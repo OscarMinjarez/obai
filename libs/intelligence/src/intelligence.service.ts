@@ -21,7 +21,7 @@ export class AiIntelligenceService {
       const promptData = INTELLIGENCE_PROMPTS[langKey] || INTELLIGENCE_PROMPTS.Spanish;
       const promptText = promptData.analysisInstruction(agent) + `\n\nCONTEXT: ${context}`;
       const result = await this.ai.models.generateContent({
-        model: 'gemini-2.0-flash-lite',
+        model: 'gemini-2.5-flash-lite',
         contents: [
           {
             role: 'user',

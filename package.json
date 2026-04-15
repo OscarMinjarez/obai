@@ -89,7 +89,8 @@
       "<rootDir>/libs/"
     ],
     "moduleNameMapper": {
-      "^obai/entities(|/.*)$": "<rootDir>/libs/entities/src/$1"
+      "^obai/entities(|/.*)$": "<rootDir>/libs/entities/src/$1",
+      "^obai/intelligence(|/.*)$": "<rootDir>/libs/intelligence/src/$1"
     },
     "coverageThreshold": {
       "global": {
