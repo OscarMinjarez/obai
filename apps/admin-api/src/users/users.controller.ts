@@ -1,9 +1,7 @@
-import { UserEntity } from 'obai/entities';
+import { Body, Controller, Get, Post } from '@nestjs/common';
+import { UsersService } from './users.service';
 import RegisterUserRequest from './requests/register-user.request';
 import { UserResponse } from './responses/user.response';
-import { Controller } from '@nestjs/common';
-import { UsersService } from './users.service';
-import { Get, Post, Body } from '@nestjs/common';
 
 @Controller('users')
 export class UsersController {

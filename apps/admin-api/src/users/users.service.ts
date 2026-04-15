@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { EntitiesService, UserEntity } from 'obai/entities';
+import { EntitiesService } from 'obai/entities';
 import RegisterUserRequest from './requests/register-user.request';
 import { UserResponse } from './responses/user.response';
 
@@ -10,9 +10,7 @@ export class UsersService {
 
   async findActiveUsers(): Promise<UserResponse[]> {
     const users = await this.entitiesService.user.findMany({
-      where: {
-        isActive: true,
-      },
+      where: { isActive: true },
     });
     return users.map((user) => new UserResponse(user));
   }

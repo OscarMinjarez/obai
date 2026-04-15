@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { DeviceEntity, DeviceRepository } from 'obai/entities';
+import { DeviceRepository } from 'obai/entities';
 import { DeviceResponse } from './responses/device.response';
 import { RegisterDeviceRequest } from './requests/register-device.request';
 
@@ -11,6 +11,7 @@ export class DevicesService {
   async registerDevice(userId: string, data: RegisterDeviceRequest): Promise<DeviceResponse> {
     const existingDevices = await this.deviceRepo.findByUserId(userId);
     const existing = existingDevices.find((d) => d.fcmToken === data.fcmToken);
+
     if (existing) {
       const updated = await this.deviceRepo.update(existing.id, {
         ...existing,
@@ -19,6 +20,7 @@ export class DevicesService {
       } as any);
       return new DeviceResponse(updated as any);
     }
+
     const created = await this.deviceRepo.create({
       ...data,
       userId,
