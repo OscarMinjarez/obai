@@ -7,9 +7,13 @@ import {
   IsOptional,
   IsNotEmpty,
 } from 'class-validator';
-import { DeviceType } from '../../../../../generated/prisma';
 
-export { DeviceType };
+export enum DeviceType {
+  MOBILE = 'MOBILE',
+  PC = 'PC',
+  TABLET = 'TABLET',
+  IOT = 'IOT',
+}
 export class DeviceEntity {
 
   @IsUUID()
