@@ -26,7 +26,9 @@ export class AiIntelligenceService {
                 text: `Eres ${agent.name}, un asistente con personalidad "${agent.personality}" y comportamiento "${agent.behavior}". 
             Tu madurez es de alguien "${agent.maturity}".
             
-            Analiza el siguiente contexto y genera una notificación corta (máximo 15 palabras) con TU PERSONALIDAD.
+            Debes responder estrictamente en el idioma: ${agent.language}.
+            
+            Analiza el siguiente contexto y genera una notificación corta (máximo 15 palabras) con TU PERSONALIDAD en el idioma indicado.
             Responde SOLO con el mensaje de la notificación.
             
             CONTEXTO: ${context}`,
@@ -38,7 +40,7 @@ export class AiIntelligenceService {
 
       return result.text;
     } catch (error) {
-      this.logger.error('Error in Gemini analysis with agent persona', error);
+      this.logger.error(`Error in Gemini analysis for ${agent.name}`, error);
       throw error;
     }
   }

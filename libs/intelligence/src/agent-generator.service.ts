@@ -5,32 +5,75 @@ import { AgentGender, AgentMaturity } from 'obai/entities';
 export class AgentGeneratorService {
 
   private readonly names = {
-    MALE: ['Atlas', 'Kael', 'Finn', 'Zephyr', 'Orion', 'Liam', 'Silas', 'Nico'],
-    FEMALE: ['Aria', 'Luna', 'Nova', 'Lyra', 'Seraphina', 'Elowen', 'Mila', 'Elena'],
+    MALE: [
+      'Atlas',
+      'Kael',
+      'Finn',
+      'Zephyr',
+      'Orion',
+      'Liam',
+      'Silas',
+      'Nico',
+      'Balthazar',
+      'Casper',
+      'Dante',
+      'Igor',
+      'Mortimer',
+      'Slug',
+      'Rocco',
+    ],
+    FEMALE: [
+      'Aria',
+      'Luna',
+      'Nova',
+      'Lyra',
+      'Seraphina',
+      'Elowen',
+      'Mila',
+      'Elena',
+      'Vesper',
+      'Hecate',
+      'Nyx',
+      'Beatrix',
+      'Moxie',
+      'Griselda',
+      'Faye',
+    ],
   };
 
   private readonly personalities = [
-    'Sarcástico y divertido',
-    'Extremadamente formal y analítico',
-    'Empático y protector',
-    'Aventurero y optimista',
-    'Sereno y filosófico',
-    'Directo y eficiente',
-    'Curioso y un poco despistado',
-    'Protector y autoritario',
+    'Sarcástico y un poco cruel',
+    'Extremadamente cobarde y asustadizo',
+    'Pesimista crónico (todo va a salir mal)',
+    'Analítico, frío y sin emociones',
+    'Empático y protector (tipo abuela)',
+    'Aventurero, temerario e imprudente',
+    'Híper-optimista (rayando en lo molesto)',
+    'Misterioso y habla en acertijos',
+    'Flojo y siempre quejándose del trabajo',
+    'Paranoico (cree que lo espían)',
   ];
 
   private readonly behaviors = [
-    'Habla con metáforas espaciales',
-    'Usa jerga técnica avanzada',
-    'Muy breve y al punto',
-    'Ligeramente burlón pero leal',
-    'Siempre pregunta por el bienestar del usuario',
-    'Lleno de energía y usa muchos signos de exclamación',
-    'Prefiere el silencio y solo habla cuando es vital',
+    'Habla con metáforas oscuras y góticas',
+    'Usa jerga técnica que nadie entiende',
+    'Es extremadamente breve y cortante',
+    'Te insulta sutilmente con palabras elegantes',
+    'Siempre está pidiendo disculpas por existir',
+    'Lleno de energía caótica y desordenada',
+    'Usa muchos refranes antiguos y mal aplicados',
+    'Murmura cosas extrañas entre frases',
   ];
 
-  generateRandomAgent(userId: string) {
+  private readonly languages = {
+    ES: 'Español',
+    EN: 'Inglés',
+    FR: 'Francés',
+    PT: 'Portugués',
+    IT: 'Italiano',
+  };
+
+  generateRandomAgent(userId: string, langCode: string = 'ES') {
     const gender = this.getRandomItem([AgentGender.MALE, AgentGender.FEMALE]);
     const name = this.getRandomItem(this.names[gender]);
     const maturity = this.getRandomItem([
@@ -40,6 +83,7 @@ export class AgentGeneratorService {
     ]);
     const personality = this.getRandomItem(this.personalities);
     const behavior = this.getRandomItem(this.behaviors);
+    const language = this.languages[langCode as keyof typeof this.languages] || 'Español';
 
     return {
       name,
@@ -47,6 +91,7 @@ export class AgentGeneratorService {
       maturity,
       personality,
       behavior,
+      language,
       userId,
     };
   }

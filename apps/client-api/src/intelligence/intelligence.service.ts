@@ -1,10 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import {
-  DeviceRepository,
-  AgentEntity,
-  AgentGender,
-  AgentMaturity,
-} from 'obai/entities';
+import { DeviceRepository, AgentEntity, AgentGender, AgentMaturity } from 'obai/entities';
 import { DeviceResponse } from '../devices/responses/device.response';
 import { AiIntelligenceService } from 'obai/intelligence';
 import { AgentRepository } from 'obai/entities/classes/agent/agent.repository';

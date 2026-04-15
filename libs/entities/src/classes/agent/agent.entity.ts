@@ -32,6 +32,9 @@ export class AgentEntity {
   @IsString()
   behavior: string;
 
+  @IsString()
+  language: string;
+
   @IsUUID()
   userId: string;
 

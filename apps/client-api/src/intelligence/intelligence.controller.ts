@@ -1,9 +1,8 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Headers } from '@nestjs/common';
 import { IntelligenceService } from './intelligence.service';
 import { AnalyzeContextRequest } from './requests/analyze-context.request';
 import { AgentGeneratorService } from 'obai/intelligence';
-import { AgentEntity } from 'obai/entities';
-import { AgentRepository } from 'obai/entities/classes/agent/agent.repository';
+import { AgentRepository, AgentEntity } from 'obai/entities';
 
 @Controller('intelligence')
 export class IntelligenceController {
@@ -21,8 +20,11 @@ export class IntelligenceController {
   }
 
   @Get('agent/generate/:id')
-  async generate(@Param('id') userId: string) {
-    return this.agentGenerator.generateRandomAgent(userId);
+  async generate(@Param('id') userId: string, @Headers('accept-language') langHeader: string) {
+    // Detectamos el idioma del header, ej: "en-US,en;q=0.9,es;q=0.8" -> tomamos "EN"
+    const detectedLang = langHeader ? langHeader.split(',')[0].split('-')[0].toUpperCase() : 'ES';
+
+    return this.agentGenerator.generateRandomAgent(userId, detectedLang);
   }
 
   @Post('agent/confirm/:id')
