@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
-import { EntitiesModule } from 'obai/entities';
 import { IntelligenceController } from './intelligence.controller';
 import { IntelligenceService } from './intelligence.service';
+import { EntitiesModule } from 'obai/entities';
+import { IntelligenceModule as AiLibraryModule } from 'obai/intelligence';
 
 @Module({
-  imports: [EntitiesModule],
+  imports: [EntitiesModule, AiLibraryModule],
   controllers: [IntelligenceController],
   providers: [IntelligenceService],
-  exports: [IntelligenceService],
 })
 export class IntelligenceModule {}

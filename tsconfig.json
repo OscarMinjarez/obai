@@ -27,6 +27,12 @@
       ],
       "obai/entities/*": [
         "libs/entities/src/*"
+      ],
+      "obai/intelligence": [
+        "libs/intelligence/src"
+      ],
+      "obai/intelligence/*": [
+        "libs/intelligence/src/*"
       ]
     }
   }
