@@ -1,29 +1,30 @@
-import { EntitiesService } from "../entities.service";
+import { EntitiesService } from '../entities.service';
 
 export abstract class BaseRepository<T> {
-    
-    constructor(
-        protected readonly entityService: EntitiesService,
-        protected readonly model: string
-    ) {}
 
-    async findAll(): Promise<T[]> {
-        return this.entityService[this.model].findMany();
-    }
+  constructor(
+    protected readonly entityService: EntitiesService,
+    protected readonly model: string,
+  ) {}
 
-    async findById(id: string): Promise<T> {
-        return this.entityService[this.model].findUnique({ where: { id } });
-    }
+  async findAll(): Promise<T[]> {
+    return this.entityService[this.model].findMany();
+  }
 
-    async create(data: T): Promise<T> {
-        return this.entityService[this.model].create({ data });
-    }
+  async findById(id: string): Promise<T> {
+    return this.entityService[this.model].findUnique({ where: { id } });
+  }
 
-    async update(id: string, data: T): Promise<T> {
-        return this.entityService[this.model].update({ where: { id }, data });
-    }
+  async create(data: T): Promise<T> {
+    return this.entityService[this.model].create({ data });
+  }
 
-    async delete(id: string): Promise<T> {
-        return this.entityService[this.model].delete({ where: { id } });
-    }
+  async update(id: string, data: T): Promise<T> {
+    return this.entityService[this.model].update({ where: { id }, data });
+  }
+
+  async delete(id: string): Promise<T> {
+    return this.entityService[this.model].delete({ where: { id } });
+  }
+
 }

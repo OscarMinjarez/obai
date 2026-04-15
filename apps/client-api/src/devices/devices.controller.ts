@@ -4,13 +4,11 @@ import { RegisterDeviceRequest } from './requests/register-device.request';
 
 @Controller('devices')
 export class DevicesController {
+
   constructor(private readonly devicesService: DevicesService) {}
 
   @Post('register/:id')
-  async register(
-    @Param('id') id: string,
-    @Body() body: RegisterDeviceRequest
-  ) {
+  async register(@Param('id') id: string, @Body() body: RegisterDeviceRequest) {
     return this.devicesService.registerDevice(id, body);
   }
 
@@ -18,4 +16,5 @@ export class DevicesController {
   async heartbeat(@Param('id') id: string) {
     return this.devicesService.updateHeartbeat(id);
   }
+
 }

@@ -2,6 +2,7 @@ import { Expose, Transform } from 'class-transformer';
 import { DeviceType } from 'obai/entities';
 
 export class DeviceResponse {
+
   @Expose()
   id: string;
 
@@ -15,10 +16,11 @@ export class DeviceResponse {
   isActive: boolean;
 
   @Expose()
-  @Transform(({ value }) => value instanceof Date ? value.toISOString() : value)
+  @Transform(({ value }) => (value instanceof Date ? value.toISOString() : value))
   lastSeen: Date;
 
   constructor(partial: Partial<DeviceResponse>) {
     Object.assign(this, partial);
   }
+
 }

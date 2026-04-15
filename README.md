@@ -1,98 +1,84 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Obai - The Spontaneous AI System
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Obai is an intelligent agent ecosystem designed to integrate into all your devices (Phone, PC, Tablet, IoT). Unlike traditional AIs, Obai is proactive and context-aware, communicating with you spontaneously based on your environment and the device you are currently using.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## 🏗️ System Architecture
 
-## Description
+The project is structured as a monorepo using **NestJS**:
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- **`apps/admin-api`**: Administrative management of the system.
+- **`apps/client-api`**: Contact point for devices and end-users.
+- **`libs/entities`**: The shared data "Backbone". It contains the database logic, entities, and repositories consumed by all applications.
 
-## Project setup
+## 🛠️ Tech Stack
 
-```bash
-$ npm install
+- **Framework:** NestJS (Node.js)
+- **Database:** PostgreSQL on **Supabase**.
+- **ORM:** **Prisma 7** (Configured to use Connection Pooler for runtime and Direct Connection for migrations).
+
+## ⚖️ Golden Rules of Coding (Obai Style)
+
+To maintain high quality and consistency, we follow this mandatory data flow:
+`Request` -> `Controller` -> `Service` -> `Repository` -> `Response`
+
+### 1. Data Flow & Structure
+- **Requests**: Located in `apps/*/src/*/requests/`. Used for input validation (Laravel FormRequest equivalent). **Do not use the DTO suffix**.
+- **Responses**: Located in `apps/*/src/*/responses/`. Used for output transformation (Laravel Resource equivalent).
+- **Services**: Contain pure business logic.
+- **Repositories**: Located in `libs/entities`. Abstract Prisma calls using a generic `BaseRepository`.
+
+### 2. Coding Style & Clean Code
+To keep the codebase consistent and readable, we follow these strict styling rules:
+
+- **Language:** All code (variables, functions, classes, comments) must be in **English**.
+- **Variables:** Use descriptive names (e.g., `userRepository` instead of `uRepo`).
+- **Semicolons:** Always use semicolons `;`.
+- **Class Structure:**
+    - Always leave **one empty line** between the class declaration and the first attribute/method.
+    - Always leave **one empty line** between methods.
+- **Internal Spacing:**
+    - **No empty lines** inside functions, loops, or conditionals. Keep logic compact within the block.
+- **Braces:** Use K&R style (braces on the same line as the statement).
+
+```typescript
+class Example {
+
+  property; // Space above first attribute
+
+  myMethod() {
+    const data = "logic";
+    return data; // No empty lines inside the method
+  }
+
+  nextMethod() {
+    // Space between methods
+  }
+}
 ```
 
-## Compile and run the project
+### 3. Naming & Parameters
+- Use descriptive but short names in URLs (e.g., `:id`).
+- Always document with `.spec.ts` files for unit tests from the creation of the file.
 
-```bash
-# development
-$ npm run start
+### 4. Git Workflow & Language Standards
+- **Language:** Commit messages, branch names, and PR descriptions must be written in **English**.
+- **Branch Naming (GitFlow):**
+    - `feature/short-description`: For new features.
+    - `bugfix/short-description`: For bug fixes.
+    - `hotfix/short-description`: For urgent production fixes.
+    - `release/vX.X.X`: For release preparation.
+- **Commit Messages:** Follow the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) standard (e.g., `feat: add device registration`).
 
-# watch mode
-$ npm run start:dev
+### 5. Database (Prisma 7)
+- **Prototyping:** Use `npx prisma db push` for quick changes.
+- **Production/Stability:** Use `npx prisma migrate dev` to generate SQL history.
+- **Important:** Connection URLs NEVER go in `schema.prisma`. They are managed centrally in `prisma.config.ts`.
 
-# production mode
-$ npm run start:prod
-```
+---
 
-## Run tests
+## 🚀 Useful Commands
 
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
-```
-
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+- **Sync database:** `npx prisma db push`
+- **Generate client:** `npx prisma generate`
+- **Run in development:** `npm run start:dev`
+- **Run tests:** `npm run test`

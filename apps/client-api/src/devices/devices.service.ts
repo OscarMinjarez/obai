@@ -5,16 +5,17 @@ import { DeviceResponse } from './responses/device.response';
 
 @Injectable()
 export class DevicesService {
+
   constructor(private readonly deviceRepo: DeviceRepository) {}
 
   async registerDevice(id: string, data: RegisterDeviceRequest): Promise<DeviceResponse> {
     const existingDevices = await this.deviceRepo.findByUserId(id);
-    const existing = existingDevices.find(d => d.fcmToken === data.fcmToken);
+    const existing = existingDevices.find((d) => d.fcmToken === data.fcmToken);
     if (existing) {
       const updated = await this.deviceRepo.update(existing.id, {
         ...existing,
         ...data,
-        lastSeen: new Date()
+        lastSeen: new Date(),
       });
       return new DeviceResponse(updated);
     }
@@ -24,7 +25,6 @@ export class DevicesService {
       isActive: true,
       lastSeen: new Date(),
     } as any);
-
     return new DeviceResponse(created);
   }
 
@@ -32,4 +32,5 @@ export class DevicesService {
     const updated = await this.deviceRepo.updateLastSeen(deviceId);
     return new DeviceResponse(updated);
   }
+
 }

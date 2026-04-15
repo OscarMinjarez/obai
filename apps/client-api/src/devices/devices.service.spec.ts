@@ -5,14 +5,12 @@ import { DeviceRepository } from 'obai/entities';
 describe('DevicesService', () => {
   let service: DevicesService;
   let repository: DeviceRepository;
-
   const mockDeviceRepository = {
     findByUserId: jest.fn(),
     create: jest.fn(),
     update: jest.fn(),
     updateLastSeen: jest.fn(),
   };
-
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -26,7 +24,6 @@ describe('DevicesService', () => {
     service = module.get<DevicesService>(DevicesService);
     repository = module.get<DeviceRepository>(DeviceRepository);
   });
-
   it('should be defined', () => {
     expect(service).toBeDefined();
   });

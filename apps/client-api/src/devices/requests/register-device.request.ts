@@ -3,14 +3,15 @@ import { DeviceType } from 'obai/entities';
 
 export class RegisterDeviceRequest {
 
-    @IsOptional()
-    @IsString()
-    name?: string;
+  @IsOptional()
+  @IsString()
+  name?: string;
 
-    @IsEnum(DeviceType)
-    type: DeviceType;
+  @IsEnum(DeviceType)
+  type: DeviceType;
 
-    @IsOptional()
-    @IsString()
-    fcmToken?: string;
+  @IsOptional()
+  @IsString()
+  fcmToken?: string;
+
 }

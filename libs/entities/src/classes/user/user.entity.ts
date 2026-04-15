@@ -1,19 +1,21 @@
-import { IsString, IsUUID } from "class-validator";
+import { IsString, IsUUID } from 'class-validator';
 
 export class UserEntity {
-    @IsUUID()
-    id: string;
 
-    @IsString()
-    name: string;
+  @IsUUID()
+  id: string;
 
-    @IsString()
-    email: string;
+  @IsString()
+  name: string;
 
-    @IsString()
-    password: string;
+  @IsString()
+  email: string;
 
-    constructor(partial: Partial<UserEntity>) {
-        Object.assign(this, partial);
-    }
+  @IsString()
+  password: string;
+
+  constructor(partial: Partial<UserEntity>) {
+    Object.assign(this, partial);
+  }
+
 }
