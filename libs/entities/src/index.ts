@@ -4,5 +4,6 @@ export * from './classes/base.repository';
 export * from './classes/user/user.entity';
 export * from './classes/user/user.repository';
 export * from './classes/agent/agent.entity';
+export * from './classes/agent/agent.repository';
 export * from './classes/device/device.entity';
 export * from './classes/device/device.repository';

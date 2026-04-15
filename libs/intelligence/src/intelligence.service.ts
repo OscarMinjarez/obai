@@ -1,6 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { GoogleGenAI } from '@google/genai';
 import { AgentEntity } from 'obai/entities';
+import { INTELLIGENCE_PROMPTS } from './prompts/intelligence.prompts';
 
 @Injectable()
 export class AiIntelligenceService {
@@ -16,29 +17,19 @@ export class AiIntelligenceService {
 
   async analyzeContext(context: string, agent: AgentEntity): Promise<string | undefined> {
     try {
+      const langKey = agent.language as keyof typeof INTELLIGENCE_PROMPTS;
+      const promptData = INTELLIGENCE_PROMPTS[langKey] || INTELLIGENCE_PROMPTS.Spanish;
+      const promptText = promptData.analysisInstruction(agent) + `\n\nCONTEXT: ${context}`;
       const result = await this.ai.models.generateContent({
-        model: 'gemini-2.5-flash',
+        model: 'gemini-2.0-flash-lite',
         contents: [
           {
             role: 'user',
-            parts: [
-              {
-                text: `Eres ${agent.name}, un asistente con personalidad "${agent.personality}" y comportamiento "${agent.behavior}". 
-            Tu madurez es de alguien "${agent.maturity}".
-            
-            Debes responder estrictamente en el idioma: ${agent.language}.
-            
-            Analiza el siguiente contexto y genera una notificación corta (máximo 15 palabras) con TU PERSONALIDAD en el idioma indicado.
-            Responde SOLO con el mensaje de la notificación.
-            
-            CONTEXTO: ${context}`,
-              },
-            ],
+            parts: [{ text: promptText }],
           },
         ],
       });
-
-      return result.text;
+      return result.text || '';
     } catch (error) {
       this.logger.error(`Error in Gemini analysis for ${agent.name}`, error);
       throw error;

@@ -1,7 +1,6 @@
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["driverAdapters"]
-  output          = "../generated/prisma"
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
 }
 
 datasource db {
@@ -9,40 +8,40 @@ datasource db {
 }
 
 model User {
-  id String @id @default(uuid())
-  email String @unique
-  name String
-  password String
-  isActive Boolean @default(true)
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String
+  password  String
+  isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  devices Device[]
-  agent Agent?
+  devices   Device[]
+  agent     Agent?
 }
 
 model Agent {
-  id String @id @default(uuid())
-  name String
-  gender String
-  maturity String
+  id          String   @id @default(uuid())
+  name        String
+  gender      String
+  maturity    String
   personality String
-  behavior String
-  language String @default("Español")
-  userId String @unique
-  user User @relation(fields: [userId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  behavior    String
+  language    String   @default("Spanish")
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model Device {
-  id String @id @default(uuid())
-  name String?
-  type String
-  isActive Boolean @default(true)
-  lastSeen DateTime @default(now())
-  fcmToken String?
-  userId String
-  user User @relation(fields: [userId], references: [id])
+  id        String   @id @default(uuid())
+  name      String?
+  type      String
+  isActive  Boolean  @default(true)
+  lastSeen  DateTime @default(now())
+  fcmToken  String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
