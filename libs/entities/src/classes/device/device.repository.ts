@@ -10,7 +10,7 @@ export class DeviceRepository extends BaseRepository<DeviceEntity> {
     }
 
     async findByUserId(id: string) {
-        return this.entityService.device.findMany({ where: { id } });
+        return this.entityService.device.findMany({ where: { userId: id } });
     }
 
     async updateLastSeen(id: string) {

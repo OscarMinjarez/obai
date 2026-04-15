@@ -20,7 +20,7 @@ export class DevicesService {
     }
     const created = await this.deviceRepo.create({
       ...data,
-      id,
+      userId: id,
       isActive: true,
       lastSeen: new Date(),
     } as any);
