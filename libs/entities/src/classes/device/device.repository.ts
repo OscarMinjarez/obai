@@ -14,6 +14,13 @@ export class DeviceRepository extends BaseRepository<DeviceEntity> {
     return this.entityService.device.findMany({ where: { userId: id } });
   }
 
+  async findMostRecentByUserId(userId: string) {
+    return this.entityService.device.findFirst({
+      where: { userId, isActive: true },
+      orderBy: { lastSeen: 'desc' },
+    });
+  }
+
   async updateLastSeen(id: string) {
     return this.entityService.device.update({
       where: { id },
