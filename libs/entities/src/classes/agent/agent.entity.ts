@@ -29,8 +29,8 @@ export class AgentEntity {
   @IsString()
   personality: string;
 
-  @IsString()
-  behavior: string;
+  @IsString({ each: true })
+  behavior: string[];
 
   @IsString()
   language: string;

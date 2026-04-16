@@ -11,7 +11,7 @@ describe('AiIntelligenceService', () => {
   const mockAgent = new AgentEntity({
     name: 'Atlas',
     personality: 'Sarcastic',
-    behavior: 'Witty',
+    behavior: ['Witty'],
     maturity: AgentMaturity.YOUNG,
     gender: AgentGender.MALE,
     language: 'Spanish',
@@ -46,7 +46,7 @@ describe('AiIntelligenceService', () => {
     expect(result).toBe('Hola, soy Atlas.');
     expect(mockGenerateContent).toHaveBeenCalledWith(
       expect.objectContaining({
-        model: 'gemini-2.0-flash-lite',
+        model: 'gemini-2.5-flash-lite',
         contents: expect.arrayContaining([
           expect.objectContaining({
             parts: expect.arrayContaining([

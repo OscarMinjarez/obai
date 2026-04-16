@@ -39,7 +39,7 @@ export class IntelligenceService {
           gender: AgentGender.MALE,
           maturity: AgentMaturity.MATURE,
           personality: 'Útil y neutral',
-          behavior: 'Profesional',
+          behavior: ['Profesional'],
           userId,
         });
       }

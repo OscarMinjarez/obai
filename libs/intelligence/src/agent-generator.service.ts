@@ -26,7 +26,7 @@ export class AgentGeneratorService {
       const promptTemplate = INTELLIGENCE_PROMPTS[langKey].identityGeneration;
       const promptText = promptTemplate.replace('{langCode}', langCode);
       const model = this.ai.models.generateContent({
-        model: 'gemini-2.0-flash-lite',
+        model: 'gemini-2.5-flash-lite',
         contents: [
           {
             role: 'user',
