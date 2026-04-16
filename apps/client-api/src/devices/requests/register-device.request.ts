@@ -1,17 +1,19 @@
-import { IsOptional, IsString, IsEnum } from 'class-validator';
-import { DeviceType } from 'obai/entities';
+import { IsString, IsNotEmpty, IsEnum, IsOptional } from 'class-validator';
 
 export class RegisterDeviceRequest {
 
-  @IsOptional()
   @IsString()
-  name?: string;
+  @IsNotEmpty()
+  name: string;
 
-  @IsEnum(DeviceType)
-  type: DeviceType;
+  @IsEnum(['MOBILE', 'PC', 'TABLET', 'IOT'], {
+    message: 'type must be one of the following values: MOBILE, PC, TABLET, IOT',
+  })
+  @IsNotEmpty()
+  type: string;
 
-  @IsOptional()
   @IsString()
+  @IsOptional()
   fcmToken?: string;
 
 }

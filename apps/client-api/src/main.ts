@@ -1,8 +1,22 @@
-import { NestFactory } from '@nestjs/core';
+import 'dotenv/config';
+import { NestFactory, Reflector } from '@nestjs/core';
+import { Logger, ValidationPipe, ClassSerializerInterceptor } from '@nestjs/common';
 import { ClientApiModule } from './client-api.module';
 
+const APP_NAME = 'ClientAPI';
+const PORT = process.env.PORT ?? 3000;
 async function bootstrap() {
   const app = await NestFactory.create(ClientApiModule);
-  await app.listen(process.env.port ?? 3000);
+  app.setGlobalPrefix('api');
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      transform: true,
+      forbidNonWhitelisted: false,
+    }),
+  );
+  app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
+  await app.listen(PORT);
+  Logger.log(`Running on http://localhost:${PORT}`, APP_NAME);
 }
 bootstrap();

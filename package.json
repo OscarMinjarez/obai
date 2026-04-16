@@ -7,10 +7,14 @@
   "license": "UNLICENSED",
   "scripts": {
     "build": "nest build",
-    "format": "npm run format:prettier && npm run format:lint",
+    "format": "npm run format:lint",
     "format:prettier": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
     "format:lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
-    "format:check": "prettier --check \"apps/**/*.ts\" \"libs/**/*.ts\" && eslint \"{src,apps,libs,test}/**/*.ts\"",
+    "format:check": "eslint \"{src,apps,libs,test}/**/*.ts\"",
+    "dev": "npm run dev:all",
+    "dev:all": "concurrently --names \"client-api,admin-api\" --prefix-colors \"cyan,magenta\" \"npm run dev:client\" \"npm run dev:admin\"",
+    "dev:client": "nest start client-api --watch",
+    "dev:admin": "nest start admin-api --watch",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
@@ -23,12 +27,16 @@
     "test:e2e": "jest --config ./apps/client-api/test/jest-e2e.json"
   },
   "dependencies": {
+    "@google/genai": "^1.50.1",
     "@nestjs/common": "^11.0.1",
     "@nestjs/core": "^11.0.1",
     "@nestjs/platform-express": "^11.0.1",
+    "@prisma/adapter-pg": "^7.7.0",
     "@prisma/client": "^7.7.0",
+    "@types/pg": "^8.20.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.15.1",
+    "pg": "^8.20.0",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1"
   },
@@ -42,6 +50,7 @@
     "@types/jest": "^30.0.0",
     "@types/node": "^24.0.0",
     "@types/supertest": "^7.0.0",
+    "concurrently": "^9.2.1",
     "dotenv": "^17.4.2",
     "eslint": "^9.18.0",
     "eslint-config-prettier": "^10.0.1",
@@ -80,7 +89,8 @@
       "<rootDir>/libs/"
     ],
     "moduleNameMapper": {
-      "^obai/entities(|/.*)$": "<rootDir>/libs/entities/src/$1"
+      "^obai/entities(|/.*)$": "<rootDir>/libs/entities/src/$1",
+      "^obai/intelligence(|/.*)$": "<rootDir>/libs/intelligence/src/$1"
     },
     "coverageThreshold": {
       "global": {

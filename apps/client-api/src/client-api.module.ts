@@ -3,9 +3,10 @@ import { ClientApiController } from './client-api.controller';
 import { ClientApiService } from './client-api.service';
 import { EntitiesModule } from 'obai/entities';
 import { DevicesModule } from './devices/devices.module';
+import { IntelligenceModule } from './intelligence/intelligence.module';
 
 @Module({
-  imports: [EntitiesModule, DevicesModule],
+  imports: [EntitiesModule, DevicesModule, IntelligenceModule],
   controllers: [ClientApiController],
   providers: [ClientApiService],
 })

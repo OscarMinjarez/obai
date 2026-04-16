@@ -4,11 +4,12 @@ import { DevicesService } from './devices.service';
 
 describe('DevicesController', () => {
   let controller: DevicesController;
-  let service: DevicesService;
+
   const mockDevicesService = {
     registerDevice: jest.fn(),
     updateHeartbeat: jest.fn(),
   };
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [DevicesController],
@@ -19,9 +20,10 @@ describe('DevicesController', () => {
         },
       ],
     }).compile();
+
     controller = module.get<DevicesController>(DevicesController);
-    service = module.get<DevicesService>(DevicesService);
   });
+
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });

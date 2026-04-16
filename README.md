@@ -6,9 +6,10 @@ Obai is an intelligent agent ecosystem designed to integrate into all your devic
 
 The project is structured as a monorepo using **NestJS**:
 
-- **`apps/admin-api`**: Administrative management of the system.
-- **`apps/client-api`**: Contact point for devices and end-users.
+- **`apps/admin-api`**: Administrative management of the system. Runs on port **3001** with global prefix `/api`.
+- **`apps/client-api`**: Contact point for devices and end-users. Runs on port **3000** with global prefix `/api`.
 - **`libs/entities`**: The shared data "Backbone". It contains the database logic, entities, and repositories consumed by all applications.
+- **`libs/intelligence`**: Core AI components powered by `@google/genai` (Gemini 2.5 Flash). It handles dynamic agent identity generation, contexts, and personality traits.
 
 ## 🛠️ Tech Stack
 
@@ -80,5 +81,5 @@ class Example {
 
 - **Sync database:** `npx prisma db push`
 - **Generate client:** `npx prisma generate`
-- **Run in development:** `npm run start:dev`
+- **Run in development:** `npm run dev` (Runs concurrently for both apps)
 - **Run tests:** `npm run test`

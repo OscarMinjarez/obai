@@ -1,25 +1,28 @@
 import { Expose, Transform } from 'class-transformer';
-import { DeviceType } from 'obai/entities';
 
-export class DeviceResponse {
+export class UserResponse {
 
   @Expose()
   id: string;
 
   @Expose()
-  name: string | null;
+  name: string;
 
   @Expose()
-  type: DeviceType;
+  email: string;
 
   @Expose()
   isActive: boolean;
 
   @Expose()
   @Transform(({ value }) => (value instanceof Date ? value.toISOString() : value))
-  lastSeen: Date;
+  createdAt: Date;
 
-  constructor(partial: Partial<DeviceResponse>) {
+  @Expose()
+  @Transform(({ value }) => (value instanceof Date ? value.toISOString() : value))
+  updatedAt: Date;
+
+  constructor(partial: Partial<UserResponse>) {
     Object.assign(this, partial);
   }
 

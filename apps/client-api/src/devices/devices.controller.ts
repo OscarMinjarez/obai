@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Param, Patch } from '@nestjs/common';
+import { Body, Controller, Param, Patch, Post } from '@nestjs/common';
 import { DevicesService } from './devices.service';
 import { RegisterDeviceRequest } from './requests/register-device.request';
 
@@ -8,13 +8,13 @@ export class DevicesController {
   constructor(private readonly devicesService: DevicesService) {}
 
   @Post('register/:id')
-  async register(@Param('id') id: string, @Body() body: RegisterDeviceRequest) {
-    return this.devicesService.registerDevice(id, body);
+  async register(@Param('id') userId: string, @Body() data: RegisterDeviceRequest) {
+    return this.devicesService.registerDevice(userId, data);
   }
 
   @Patch(':id/heartbeat')
-  async heartbeat(@Param('id') id: string) {
-    return this.devicesService.updateHeartbeat(id);
+  async updateHeartbeat(@Param('id') deviceId: string) {
+    return this.devicesService.updateHeartbeat(deviceId);
   }
 
 }

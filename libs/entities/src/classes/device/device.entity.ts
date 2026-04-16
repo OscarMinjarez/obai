@@ -1,4 +1,12 @@
-import { IsString, IsUUID, IsEnum, IsBoolean, IsDate, IsOptional } from 'class-validator';
+import {
+  IsString,
+  IsUUID,
+  IsEnum,
+  IsBoolean,
+  IsDate,
+  IsOptional,
+  IsNotEmpty,
+} from 'class-validator';
 
 export enum DeviceType {
   MOBILE = 'MOBILE',
@@ -11,16 +19,17 @@ export class DeviceEntity {
   @IsUUID()
   id: string;
 
-  @IsString()
   @IsOptional()
-  name?: string;
+  @IsString()
+  name: string | null;
 
   @IsEnum(DeviceType)
+  @IsNotEmpty()
   type: DeviceType;
 
-  @IsString()
   @IsOptional()
-  fcmToken?: string;
+  @IsString()
+  fcmToken: string | null;
 
   @IsBoolean()
   isActive: boolean;
