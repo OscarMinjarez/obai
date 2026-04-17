@@ -1,23 +1,48 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { EntitiesService, AgentEntity } from 'obai/entities';
-import { AiIntelligenceService } from 'obai/intelligence';
+import { AiIntelligenceService, AgentGeneratorService } from 'obai/intelligence';
 
 @Injectable()
 export class MessagingService {
-
   constructor(
     private readonly entities: EntitiesService,
     private readonly ai: AiIntelligenceService,
+    private readonly agentGenerator: AgentGeneratorService,
   ) {}
 
   async sendMessage(userId: string, content: string) {
+    // 0. Sincronización de Fallback: Si el usuario de Supabase no existe en Prisma local, lo creamos.
+    let userExists = await (this.entities as any).user.findUnique({ where: { id: userId } });
+    if (!userExists) {
+      this.ai['logger']?.warn(`Usuario ${userId} no encontrado en Prisma. Creando fallback local...`);
+      await (this.entities as any).user.create({
+        data: {
+          id: userId,
+          email: `${userId}@supabase.fallback`,
+          password: '[SUPABASE_AUTH_DELEGATED]',
+        }
+      });
+    }
+
     // 1. Buscamos al agente del usuario
-    const agentData = await (this.entities as any).agent.findUnique({
+    let agentData = await (this.entities as any).agent.findUnique({
       where: { userId },
     });
 
     if (!agentData) {
-      throw new NotFoundException('No active agent found for this user.');
+      // Usamos el AgentGeneratorService para crear un agente con personalidad según el idioma
+      const generatedProfile = await this.agentGenerator.generateRandomAgent(userId, 'ES');
+      agentData = await (this.entities as any).agent.create({
+        data: {
+          name: generatedProfile.name || 'Obai Base',
+          description: generatedProfile.description || 'Soy Obai, tu asistente inteligente.',
+          gender: generatedProfile.gender || 'MALE',
+          maturity: generatedProfile.maturity || 'MATURE',
+          personality: generatedProfile.personality || 'Amigable',
+          behaviors: generatedProfile.behaviors || ['Profesional'],
+          userId,
+        }
+      });
     }
 
     const agent = new AgentEntity(agentData);

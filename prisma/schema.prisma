@@ -24,6 +24,8 @@ model Agent {
   id          String   @id @default(uuid())
   name        String
   description String
+  gender      String   @default("MALE")
+  maturity    String   @default("MATURE")
   personality String
   behaviors   String[]
   userId      String   @unique

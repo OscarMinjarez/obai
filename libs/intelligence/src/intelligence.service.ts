@@ -5,7 +5,6 @@ import { INTELLIGENCE_PROMPTS } from './prompts/intelligence.prompts';
 
 @Injectable()
 export class AiIntelligenceService {
-
   private readonly logger = new Logger(AiIntelligenceService.name);
   private ai: GoogleGenAI;
 
@@ -19,8 +18,9 @@ export class AiIntelligenceService {
     try {
       const promptData = INTELLIGENCE_PROMPTS['Spanish'];
       const promptText = promptData.analysisInstruction(agent) + `\n\nCONTEXT: ${context}`;
+
       const result = await this.ai.models.generateContent({
-        model: 'gemini-2.0-flash-lite',
+        model: 'gemini-2.5-flash-lite',
         contents: [
           {
             role: 'user',
@@ -43,13 +43,15 @@ export class AiIntelligenceService {
       }));
 
       const systemInstruction = `You are ${agent.name}. 
+      Your gender: ${agent.gender}.
+      Your maturity: ${agent.maturity}.
       Your personality: ${agent.personality}. 
       Your description: ${agent.description}. 
       Your behaviors: ${agent.behaviors.join(', ')}.
       Always respond in the same language as the user. Stay in character at all times.`;
 
       const result = await this.ai.models.generateContent({
-        model: 'gemini-2.0-flash-lite',
+        model: 'gemini-2.5-flash-lite',
         contents: chatHistory,
         config: {
           systemInstruction: systemInstruction,
@@ -62,5 +64,4 @@ export class AiIntelligenceService {
       return `[System Error] I'm having trouble thinking right now.`;
     }
   }
-
 }
