@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Headers, Req } from '@nestjs/common';
+import { Body, Controller, Get, Post, Headers, Req } from '@nestjs/common';
 import { IntelligenceService } from './intelligence.service';
 import { AnalyzeContextRequest } from './requests/analyze-context.request';
 import { AgentGeneratorService } from 'obai/intelligence';

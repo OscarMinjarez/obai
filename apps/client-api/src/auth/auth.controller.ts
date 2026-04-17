@@ -17,4 +17,5 @@ export class AuthController {
   async login(@Body() data: LoginRequest) {
     return this.authService.signInWithEmailAndPassword(data.email, data.password);
   }
+
 }

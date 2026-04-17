@@ -47,4 +47,5 @@ export class AuthService implements OnModuleInit {
         }
         return data;
     }
+
 }

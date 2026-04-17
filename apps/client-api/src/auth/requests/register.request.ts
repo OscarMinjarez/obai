@@ -12,4 +12,5 @@ export class RegisterRequest {
   @IsString()
   @IsNotEmpty()
   name: string;
+
 }
