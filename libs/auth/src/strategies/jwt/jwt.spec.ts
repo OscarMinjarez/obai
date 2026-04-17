@@ -1,5 +1,9 @@
 import { JwtStrategy } from './jwt';
 
+jest.mock('jwks-rsa', () => ({
+  passportJwtSecret: jest.fn().mockReturnValue(jest.fn()),
+}));
+
 describe('JwtStrategy', () => {
   let strategy: JwtStrategy;
 

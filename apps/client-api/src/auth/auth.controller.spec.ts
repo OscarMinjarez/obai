@@ -2,6 +2,10 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AuthController } from './auth.controller';
 import { AuthService } from 'obai/auth';
 
+jest.mock('jwks-rsa', () => ({
+  passportJwtSecret: jest.fn().mockReturnValue(jest.fn()),
+}));
+
 describe('AuthController', () => {
   let controller: AuthController;
   let service: AuthService;
