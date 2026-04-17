@@ -6,6 +6,7 @@ import { AgentRepository } from 'obai/entities/classes/agent/agent.repository';
 
 @Injectable()
 export class IntelligenceService {
+
   private readonly logger = new Logger(IntelligenceService.name);
 
   constructor(

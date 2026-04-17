@@ -5,6 +5,7 @@ import { INTELLIGENCE_PROMPTS } from './prompts/intelligence.prompts';
 
 @Injectable()
 export class AiIntelligenceService {
+
   private readonly logger = new Logger(AiIntelligenceService.name);
   private ai: GoogleGenAI;
 
@@ -64,4 +65,5 @@ export class AiIntelligenceService {
       return `[System Error] I'm having trouble thinking right now.`;
     }
   }
+
 }

@@ -16,6 +16,7 @@ import * as jwt from 'jsonwebtoken';
   namespace: 'chat',
 })
 export class ChatGateway implements OnGatewayConnection {
+
   @WebSocketServer()
   server: Server;
 
@@ -72,4 +73,5 @@ export class ChatGateway implements OnGatewayConnection {
       client.emit('chat:typing', { isTyping: false });
     }
   }
+
 }

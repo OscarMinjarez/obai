@@ -1,6 +1,7 @@
 import { IsString, IsNotEmpty, IsUUID } from 'class-validator';
 
 export class AgentEntity {
+
   @IsUUID()
   id: string;
 
@@ -35,4 +36,5 @@ export class AgentEntity {
   constructor(partial: Partial<AgentEntity>) {
     Object.assign(this, partial);
   }
+
 }
