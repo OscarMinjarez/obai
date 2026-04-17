@@ -35,6 +35,7 @@
     "@nestjs/platform-express": "^11.0.1",
     "@prisma/adapter-pg": "^7.7.0",
     "@prisma/client": "^7.7.0",
+    "@supabase/supabase-js": "^2.103.3",
     "@types/bcrypt": "^6.0.0",
     "@types/passport-jwt": "^4.0.1",
     "@types/pg": "^8.20.0",
@@ -96,6 +97,7 @@
       "<rootDir>/libs/"
     ],
     "moduleNameMapper": {
+      "^obai/auth(|/.*)$": "<rootDir>/libs/auth/src/$1",
       "^obai/entities(|/.*)$": "<rootDir>/libs/entities/src/$1",
       "^obai/intelligence(|/.*)$": "<rootDir>/libs/intelligence/src/$1"
     },

@@ -1,10 +1,13 @@
-import { Body, Controller, Get, Param, Post, Headers } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Headers, Req } from '@nestjs/common';
 import { IntelligenceService } from './intelligence.service';
 import { AnalyzeContextRequest } from './requests/analyze-context.request';
 import { AgentGeneratorService } from 'obai/intelligence';
 import { AgentRepository, AgentEntity } from 'obai/entities';
+import { UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from 'obai/auth/guards/jwt-auth/jwt-auth.guard';
 
 @Controller('intelligence')
+@UseGuards(JwtAuthGuard)
 export class IntelligenceController {
 
   constructor(
@@ -13,20 +16,23 @@ export class IntelligenceController {
     private readonly agentRepo: AgentRepository,
   ) {}
 
-  @Post('trace/:id')
-  async trace(@Param('id') userId: string, @Body() data: AnalyzeContextRequest) {
+  @Post('trace')
+  async trace(@Req() req, @Body() data: AnalyzeContextRequest) {
+    const userId = req.user.id;
     await this.intelligenceService.analyzeContextAndNotify(userId, data.context);
     return { success: true, message: 'Intelligence analysis triggered successfully' };
   }
 
-  @Get('agent/generate/:id')
-  async generate(@Param('id') userId: string, @Headers('accept-language') langHeader: string) {
+  @Get('agent/generate')
+  async generate(@Req() req, @Headers('accept-language') langHeader: string) {
+    const userId = req.user.id;
     const detectedLang = langHeader ? langHeader.split(',')[0].split('-')[0].toUpperCase() : 'ES';
     return this.agentGenerator.generateRandomAgent(userId, detectedLang);
   }
 
-  @Post('agent/confirm/:id')
-  async confirm(@Param('id') userId: string, @Body() agentData: any) {
+  @Post('agent/confirm')
+  async confirm(@Req() req, @Body() agentData: any) {
+    const userId = req.user.id;
     const existing = await this.agentRepo.findByUserId(userId);
     if (existing) {
       await this.agentRepo.deleteByUserId(userId);
