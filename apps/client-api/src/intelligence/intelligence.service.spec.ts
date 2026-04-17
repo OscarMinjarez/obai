@@ -46,8 +46,8 @@ describe('IntelligenceService', () => {
       name: 'Test Agent',
       personality: 'Kind',
       behavior: 'Polite',
-      maturity: AgentMaturity.MATURE,
-      gender: AgentGender.FEMALE,
+      maturity: 'MATURE',
+      gender: 'FEMALE',
       language: 'Spanish',
       userId: 'user-123',
     });

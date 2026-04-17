@@ -21,7 +21,7 @@ export class AiIntelligenceService {
       const promptText = promptData.analysisInstruction(agent) + `\n\nCONTEXT: ${context}`;
 
       const result = await this.ai.models.generateContent({
-        model: 'gemini-2.5-flash-lite',
+        model: 'gemini-3.1-flash-lite-preview',
         contents: [
           {
             role: 'user',
@@ -52,7 +52,7 @@ export class AiIntelligenceService {
       Always respond in the same language as the user. Stay in character at all times.`;
 
       const result = await this.ai.models.generateContent({
-        model: 'gemini-2.5-flash-lite',
+        model: 'gemini-3.1-flash-lite-preview',
         contents: chatHistory,
         config: {
           systemInstruction: systemInstruction,
