@@ -1,7 +1,20 @@
-import { Jwt } from './jwt';
+import { JwtStrategy } from './jwt';
 
-describe('Jwt', () => {
+describe('JwtStrategy', () => {
+  let strategy: JwtStrategy;
+
+  beforeEach(() => {
+    process.env.SUPABASE_JWT_SECRET = 'test-secret';
+    strategy = new JwtStrategy();
+  });
+
   it('should be defined', () => {
-    expect(new Jwt()).toBeDefined();
+    expect(strategy).toBeDefined();
+  });
+
+  it('should validate and return user object from payload', async () => {
+    const payload = { sub: 'user-123', email: 'test@obai.com' };
+    const result = await strategy.validate(payload);
+    expect(result).toEqual({ id: 'user-123', email: 'test@obai.com' });
   });
 });
