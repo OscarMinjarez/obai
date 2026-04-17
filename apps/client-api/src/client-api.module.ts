@@ -5,9 +5,10 @@ import { EntitiesModule } from 'obai/entities';
 import { DevicesModule } from './devices/devices.module';
 import { IntelligenceModule } from './intelligence/intelligence.module';
 import { AuthModule } from './auth/auth.module';
+import { ChatModule } from './chat/chat.module';
 
 @Module({
-  imports: [EntitiesModule, DevicesModule, IntelligenceModule, AuthModule],
+  imports: [EntitiesModule, DevicesModule, IntelligenceModule, AuthModule, ChatModule],
   controllers: [ClientApiController],
   providers: [ClientApiService],
 })

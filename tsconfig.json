@@ -39,7 +39,13 @@
       ],
       "obai/intelligence/*": [
         "libs/intelligence/src/*"
-      ]
+      ],
+      "obai/messaging": [
+        "libs/messaging/src"
+      ],
+      "obai/messaging/*": [
+        "libs/messaging/src/*"
+      ],
     }
   }
 }

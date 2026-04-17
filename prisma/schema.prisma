@@ -10,25 +10,25 @@ datasource db {
 model User {
   id        String   @id @default(uuid())
   email     String   @unique
-  name      String
+  name      String?
   password  String
   isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   devices   Device[]
-  agent     Agent?
+  agents    Agent[]
+  messages  Message[]
 }
 
 model Agent {
   id          String   @id @default(uuid())
   name        String
-  gender      String
-  maturity    String
+  description String
   personality String
-  behavior    String[]
-  language    String   @default("Spanish")
+  behaviors   String[]
   userId      String   @unique
   user        User     @relation(fields: [userId], references: [id])
+  messages    Message[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
@@ -44,4 +44,16 @@ model Device {
   user      User     @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Message {
+  id        String   @id @default(uuid())
+  content   String   @db.Text
+  role      String
+  createdAt DateTime @default(now())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  agentId   String
+  agent     Agent    @relation(fields: [agentId], references: [id])
+  @@index([userId, createdAt])
 }
