@@ -1,15 +1,23 @@
-# Obai - The Spontaneous AI System
+# Obai - The Ubiquitous AI Companion
 
-Obai is an intelligent agent ecosystem designed to integrate into all your devices (Phone, PC, Tablet, IoT). Unlike traditional AIs, Obai is proactive and context-aware, communicating with you spontaneously based on your environment and the device you are currently using.
+Obai is not a standard chatbot or a B2B SaaS. **Obai is true Ambient Artificial Intelligence** — a proactive, deeply personal companion that travels with you across your devices (Phone, PC, Tablet, IoT). 
+
+Unlike traditional AIs where *you* initiate the conversation, Obai lives in the background of your life. It understands your context silently: it knows your location, the current weather, and the device you are currently paying attention to. 
+
+**The Obai Vision:**
+- **Context-Aware Presence:** Through device _heartbeats_, Obai knows if you are walking outside with your phone or sitting at your work PC. 
+- **Personality-Driven Proactivity:** Obai doesn't just answer questions; it initiates them. If it rains, a "fearful" Obai might suggest taking shelter in a nearby café, while a "brave" Obai might suggest an adventure. 
+- **Spontaneous Sockets:** Powered by real-time WebSockets, Obai taps you on the shoulder spontaneously across devices, asking if it can help with a meeting just as you log into your desktop. 
 
 ## 🏗️ System Architecture
 
-The project is structured as a monorepo using **NestJS**:
+The project is structured as a monorepo using **NestJS**, heavily optimized for real-time telemetry and Agent memory:
 
-- **`apps/admin-api`**: Administrative management of the system. Runs on port **3001** with global prefix `/api`.
-- **`apps/client-api`**: Contact point for devices and end-users. Runs on port **3000** with global prefix `/api`.
-- **`libs/entities`**: The shared data "Backbone". It contains the database logic, entities, and repositories consumed by all applications.
-- **`libs/intelligence`**: Core AI components powered by `@google/genai` (Gemini 2.5 Flash). It handles dynamic agent identity generation, contexts, and personality traits.
+- **`apps/admin-api`** (Port 3001) — **The Control Center**: Designed for instance administrators and open-source self-hosters. It acts as the "God View" telemetry system to monitor Gemini token consumption, active WebSocket connections, and system health. It is also responsible for moderation (abuse prevention), injecting global context overrides (e.g., holiday-themed global prompts), and serving as the configuration wizard for local deployments.
+- **`apps/client-api`** (Port 3000) — **The Sensory Gateway**: The primary contact point for end-users and IoT hardware. It handles JWT authentication, receives hardware heartbeats (context triggers), and maintains the Socket.io connections that allow Obai to execute its spontaneous proactivity directly with the user.
+- **`libs/messaging`**: Real-time Socket.io backbone allowing Obai to achieve spontaneous proactivity.
+- **`libs/entities`**: The shared "Long-Term Memory". It contains our persistent database logic consumed by all applications.
+- **`libs/intelligence`**: Core AI components powered by `@google/genai`. It handles dynamic personality assignment (traits, gender, maturity) based on regional nuances.
 
 ## 🛠️ Tech Stack
 
