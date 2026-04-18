@@ -15,6 +15,8 @@ The project is structured as a monorepo using **NestJS**, heavily optimized for 
 
 - **`apps/admin-api`** (Port 3001) — **The Control Center**: Designed for instance administrators and open-source self-hosters. It acts as the "God View" telemetry system to monitor Gemini token consumption, active WebSocket connections, and system health. It is also responsible for moderation (abuse prevention), injecting global context overrides (e.g., holiday-themed global prompts), and serving as the configuration wizard for local deployments.
 - **`apps/client-api`** (Port 3000) — **The Sensory Gateway**: The primary contact point for end-users and IoT hardware. It handles JWT authentication, receives hardware heartbeats (context triggers), and maintains the Socket.io connections that allow Obai to execute its spontaneous proactivity directly with the user.
+- **`apps/web`**: The Web Interface built with Nuxt 3. Displays the public-facing chat client and the Admin visual dashboard through Nuxt layouts.
+- **`apps/mobile`**: The true pocket-companion native app built with Expo (React Native) + NativeWind, serving as the ultimate sensor and interface for the user.
 - **`libs/messaging`**: Real-time Socket.io backbone allowing Obai to achieve spontaneous proactivity.
 - **`libs/entities`**: The shared "Long-Term Memory". It contains our persistent database logic consumed by all applications.
 - **`libs/intelligence`**: Core AI components powered by `@google/genai`. It handles dynamic personality assignment (traits, gender, maturity) based on regional nuances.
@@ -89,5 +91,8 @@ class Example {
 
 - **Sync database:** `npx prisma db push`
 - **Generate client:** `npx prisma generate`
-- **Run in development:** `npm run dev` (Runs concurrently for both apps)
+- **Run all APIs (Backend):** `npm run dev:apis` (Runs Client-API and Admin-API)
+- **Run Web Frontend:** `npm run dev:web` (Runs Nuxt 3 App)
+- **Run Mobile App:** `npm run dev:mobile` (Runs Expo app with NativeWind)
+- **Run Full Ecosystem:** `npm run dev:all` (Runs APIs, Web, and Mobile concurrently)
 - **Run tests:** `npm run test`
