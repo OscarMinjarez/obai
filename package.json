@@ -17,6 +17,7 @@
     "dev:web": "npm run dev --prefix apps/web",
     "dev:mobile": "npm run start --prefix apps/mobile",
     "dev:all": "concurrently --names \"client,admin,web,mobile\" --prefix-colors \"cyan,magenta,yellow,blue\" \"npm run dev:client\" \"npm run dev:admin\" \"npm run dev:web\" \"npm run dev:mobile\"",
+    "ui:add": "node scripts/add-ui.js",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
@@ -29,6 +30,7 @@
     "test:e2e": "jest --config ./apps/client-api/test/jest-e2e.json"
   },
   "dependencies": {
+    "@base-ui/react": "^1.4.0",
     "@google/genai": "^1.50.1",
     "@nestjs/common": "^11.0.1",
     "@nestjs/core": "^11.0.1",
@@ -47,15 +49,19 @@
     "bcrypt": "^6.0.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.15.1",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
     "jsonwebtoken": "^9.0.3",
     "jwks-rsa": "^4.0.1",
     "lru-cache": "^9.1.2",
+    "lucide-react": "^1.8.0",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
     "pg": "^8.20.0",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
-    "socket.io": "^4.8.3"
+    "socket.io": "^4.8.3",
+    "tailwind-merge": "^3.5.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
@@ -66,6 +72,7 @@
     "@types/express": "^5.0.0",
     "@types/jest": "^30.0.0",
     "@types/node": "^24.0.0",
+    "@types/react-native": "^0.72.8",
     "@types/supertest": "^7.0.0",
     "concurrently": "^9.2.1",
     "dotenv": "^17.4.2",
@@ -76,6 +83,8 @@
     "jest": "^30.0.0",
     "prettier": "^3.4.2",
     "prisma": "^7.7.0",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5",
     "source-map-support": "^0.5.21",
     "supertest": "^7.0.0",
     "ts-jest": "^29.2.5",

@@ -21,6 +21,7 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
+    "jsx": "react-jsx",
     "paths": {
       "obai/auth": [
         "libs/auth/src"
@@ -46,6 +47,18 @@
       "obai/messaging/*": [
         "libs/messaging/src/*"
       ],
+      "obai/shared": [
+        "libs/shared/src"
+      ],
+      "obai/shared/*": [
+        "libs/shared/src/*"
+      ],
+      "@obai/shared": [
+        "libs/shared/src"
+      ],
+      "@obai/shared/*": [
+        "libs/shared/src/*"
+      ]
     }
   }
 }
