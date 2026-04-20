@@ -58,6 +58,12 @@
       ],
       "@obai/shared/*": [
         "libs/shared/src/*"
+      ],
+      "obai/common": [
+        "libs/common/src"
+      ],
+      "obai/common/*": [
+        "libs/common/src/*"
       ]
     }
   }
