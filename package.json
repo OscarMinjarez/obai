@@ -15,7 +15,7 @@
     "dev:admin": "nest start admin-api --watch",
     "dev:apis": "concurrently --names \"client,admin\" --prefix-colors \"cyan,magenta\" \"npm run dev:client\" \"npm run dev:admin\"",
     "dev:web": "npm run dev --prefix apps/web",
-    "dev:mobile": "npm run start --prefix apps/mobile",
+    "dev:mobile": "npm run dev --prefix apps/mobile",
     "dev:all": "concurrently --names \"client,admin,web,mobile\" --prefix-colors \"cyan,magenta,yellow,blue\" \"npm run dev:client\" \"npm run dev:admin\" \"npm run dev:web\" \"npm run dev:mobile\"",
     "ui:add": "node scripts/add-ui.js",
     "start": "nest start",
@@ -59,6 +59,7 @@
     "passport-jwt": "^4.0.1",
     "pg": "^8.20.0",
     "reflect-metadata": "^0.2.2",
+    "reka-ui": "^2.9.6",
     "rxjs": "^7.8.1",
     "socket.io": "^4.8.3",
     "tailwind-merge": "^3.5.0"

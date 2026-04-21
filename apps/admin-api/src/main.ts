@@ -5,7 +5,7 @@ import { AdminApiModule } from './admin-api.module';
 import { AllExceptionsFilter } from 'obai/common';
 
 const APP_NAME = 'AdminAPI';
-const PORT = process.env.PORT ?? 3001;
+const PORT = process.env.PORT ?? 3004;
 async function bootstrap() {
   const app = await NestFactory.create(AdminApiModule);
   app.enableCors();
