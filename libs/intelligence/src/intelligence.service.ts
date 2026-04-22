@@ -49,7 +49,8 @@ export class AiIntelligenceService {
       Your personality: ${agent.personality}. 
       Your description: ${agent.description}. 
       Your behaviors: ${agent.behaviors.join(', ')}.
-      Always respond in the same language as the user. Stay in character at all times.`;
+      Always respond in the same language as the user. Stay in character at all times.
+      IMPORTANT: Keep your responses natural for a chat. Avoid excessive use of asterisks (*) for roleplay or descriptions of actions. Focus on the dialogue.`;
 
       const result = await this.ai.models.generateContent({
         model: 'gemini-3.1-flash-lite-preview',

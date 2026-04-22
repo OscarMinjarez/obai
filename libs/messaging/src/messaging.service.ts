@@ -71,11 +71,39 @@ export class MessagingService {
   }
 
   async getHistory(userId: string) {
-    return (this.entities as any).message.findMany({
+    const history = await (this.entities as any).message.findMany({
       where: { userId },
       orderBy: { createdAt: 'asc' },
       take: 50,
     });
+
+    if (history.length === 0) {
+      // If no history, let's create a personalized welcome message
+      const agentData = await (this.entities as any).agent.findUnique({
+        where: { userId },
+      });
+
+      if (agentData) {
+        const agent = new AgentEntity(agentData);
+        const welcomeMessage = await this.ai.generateChatResponse(
+          userId,
+          [{ role: 'system', content: 'Greet the user for the first time and introduce yourself briefly based on your profile. Keep it natural and avoid long roleplay descriptions.' }],
+          agent
+        );
+
+        const savedWelcome = await (this.entities as any).message.create({
+          data: {
+            content: welcomeMessage,
+            role: 'assistant',
+            userId,
+            agentId: agent.id,
+          },
+        });
+        return [savedWelcome];
+      }
+    }
+
+    return history;
   }
 
 }

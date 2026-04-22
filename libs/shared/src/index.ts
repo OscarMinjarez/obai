@@ -12,3 +12,8 @@ export { default as RegisterPageView } from './pages/RegisterPageView.vue';
 
 // UI Components
 export { Button } from './components/ui/button';
+export { Input } from './components/ui/input';
+export { Textarea } from './components/ui/textarea';
+export { Avatar, AvatarFallback, AvatarImage } from './components/ui/avatar';
+export { ScrollArea, ScrollBar } from './components/ui/scroll-area';
+export { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from './components/ui/card';

@@ -16,16 +16,23 @@
 <script setup lang="ts">
 import { IonContent, IonPage } from '@ionic/vue';
 import { useRouter } from 'vue-router';
-import LoginPageView from '@obai/shared/pages/LoginPageView.vue';
-import { useAuth } from '@obai/shared/composables/useAuth';
+import { LoginPageView, useAuth, useAgents } from '@obai/shared';
 
 const router = useRouter();
 const { login, isLoading, error } = useAuth();
+const { getMyAgent } = useAgents();
 
 async function handleLogin(payload: { email: string; pass: string }) {
   try {
     await login(payload.email, payload.pass);
-    router.push('/onboarding');
+    
+    // Check if user already has an agent to skip onboarding
+    const agent = await getMyAgent();
+    if (agent) {
+      router.push('/chat');
+    } else {
+      router.push('/onboarding');
+    }
   } catch (e) {
     console.error('Error logueando en la app', e);
   }

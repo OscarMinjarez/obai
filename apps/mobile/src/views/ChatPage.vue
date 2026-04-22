@@ -2,6 +2,9 @@
   <ion-page>
     <ion-content>
       <ChatPageView>
+        <template #title>
+          {{ agentName }}
+        </template>
         <template #actions>
           <Button variant="ghost" size="icon" as-child>
             <router-link to="/home">
@@ -15,6 +18,17 @@
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted } from 'vue';
 import { IonContent, IonPage } from '@ionic/vue';
-import { ChatPageView, Button } from '@obai/shared';
+import { ChatPageView, Button, useAgents } from '@obai/shared';
+
+const { getMyAgent } = useAgents();
+const agentName = ref('Asistente');
+
+onMounted(async () => {
+  const agent = await getMyAgent();
+  if (agent) {
+    agentName.value = agent.name;
+  }
+});
 </script>
