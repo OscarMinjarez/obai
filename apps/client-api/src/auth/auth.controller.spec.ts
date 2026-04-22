@@ -41,8 +41,15 @@ describe('AuthController', () => {
   });
 
   it('should call login on service', async () => {
-    const dto = { email: 'a@a.com', password: '123' };
-    await controller.login(dto);
-    expect(service.signInWithEmailAndPassword).toHaveBeenCalledWith(dto.email, dto.password);
+    const dto = { email: 'a@a.com', password: '123', deviceType: 'Web', userAgent: 'Browser' };
+    const ip = '127.0.0.1';
+    await controller.login(dto as any, ip);
+    expect(service.signInWithEmailAndPassword).toHaveBeenCalledWith(
+      dto.email,
+      dto.password,
+      dto.deviceType,
+      dto.userAgent,
+      ip
+    );
   });
 });

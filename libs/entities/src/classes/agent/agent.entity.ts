@@ -1,15 +1,4 @@
-import { IsString, IsNotEmpty, IsUUID, IsEnum } from 'class-validator';
-
-export enum AgentGender {
-  MALE = 'MALE',
-  FEMALE = 'FEMALE',
-}
-
-export enum AgentMaturity {
-  YOUNG = 'YOUNG',
-  MATURE = 'MATURE',
-  ELDER = 'ELDER',
-}
+import { IsString, IsNotEmpty, IsUUID } from 'class-validator';
 
 export class AgentEntity {
 
@@ -20,23 +9,33 @@ export class AgentEntity {
   @IsNotEmpty()
   name: string;
 
-  @IsEnum(AgentGender)
-  gender: AgentGender;
+  @IsString()
+  @IsNotEmpty()
+  description: string;
 
-  @IsEnum(AgentMaturity)
-  maturity: AgentMaturity;
+  @IsString()
+  @IsNotEmpty()
+  gender: string;
+
+  @IsString()
+  @IsNotEmpty()
+  maturity: string;
 
   @IsString()
   personality: string;
 
   @IsString({ each: true })
-  behavior: string[];
+  behaviors: string[];
 
   @IsString()
+  @IsNotEmpty()
   language: string;
 
   @IsUUID()
   userId: string;
+
+  createdAt: Date;
+  updatedAt: Date;
 
   constructor(partial: Partial<AgentEntity>) {
     Object.assign(this, partial);

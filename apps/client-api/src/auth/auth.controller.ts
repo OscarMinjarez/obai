@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Ip, Post } from '@nestjs/common';
 import { AuthService } from 'obai/auth';
 import { RegisterRequest } from './requests/register.request';
 import { LoginRequest } from './requests/login.request';
@@ -14,8 +14,19 @@ export class AuthController {
   }
 
   @Post('login')
-  async login(@Body() data: LoginRequest) {
-    return this.authService.signInWithEmailAndPassword(data.email, data.password);
+  async login(@Body() data: LoginRequest, @Ip() ip: string) {
+    return this.authService.signInWithEmailAndPassword(
+      data.email, 
+      data.password, 
+      data.deviceType, 
+      data.userAgent,
+      ip
+    );
+  }
+
+  @Post('logout')
+  async logout(@Body() data: { refreshToken: string }) {
+    return this.authService.logout(data.refreshToken);
   }
 
 }

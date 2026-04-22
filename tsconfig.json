@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+
     "module": "nodenext",
     "moduleResolution": "nodenext",
     "resolvePackageJsonExports": true,
@@ -21,6 +22,7 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
+    "jsx": "react-jsx",
     "paths": {
       "obai/auth": [
         "libs/auth/src"
@@ -39,7 +41,38 @@
       ],
       "obai/intelligence/*": [
         "libs/intelligence/src/*"
+      ],
+      "obai/messaging": [
+        "libs/messaging/src"
+      ],
+      "obai/messaging/*": [
+        "libs/messaging/src/*"
+      ],
+      "obai/shared": [
+        "libs/shared/src"
+      ],
+      "obai/shared/*": [
+        "libs/shared/src/*"
+      ],
+      "@obai/shared": [
+        "libs/shared/src"
+      ],
+      "@obai/shared/*": [
+        "libs/shared/src/*"
+      ],
+      "obai/common": [
+        "libs/common/src"
+      ],
+      "obai/common/*": [
+        "libs/common/src/*"
       ]
     }
-  }
+  },
+  "include": [
+    "apps/**/*.ts",
+    "libs/**/*.ts",
+    "libs/**/*.vue",
+    "apps/**/*.vue",
+    "src/**/*.ts"
+  ]
 }

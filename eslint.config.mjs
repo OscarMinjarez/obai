@@ -1,11 +1,35 @@
 import tsEslint from 'typescript-eslint';
+import pluginVue from 'eslint-plugin-vue';
+import vueParser from 'vue-eslint-parser';
 
 export default tsEslint.config(
+  {
+    ignores: [
+      '**/dist/**',
+      '**/node_modules/**',
+      'libs/shared/src/components/ui/**',
+      'apps/web/.nuxt/**',
+      'apps/mobile/www/**',
+    ],
+  },
   ...tsEslint.configs.recommended,
+  ...pluginVue.configs['flat/recommended'],
+  {
+    files: ['**/*.vue'],
+    languageOptions: {
+      parser: vueParser,
+      parserOptions: {
+        parser: tsEslint.parser,
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
+        extraFileExtensions: ['.vue'],
+      },
+    },
+  },
   {
     languageOptions: {
       parserOptions: {
-        project: 'tsconfig.json',
+        projectService: true,
         tsconfigRootDir: import.meta.dirname,
       },
     },
@@ -22,6 +46,7 @@ export default tsEslint.config(
       }],
       'no-multiple-empty-lines': ['error', { max: 1, maxEOF: 1 }],
       'semi': ['error', 'always'],
+      'vue/multi-word-component-names': 'off',
     },
   },
   {

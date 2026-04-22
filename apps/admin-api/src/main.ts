@@ -2,11 +2,14 @@ import 'dotenv/config';
 import { NestFactory, Reflector } from '@nestjs/core';
 import { Logger, ValidationPipe, ClassSerializerInterceptor } from '@nestjs/common';
 import { AdminApiModule } from './admin-api.module';
+import { AllExceptionsFilter } from 'obai/common';
 
 const APP_NAME = 'AdminAPI';
-const PORT = process.env.PORT ?? 3001;
+const PORT = process.env.PORT ?? 8001;
 async function bootstrap() {
   const app = await NestFactory.create(AdminApiModule);
+  app.enableCors();
+  app.useGlobalFilters(new AllExceptionsFilter());
   app.setGlobalPrefix('api');
   // Enforce DTO validation
   app.useGlobalPipes(

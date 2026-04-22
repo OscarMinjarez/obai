@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { DeviceRepository, AgentEntity, AgentGender, AgentMaturity } from 'obai/entities';
+import { DeviceRepository, AgentEntity } from 'obai/entities';
 import { DeviceResponse } from '../devices/responses/device.response';
 import { AiIntelligenceService } from 'obai/intelligence';
 import { AgentRepository } from 'obai/entities/classes/agent/agent.repository';
@@ -36,10 +36,11 @@ export class IntelligenceService {
       if (!agent) {
         agent = new AgentEntity({
           name: 'Obai Base',
-          gender: AgentGender.MALE,
-          maturity: AgentMaturity.MATURE,
+          description: 'Asistente base útil y neutral',
+          gender: 'MALE',
+          maturity: 'MATURE',
           personality: 'Útil y neutral',
-          behavior: ['Profesional'],
+          behaviors: ['Profesional'],
           userId,
         });
       }

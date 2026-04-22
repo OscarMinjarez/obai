@@ -17,11 +17,11 @@ export class AiIntelligenceService {
 
   async analyzeContext(context: string, agent: AgentEntity): Promise<string | undefined> {
     try {
-      const langKey = agent.language as keyof typeof INTELLIGENCE_PROMPTS;
-      const promptData = INTELLIGENCE_PROMPTS[langKey] || INTELLIGENCE_PROMPTS.Spanish;
+      const promptData = INTELLIGENCE_PROMPTS['Spanish'];
       const promptText = promptData.analysisInstruction(agent) + `\n\nCONTEXT: ${context}`;
+
       const result = await this.ai.models.generateContent({
-        model: 'gemini-2.5-flash-lite',
+        model: 'gemini-3.1-flash-lite-preview',
         contents: [
           {
             role: 'user',
@@ -33,6 +33,43 @@ export class AiIntelligenceService {
     } catch (error) {
       this.logger.error(`Error in Gemini analysis for ${agent.name}`, error);
       throw error;
+    }
+  }
+
+  async generateChatResponse(userId: string, history: any[], agent: AgentEntity): Promise<string> {
+    try {
+      const chatHistory = history.map(msg => ({
+        role: msg.role === 'user' ? 'user' : 'model',
+        parts: [{ text: msg.content }],
+      }));
+
+      const systemInstruction = `You are ${agent.name}, a human-like AI companion. 
+      Your profile:
+      - Gender: ${agent.gender}
+      - Maturity: ${agent.maturity}
+      - Personality: ${agent.personality}
+      - Description: ${agent.description}
+      - Behaviors: ${agent.behaviors.join(', ')}
+      
+      CRITICAL INSTRUCTIONS:
+      1. Be human, natural, and conversational. 
+      2. Avoid being theatrical, poetic, or overly dramatic. Speak like a real person.
+      3. Do NOT use metaphors or long roleplay descriptions between asterisks.
+      4. Stay in character as a companion, not a fictional character in a play.
+      5. Respond in the same language as the user.`;
+
+      const result = await this.ai.models.generateContent({
+        model: 'gemini-3.1-flash-lite-preview',
+        contents: chatHistory,
+        config: {
+          systemInstruction: systemInstruction,
+        },
+      });
+
+      return result.text || '...';
+    } catch (error) {
+      this.logger.error(`Error in Gemini chat for ${agent.name}`, error);
+      return `[System Error] I'm having trouble thinking right now.`;
     }
   }
 

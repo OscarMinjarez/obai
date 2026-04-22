@@ -10,25 +10,28 @@ datasource db {
 model User {
   id        String   @id @default(uuid())
   email     String   @unique
-  name      String
+  name      String?
   password  String
   isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   devices   Device[]
-  agent     Agent?
+  sessions  Session[]
+  agents    Agent[]
+  messages  Message[]
 }
 
 model Agent {
   id          String   @id @default(uuid())
   name        String
-  gender      String
-  maturity    String
+  description String
+  gender      String   @default("MALE")
+  maturity    String   @default("MATURE")
   personality String
-  behavior    String[]
-  language    String   @default("Spanish")
+  behaviors   String[]
+  language    String   @default("Español")
   userId      String   @unique
-  user        User     @relation(fields: [userId], references: [id])
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
@@ -41,7 +44,31 @@ model Device {
   lastSeen  DateTime @default(now())
   fcmToken  String?
   userId    String
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Session {
+  id           String   @id @default(uuid())
+  token        String   @unique
+  deviceType   String
+  userAgent    String?
+  ipAddress    String?
+  isActive     Boolean  @default(true)
+  lastActiveAt DateTime @default(now())
+  expiresAt    DateTime
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt    DateTime @default(now())
+}
+
+model Message {
+  id        String   @id @default(uuid())
+  content   String   @db.Text
+  role      String
+  createdAt DateTime @default(now())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@index([userId, createdAt])
 }

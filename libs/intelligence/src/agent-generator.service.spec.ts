@@ -45,7 +45,7 @@ describe('AgentGeneratorService', () => {
     expect(result.userId).toBe('user-123');
     expect(mockGenerateContent).toHaveBeenCalledWith(
       expect.objectContaining({
-        model: 'gemini-2.5-flash-lite',
+        model: 'gemini-3.1-flash-lite-preview',
         contents: expect.arrayContaining([
           expect.objectContaining({
             parts: expect.arrayContaining([
