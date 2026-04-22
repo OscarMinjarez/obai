@@ -7,7 +7,7 @@ import { ScrollArea } from '../components/ui/scroll-area';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '../components/ui/card';
 import { useChat } from '../composables/useChat';
 
-const { messages, isTyping, isConnected, connect, sendMessage } = useChat();
+const { messages, isTyping, isConnected, deviceType, connect, sendMessage } = useChat();
 const newMessage = ref('');
 const scrollAreaRef = ref<any>(null);
 const textareaRef = ref<any>(null);
@@ -69,8 +69,11 @@ watch(messages, () => {
           <CardTitle class="text-lg font-bold leading-none tracking-tight">
             <slot name="title">Asistente Obai</slot>
           </CardTitle>
-          <p class="text-xs text-muted-foreground mt-1">
+          <p class="text-[10px] text-muted-foreground mt-1 flex items-center gap-1.5 font-medium uppercase tracking-wider">
+            <span :class="['h-1.5 w-1.5 rounded-full', isConnected ? 'bg-green-500' : 'bg-red-500']"></span>
             {{ isConnected ? 'En línea' : 'Desconectado' }}
+            <span v-if="deviceType" class="opacity-40">•</span>
+            <span v-if="deviceType" class="opacity-70">{{ deviceType }}</span>
           </p>
         </div>
       </div>

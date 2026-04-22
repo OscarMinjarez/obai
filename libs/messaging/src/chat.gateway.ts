@@ -45,11 +45,16 @@ export class ChatGateway implements OnGatewayConnection {
       }
 
       client.data.userId = decoded.payload.sub;
+      const userAgent = client.handshake.headers['user-agent'] || '';
+      const isMobile = /mobile/i.test(userAgent);
+      const deviceType = isMobile ? 'Móvil' : 'Web';
+      client.data.device = deviceType;
       client.join(client.data.userId);
-      this.logger.log(`✅ Usuario autenticado y unido a sala: ${client.data.userId}`);
+      this.logger.log(`✅ Usuario ${client.data.userId} conectado desde: ${deviceType} (${userAgent.substring(0, 50)}...)`);
 
       const history = await this.messagingService.getHistory(client.data.userId);
       client.emit('chat:history', history);
+      client.emit('chat:device_info', { deviceType });
     } catch (error) {
       this.logger.error(`❌ Conexión fallida: ${error.message}`);
       client.disconnect();

@@ -6,8 +6,9 @@ export function useChat() {
   const { token } = useAuth();
   const socket = ref<Socket | null>(null);
   const messages = ref<any[]>([]);
-  const isTyping = ref(false);
   const isConnected = ref(false);
+  const isTyping = ref(false);
+  const deviceType = ref<string>('');
 
   const connect = () => {
     if (socket.value?.connected) return;
@@ -98,6 +99,7 @@ export function useChat() {
     messages,
     isTyping,
     isConnected,
+    deviceType,
     connect,
     sendMessage,
     disconnect,
