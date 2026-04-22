@@ -1,5 +1,10 @@
 <script setup lang="ts">
 import { Button } from '@obai/shared/components/ui/button';
+import { definePageMeta } from '#imports';
+
+definePageMeta({
+  middleware: ['auth']
+});
 </script>
 
 <template>

@@ -1,37 +1,37 @@
 <template>
   <ion-page>
-    <ion-content class="ion-padding">
-      <div class="mx-auto flex min-h-[100svh] max-w-md items-center">
-        <section class="w-full space-y-6 rounded-lg border bg-card p-6 text-card-foreground shadow-sm">
-          <div class="space-y-2">
-            <p class="text-sm font-medium text-muted-foreground">Login</p>
-            <h1 class="text-3xl font-semibold tracking-tight">Sign in</h1>
-            <p class="text-sm text-muted-foreground">Use the same default shadcn-vue theme as web.</p>
-          </div>
-
-          <div class="space-y-4">
-            <div class="space-y-2">
-              <label class="text-sm font-medium leading-none">Email</label>
-              <input type="email" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" placeholder="you@example.com" />
-            </div>
-            <div class="space-y-2">
-              <label class="text-sm font-medium leading-none">Password</label>
-              <input type="password" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" placeholder="••••••••" />
-            </div>
-            <div class="flex flex-col gap-3">
-              <Button>Login</Button>
-              <Button variant="outline" as-child>
-                <router-link to="/home">Back</router-link>
-              </Button>
-            </div>
-          </div>
-        </section>
-      </div>
+    <ion-content class="ion-padding bg-background text-foreground">
+      <p v-if="error" class="text-red-500 text-center py-2">{{ error }}</p>
+      <LoginPageView 
+        title="Iniciar Sesión (App)" 
+        subtitle="Acceso de Usuario"
+        :loading="isLoading"
+        @login="handleLogin"
+        @back="handleBack"
+      />
     </ion-content>
   </ion-page>
 </template>
 
 <script setup lang="ts">
 import { IonContent, IonPage } from '@ionic/vue';
-import { Button } from '@obai/shared/components/ui/button';
+import { useRouter } from 'vue-router';
+import LoginPageView from '@obai/shared/pages/LoginPageView.vue';
+import { useAuth } from '@obai/shared/composables/useAuth';
+
+const router = useRouter();
+const { login, isLoading, error } = useAuth();
+
+async function handleLogin(payload: { email: string; pass: string }) {
+  try {
+    await login(payload.email, payload.pass);
+    router.push('/chat'); // o la ruta principal de la app
+  } catch (e) {
+    console.error('Error logueando en la app', e);
+  }
+}
+
+function handleBack() {
+  router.push('/home');
+}
 </script>

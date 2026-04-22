@@ -1,33 +1,34 @@
 <script setup lang="ts">
-import { Button } from '@obai/shared/components/ui/button';
+import LoginPageView from '@obai/shared/pages/LoginPageView.vue';
+import { useAuth } from '@obai/shared/composables/useAuth'; // Asegúrate de resolver la ruta según el alias
+import { useRouter } from '#imports';
+
+const router = useRouter();
+const { login, isLoading, error } = useAuth();
+
+async function handleLogin(payload: { email: string; pass: string }) {
+  try {
+    await login(payload.email, payload.pass);
+    router.push('/chat'); // o tu ruta principal web
+  } catch (e) {
+    console.error('Error logueando en web', e);
+  }
+}
+
+function handleBack() {
+  router.push('/');
+}
 </script>
 
 <template>
   <main class="min-h-screen bg-background text-foreground">
-    <div class="mx-auto flex min-h-screen max-w-xl items-center px-6 py-12">
-      <section class="w-full space-y-6 rounded-lg border bg-card p-6 text-card-foreground shadow-sm">
-        <div class="space-y-2">
-          <p class="text-sm font-medium text-muted-foreground">Login</p>
-          <h1 class="text-3xl font-semibold tracking-tight">Sign in</h1>
-          <p class="text-sm text-muted-foreground">Use the same shared theme in web and mobile.</p>
-        </div>
-        <form class="space-y-4" @submit.prevent>
-          <div class="space-y-2">
-            <label class="text-sm font-medium leading-none">Email</label>
-            <input type="email" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" placeholder="you@example.com" />
-          </div>
-          <div class="space-y-2">
-            <label class="text-sm font-medium leading-none">Password</label>
-            <input type="password" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" placeholder="••••••••" />
-          </div>
-          <div class="flex flex-col gap-3 sm:flex-row">
-            <Button type="submit">Login</Button>
-            <Button variant="outline" as-child>
-              <NuxtLink to="/">Back</NuxtLink>
-            </Button>
-          </div>
-        </form>
-      </section>
-    </div>
+    <p v-if="error" class="text-red-500 text-center py-2">{{ error }}</p>
+    <LoginPageView 
+      title="Iniciar Sesión (Web)" 
+      subtitle="Acceso de Usuario"
+      :loading="isLoading"
+      @login="handleLogin"
+      @back="handleBack"
+    />
   </main>
 </template>

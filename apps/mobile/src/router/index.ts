@@ -4,6 +4,7 @@ import HomePage from '../views/HomePage.vue';
 import LoginPage from '../views/LoginPage.vue';
 import RegisterPage from '../views/RegisterPage.vue';
 import ChatPage from '../views/ChatPage.vue';
+import { useAuth } from '@obai/shared/composables/useAuth';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -28,13 +29,25 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/chat',
     name: 'Chat',
-    component: ChatPage
+    component: ChatPage,
+    meta: { requiresAuth: true }
   }
 ]
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes
-})
+});
+
+// Guard global de seguridad
+router.beforeEach((to, from, next) => {
+  const { isAuthenticated } = useAuth();
+  
+  if (to.meta.requiresAuth && !isAuthenticated()) {
+    next('/login');
+  } else {
+    next();
+  }
+});
 
 export default router;
