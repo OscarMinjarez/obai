@@ -3,26 +3,24 @@ import { Button } from '@obai/shared/components/ui/button';
 </script>
 
 <template>
-  <main class="min-h-screen bg-background text-foreground">
-    <div class="mx-auto flex min-h-screen max-w-xl items-center px-6 py-12">
-      <section class="w-full space-y-6 rounded-lg border bg-card p-6 text-card-foreground shadow-sm">
-        <div class="space-y-2">
-          <p class="text-sm font-medium text-muted-foreground">Obai Web</p>
-          <h1 class="text-3xl font-semibold tracking-tight">Welcome</h1>
-          <p class="text-sm text-muted-foreground">Default shadcn-vue light theme, shared from the monorepo library.</p>
-        </div>
-        <div class="flex flex-col gap-3 sm:flex-row">
-          <Button as-child>
-            <NuxtLink to="/login">Login</NuxtLink>
-          </Button>
-          <Button variant="outline" as-child>
-            <NuxtLink to="/register">Register</NuxtLink>
-          </Button>
-          <Button variant="secondary" as-child>
-            <NuxtLink to="/chat">Chat</NuxtLink>
-          </Button>
-        </div>
-      </section>
+  <main class="min-h-screen bg-background text-foreground flex items-center justify-center p-6">
+    <div class="w-full max-w-sm space-y-8 text-center">
+      <div class="space-y-2">
+        <h1 class="text-3xl font-bold tracking-tight">Obai Web</h1>
+        <p class="text-sm text-muted-foreground">Plataforma de pruebas y desarrollo.</p>
+      </div>
+      
+      <div class="flex flex-col gap-3">
+        <Button as-child class="h-10">
+          <NuxtLink to="/login">Ir a Login</NuxtLink>
+        </Button>
+        <Button variant="outline" as-child class="h-10">
+          <NuxtLink to="/register">Crear Cuenta</NuxtLink>
+        </Button>
+        <Button variant="secondary" as-child class="h-10">
+          <NuxtLink to="/chat">Ir al Chat</NuxtLink>
+        </Button>
+      </div>
     </div>
   </main>
 </template>

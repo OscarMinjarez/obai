@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import RegisterPageView from '@obai/shared/pages/RegisterPageView.vue';
-import { useAuth } from '@obai/shared/composables/useAuth';
+import { RegisterPageView, useAuth } from '@obai/shared';
 import { useRouter } from '#imports';
 
 const router = useRouter();
-const { register, login, isLoading, error } = useAuth();
+const { register, isLoading, error } = useAuth();
 
 async function handleRegister(payload: { name: string; email: string; pass: string }) {
   try {
@@ -21,14 +20,18 @@ function handleBack() {
 </script>
 
 <template>
-  <main class="min-h-screen bg-background text-foreground">
-    <p v-if="error" class="text-red-500 text-center py-2">{{ error }}</p>
+  <div class="relative min-h-screen">
+    <!-- Floating error indicator -->
+    <p v-if="error" class="fixed top-6 left-1/2 -translate-x-1/2 z-[60] bg-red-500/10 border border-red-500/20 text-red-500 px-4 py-2 rounded-full text-xs font-bold backdrop-blur-md animate-in fade-in slide-in-from-top-4">
+      {{ error }}
+    </p>
+
     <RegisterPageView 
-      title="Crear Cuenta"
-      subtitle="Regístrate en Web"
+      title="Empieza hoy"
+      subtitle="Crea tu cuenta de Obai"
       :loading="isLoading"
       @register="handleRegister"
       @back="handleBack"
     />
-  </main>
+  </div>
 </template>

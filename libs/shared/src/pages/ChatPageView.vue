@@ -10,11 +10,25 @@ import { useChat } from '../composables/useChat';
 const { messages, isTyping, isConnected, connect, sendMessage } = useChat();
 const newMessage = ref('');
 const scrollAreaRef = ref<any>(null);
+const textareaRef = ref<any>(null);
+
+const adjustTextareaHeight = () => {
+  const el = textareaRef.value?.$el?.querySelector('textarea');
+  if (el) {
+    el.style.height = 'auto';
+    el.style.height = `${Math.min(el.scrollHeight, 200)}px`;
+  }
+};
+
+watch(newMessage, () => {
+  nextTick(adjustTextareaHeight);
+});
 
 const handleSend = () => {
   if (!newMessage.value.trim()) return;
   sendMessage(newMessage.value);
   newMessage.value = '';
+  nextTick(adjustTextareaHeight); // Reset height after sending
 };
 
 const scrollToBottom = async () => {
@@ -66,11 +80,11 @@ watch(messages, () => {
     <!-- Messages List -->
     <CardContent class="flex-1 p-0 overflow-hidden">
       <ScrollArea ref="scrollAreaRef" class="h-full w-full">
-        <div class="flex flex-col gap-4 p-6">
+        <div class="mx-auto w-full max-w-3xl flex flex-col gap-4 p-6 sm:p-8">
           <!-- Empty State -->
           <div v-if="messages.length === 0" class="flex h-[400px] flex-col items-center justify-center space-y-3 text-muted-foreground opacity-60">
-            <div class="h-12 w-12 rounded-full bg-muted flex items-center justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            <div class="h-10 w-10 rounded-full bg-muted flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
             </div>
             <p class="text-sm font-medium">No hay mensajes. Di algo para comenzar.</p>
           </div>
@@ -83,7 +97,7 @@ watch(messages, () => {
           >
             <div 
               :class="[
-                'max-w-[85%] sm:max-w-[70%] rounded-2xl px-4 py-2.5 text-sm shadow-sm transition-all',
+                'max-w-[85%] sm:max-w-[75%] rounded-2xl px-4 py-2 text-sm shadow-sm transition-all',
                 msg.role === 'user' 
                   ? 'bg-primary text-primary-foreground rounded-tr-none' 
                   : 'bg-muted text-foreground rounded-tl-none border border-border/40'
@@ -95,11 +109,11 @@ watch(messages, () => {
 
           <!-- Typing indicator -->
           <div v-if="isTyping" class="flex justify-start animate-in fade-in duration-200">
-            <div class="flex items-center gap-1.5 rounded-2xl bg-muted/50 border border-border/30 px-4 py-3 text-muted-foreground">
+            <div class="flex items-center gap-1.5 rounded-2xl bg-muted/50 border border-border/30 px-3 py-2 text-muted-foreground">
               <span class="flex gap-1">
-                <span class="h-1.5 w-1.5 animate-bounce rounded-full bg-primary/40"></span>
-                <span class="h-1.5 w-1.5 animate-bounce rounded-full bg-primary/40 [animation-delay:0.2s]"></span>
-                <span class="h-1.5 w-1.5 animate-bounce rounded-full bg-primary/40 [animation-delay:0.4s]"></span>
+                <span class="h-1.2 w-1.2 animate-bounce rounded-full bg-primary/40"></span>
+                <span class="h-1.2 w-1.2 animate-bounce rounded-full bg-primary/40 [animation-delay:0.2s]"></span>
+                <span class="h-1.2 w-1.2 animate-bounce rounded-full bg-primary/40 [animation-delay:0.4s]"></span>
               </span>
             </div>
           </div>
@@ -108,23 +122,25 @@ watch(messages, () => {
     </CardContent>
 
     <!-- Input Area -->
-    <CardFooter class="shrink-0 border-t bg-card/30 p-4 backdrop-blur-md sm:p-6">
-      <div class="mx-auto flex w-full max-w-3xl gap-3">
+    <CardFooter class="shrink-0 border-t bg-background p-3 sm:p-4">
+      <div class="mx-auto flex w-full max-w-3xl items-end gap-2">
         <div class="relative flex-1">
           <Textarea 
+            ref="textareaRef"
             v-model="newMessage"
             rows="1"
             placeholder="Escribe un mensaje..." 
-            class="flex min-h-[56px] w-full resize-none rounded-2xl border border-input bg-background px-6 py-4 text-base shadow-sm ring-offset-background transition-all placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-50"
+            class="flex !min-h-[40px] w-full resize-none rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm ring-offset-background transition-all placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:opacity-50"
             @keydown.enter.prevent="handleSend"
           />
         </div>
         <Button 
           @click="handleSend" 
-          class="h-14 w-14 shrink-0 rounded-2xl shadow-lg transition-transform active:scale-95" 
+          size="icon"
+          class="h-10 w-10 shrink-0 rounded-md shadow-sm transition-all active:scale-95" 
           :disabled="!newMessage.trim()"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
         </Button>
       </div>
     </CardFooter>
