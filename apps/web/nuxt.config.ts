@@ -11,6 +11,9 @@ export default defineNuxtConfig({
     '@obai/shared': fileURLToPath(new URL('../../libs/shared/src', import.meta.url))
   },
   vite: {
+    define: {
+      'process.env.VITE_API_URL': JSON.stringify(process.env.VITE_API_URL || 'http://localhost:8000/api')
+    },
     server: {
       fs: {
         allow: [fileURLToPath(new URL('../..', import.meta.url))]

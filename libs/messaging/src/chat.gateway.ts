@@ -45,7 +45,8 @@ export class ChatGateway implements OnGatewayConnection {
       }
 
       client.data.userId = decoded.payload.sub;
-      this.logger.log(`✅ Usuario autenticado y conectado: ${client.data.userId}`);
+      client.join(client.data.userId);
+      this.logger.log(`✅ Usuario autenticado y unido a sala: ${client.data.userId}`);
 
       const history = await this.messagingService.getHistory(client.data.userId);
       client.emit('chat:history', history);
@@ -62,15 +63,27 @@ export class ChatGateway implements OnGatewayConnection {
   ) {
     const userId = client.data.userId;
     if (!userId) return;
-    client.emit('chat:typing', { isTyping: true });
+
+    // Notificar escritura a todos los dispositivos del usuario
+    this.server.to(userId).emit('chat:typing', { isTyping: true });
+
     try {
+      // Reenviar el mensaje del usuario a sus otros dispositivos para sincronizar la vista
+      client.to(userId).emit('chat:receive', { 
+        role: 'user', 
+        content: data.message, 
+        createdAt: new Date().toISOString() 
+      });
+
       const response = await this.messagingService.sendMessage(userId, data.message);
-      client.emit('chat:receive', response);
+      
+      // Enviar la respuesta del bot a TODOS los dispositivos del usuario
+      this.server.to(userId).emit('chat:receive', response);
     } catch (error) {
       this.logger.error('Error en el chat gateway', error);
       client.emit('chat:error', { message: 'No pude procesar tu mensaje.' });
     } finally {
-      client.emit('chat:typing', { isTyping: false });
+      this.server.to(userId).emit('chat:typing', { isTyping: false });
     }
   }
 

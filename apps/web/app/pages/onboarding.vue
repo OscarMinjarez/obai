@@ -45,11 +45,13 @@ onMounted(async () => {
     <p v-if="error" class="fixed top-4 left-1/2 -translate-x-1/2 bg-red-500/10 border border-red-500/20 text-red-400 px-4 py-2 rounded-full backdrop-blur-md z-50">
       {{ error }}
     </p>
-    <BotSetupPageView 
-      :initial-agent="currentAgent"
-      :loading="isLoading"
-      @save="handleSave"
-      @regenerate="fetchNewSuggestion"
-    />
+    <ClientOnly>
+      <BotSetupPageView 
+        :initial-agent="currentAgent"
+        :loading="isLoading"
+        @save="handleSave"
+        @regenerate="fetchNewSuggestion"
+      />
+    </ClientOnly>
   </main>
 </template>

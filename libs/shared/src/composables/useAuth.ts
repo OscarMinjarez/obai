@@ -10,18 +10,24 @@ const token = ref<string | null>(null);
 export function useAuth() {
   const isLoading = ref(false);
   const error = ref<string | null>(null);
-  
-  // Utilizaremos una URL base genérica. Podrías pasarla por variables de entorno.
-  const API_URL = ((import.meta as any).env?.VITE_API_URL as string) || 'http://localhost:8000/api';
 
-  // Sincronizar estado local al iniciar
+  const API_URL = (typeof process !== 'undefined' && process.env?.VITE_API_URL) 
+    ? process.env.VITE_API_URL 
+    : 'http://localhost:8000/api';
+
+  // Recuperar inmediatamente si estamos en el cliente
   if (typeof window !== 'undefined' && !token.value) {
-    const storedToken = localStorage.getItem('obai_token');
-    const storedUser = localStorage.getItem('obai_user');
-    if (storedToken) token.value = storedToken;
-    if (storedUser) user.value = JSON.parse(storedUser);
+    try {
+      const storedToken = localStorage.getItem('obai_token');
+      const storedUser = localStorage.getItem('obai_user');
+      if (storedToken) {
+        token.value = storedToken;
+        if (storedUser) user.value = JSON.parse(storedUser);
+      }
+    } catch (e) {
+      console.error('Error recovering session', e);
+    }
   }
-
   const login = async (email: string, password: string) => {
     isLoading.value = true;
     error.value = null;
@@ -31,21 +37,14 @@ export function useAuth() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
       });
-      
       const data = await res.json();
-      
       if (!res.ok) throw new Error(data.message || 'Error en login');
-      
-      // Supongamos que la API devuelve { access_token, user } o similar
-      // Si la API usa supabase, verifica la estructura exacta devuelta
       token.value = data.access_token || data.session?.access_token || data.token;
       user.value = data.user || data;
-
       if (typeof window !== 'undefined') {
         if (token.value) localStorage.setItem('obai_token', token.value);
         localStorage.setItem('obai_user', JSON.stringify(user.value));
       }
-      
       return data;
     } catch (e: any) {
       error.value = e.message;

@@ -20,15 +20,17 @@ onMounted(async () => {
 
 <template>
   <main class="h-screen overflow-hidden">
-    <ChatPageView>
-      <template #title>
-        {{ agentName }}
-      </template>
-      <template #actions>
-        <Button variant="ghost" size="sm" as-child>
-          <NuxtLink to="/">Volver</NuxtLink>
-        </Button>
-      </template>
-    </ChatPageView>
+    <ClientOnly>
+      <ChatPageView>
+        <template #title>
+          {{ agentName }}
+        </template>
+        <template #actions>
+          <Button variant="ghost" size="sm" as-child>
+            <NuxtLink to="/">Volver</NuxtLink>
+          </Button>
+        </template>
+      </ChatPageView>
+    </ClientOnly>
   </main>
 </template>

@@ -6,7 +6,9 @@ export function useAgents() {
   const isLoading = ref(false);
   const error = ref<string | null>(null);
   
-  const API_URL = ((import.meta as any).env?.VITE_API_URL as string) || 'http://localhost:8000/api';
+  const API_URL = (typeof process !== 'undefined' && process.env?.VITE_API_URL) 
+    ? process.env.VITE_API_URL 
+    : 'http://localhost:8000/api';
 
   const getMyAgent = async () => {
     isLoading.value = true;

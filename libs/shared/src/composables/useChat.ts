@@ -11,11 +11,17 @@ export function useChat() {
 
   const connect = () => {
     if (socket.value?.connected) return;
+    if (!token.value) {
+      console.warn('Cannot connect to socket: No token available');
+      return;
+    }
 
-    // In a real app, this URL should be an env var
-    const baseUrl = window.location.hostname === 'localhost' 
-      ? 'http://localhost:8000' 
-      : 'http://localhost:8000'; // Fallback for now
+    // Usamos el API_URL base para los sockets (quitando el /api si existe)
+    const apiUrl = (typeof process !== 'undefined' && process.env?.VITE_API_URL) 
+      ? process.env.VITE_API_URL 
+      : (typeof window !== 'undefined' && (window as any)._env_?.VITE_API_URL) || 'http://localhost:8000/api';
+    
+    const baseUrl = apiUrl.replace('/api', '');
 
     socket.value = io(`${baseUrl}/chat`, {
       auth: { token: token.value },
@@ -37,7 +43,10 @@ export function useChat() {
     });
 
     socket.value.on('chat:receive', (message: any) => {
-      // Remove typing indicator when real message arrives or just append
+      const lastMsg = messages.value[messages.value.length - 1];
+      if (lastMsg && lastMsg.content === message.content && lastMsg.role === message.role) {
+        return;
+      }
       messages.value.push(message);
     });
 
@@ -71,13 +80,15 @@ export function useChat() {
     }
   };
 
-  // Reconnect if token changes
+  // Reconnect if token changes or becomes available
   watch(token, (newToken) => {
-    if (newToken && socket.value) {
-      disconnect();
+    if (newToken) {
+      if (socket.value) disconnect();
       connect();
+    } else {
+      disconnect();
     }
-  });
+  }, { immediate: true });
 
   onUnmounted(() => {
     disconnect();

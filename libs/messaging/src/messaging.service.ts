@@ -87,7 +87,7 @@ export class MessagingService {
         const agent = new AgentEntity(agentData);
         const welcomeMessage = await this.ai.generateChatResponse(
           userId,
-          [{ role: 'system', content: 'Greet the user for the first time and introduce yourself briefly based on your profile. Keep it natural and avoid long roleplay descriptions.' }],
+          [{ role: 'system', content: 'Greet the user for the first time. Keep it extremely simple, human, and friendly. Avoid any drama, poetry, or roleplay.' }],
           agent
         );
 
