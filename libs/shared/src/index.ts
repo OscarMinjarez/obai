@@ -17,3 +17,7 @@ export { Textarea } from './components/ui/textarea';
 export { Avatar, AvatarFallback, AvatarImage } from './components/ui/avatar';
 export { ScrollArea, ScrollBar } from './components/ui/scroll-area';
 export { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from './components/ui/card';
+export { SidebarProvider, Sidebar, SidebarTrigger, SidebarInset, SidebarContent, SidebarHeader, SidebarFooter, SidebarRail } from './components/ui/sidebar';
+
+// Layout components
+export { default as AppSidebar } from './components/AppSidebar.vue';

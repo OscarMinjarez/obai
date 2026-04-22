@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { ChatPageView, Button, useAgents } from '@obai/shared';
+import { ChatPageView, useAgents } from '@obai/shared';
 import { definePageMeta } from '#imports';
 
 definePageMeta({
@@ -19,18 +19,11 @@ onMounted(async () => {
 </script>
 
 <template>
-  <main class="h-screen overflow-hidden">
-    <ClientOnly>
-      <ChatPageView>
-        <template #title>
-          {{ agentName }}
-        </template>
-        <template #actions>
-          <Button variant="ghost" size="sm" as-child>
-            <NuxtLink to="/">Volver</NuxtLink>
-          </Button>
-        </template>
-      </ChatPageView>
-    </ClientOnly>
-  </main>
+  <ClientOnly>
+    <ChatPageView>
+      <template #title>
+        {{ agentName }}
+      </template>
+    </ChatPageView>
+  </ClientOnly>
 </template>

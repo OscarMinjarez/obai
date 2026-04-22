@@ -55,6 +55,11 @@ export function useChat() {
       isTyping.value = data.isTyping;
     });
 
+    socket.value.on('chat:device_info', (data: { deviceType: string }) => {
+      console.log('📱 Dispositivo detectado:', data.deviceType);
+      deviceType.value = data.deviceType;
+    });
+
     socket.value.on('chat:error', (err: any) => {
       console.error('Socket error:', err);
     });

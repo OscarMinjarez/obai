@@ -1,26 +1,17 @@
 <template>
-  <ion-page>
-    <ion-content>
-      <ChatPageView>
-        <template #title>
-          {{ agentName }}
-        </template>
-        <template #actions>
-          <Button variant="ghost" size="icon" as-child>
-            <router-link to="/home">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-            </router-link>
-          </Button>
-        </template>
-      </ChatPageView>
-    </ion-content>
+  <ion-page class="obai-page">
+    <ChatPageView>
+      <template #title>
+        {{ agentName }}
+      </template>
+    </ChatPageView>
   </ion-page>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { IonContent, IonPage } from '@ionic/vue';
-import { ChatPageView, Button, useAgents } from '@obai/shared';
+import { IonPage } from '@ionic/vue';
+import { ChatPageView, useAgents } from '@obai/shared';
 
 const { getMyAgent } = useAgents();
 const agentName = ref('Asistente');
@@ -32,3 +23,41 @@ onMounted(async () => {
   }
 });
 </script>
+
+<style>
+/*
+ * Neutralizamos la interferencia de Ionic con el layout de shadcn.
+ * Usamos selectores globales porque el Sheet/Dialog portal
+ * se teleporta fuera del scope del componente.
+ */
+
+/* 1. Forzar ion-page a comportarse como un contenedor block normal */
+.obai-page {
+  display: block !important;
+  position: relative !important;
+  contain: none !important;
+}
+
+/* 2. El SidebarProvider y ChatPageView necesitan ocupar toda la pantalla */
+.obai-page > .sidebar-provider,
+.obai-page [data-slot="sidebar-provider"] {
+  height: 100vh;
+  width: 100%;
+}
+
+/* 3. Asegurar que el Sheet overlay de shadcn esté sobre las capas de Ionic */
+[data-radix-dialog-overlay],
+[data-reka-dialog-overlay] {
+  z-index: 10000 !important;
+}
+
+[data-radix-dialog-content],
+[data-reka-dialog-content] {
+  z-index: 10001 !important;
+}
+
+/* 4. Evitar que Ionic resetee el background del Sheet */
+ion-app [role="dialog"] {
+  background-color: hsl(var(--sidebar-background)) !important;
+}
+</style>

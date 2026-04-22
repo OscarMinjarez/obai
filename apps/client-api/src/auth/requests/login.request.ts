@@ -9,4 +9,10 @@ export class LoginRequest {
   @MinLength(6)
   password: string;
 
+  @IsString()
+  deviceType?: string;
+
+  @IsString()
+  userAgent?: string;
+
 }

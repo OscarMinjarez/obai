@@ -41,69 +41,79 @@ export class MessagingService {
       });
     }
     const agent = new AgentEntity(agentData);
-    await (this.entities as any).message.create({
-      data: {
-        content,
-        role: 'user',
+    
+    try {
+      await (this.entities as any).message.create({
+        data: {
+          content,
+          role: 'user',
+          userId,
+        },
+      });
+
+      const history = await (this.entities as any).message.findMany({
+        where: { userId },
+        orderBy: { createdAt: 'desc' },
+        take: 15,
+      });
+      const chronologicalHistory = history.reverse();
+      const aiResponse = await this.ai.generateChatResponse(
         userId,
-        agentId: agent.id,
-      },
-    });
-    const history = await (this.entities as any).message.findMany({
-      where: { userId },
-      orderBy: { createdAt: 'desc' },
-      take: 15,
-    });
-    const chronologicalHistory = history.reverse();
-    const aiResponse = await this.ai.generateChatResponse(
-      userId,
-      chronologicalHistory,
-      agent,
-    );
-    return await (this.entities as any).message.create({
-      data: {
-        content: aiResponse,
-        role: 'assistant',
-        userId,
-        agentId: agent.id,
-      },
-    });
+        chronologicalHistory,
+        agent,
+      );
+
+      return await (this.entities as any).message.create({
+        data: {
+          content: aiResponse,
+          role: 'assistant',
+          userId,
+        },
+      });
+    } catch (error) {
+      console.error('❌ Error en el flujo de mensajería:', error.message);
+      throw new Error('Lo siento, hubo un problema al procesar tu mensaje. Inténtalo de nuevo.');
+    }
   }
 
   async getHistory(userId: string) {
-    const history = await (this.entities as any).message.findMany({
-      where: { userId },
-      orderBy: { createdAt: 'asc' },
-      take: 50,
-    });
-
-    if (history.length === 0) {
-      // If no history, let's create a personalized welcome message
-      const agentData = await (this.entities as any).agent.findUnique({
+    try {
+      const history = await (this.entities as any).message.findMany({
         where: { userId },
+        orderBy: { createdAt: 'asc' },
+        take: 50,
       });
 
-      if (agentData) {
-        const agent = new AgentEntity(agentData);
-        const welcomeMessage = await this.ai.generateChatResponse(
-          userId,
-          [{ role: 'system', content: 'Greet the user for the first time. Keep it extremely simple, human, and friendly. Avoid any drama, poetry, or roleplay.' }],
-          agent
-        );
-
-        const savedWelcome = await (this.entities as any).message.create({
-          data: {
-            content: welcomeMessage,
-            role: 'assistant',
-            userId,
-            agentId: agent.id,
-          },
+      if (history.length === 0) {
+        // If no history, let's create a personalized welcome message
+        const agentData = await (this.entities as any).agent.findUnique({
+          where: { userId },
         });
-        return [savedWelcome];
-      }
-    }
 
-    return history;
+        if (agentData) {
+          const agent = new AgentEntity(agentData);
+          const welcomeMessage = await this.ai.generateChatResponse(
+            userId,
+            [{ role: 'system', content: 'Greet the user for the first time. Keep it extremely simple, human, and friendly. Avoid any drama, poetry, or roleplay.' }],
+            agent
+          );
+
+          const savedWelcome = await (this.entities as any).message.create({
+            data: {
+              content: welcomeMessage,
+              role: 'assistant',
+              userId,
+            },
+          });
+          return [savedWelcome];
+        }
+      }
+
+      return history;
+    } catch (error) {
+      console.error('❌ Error recuperando historial:', error.message);
+      return []; // Return empty history instead of failing
+    }
   }
 
 }

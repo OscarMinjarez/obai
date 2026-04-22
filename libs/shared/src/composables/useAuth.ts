@@ -31,18 +31,30 @@ export function useAuth() {
   const login = async (email: string, password: string) => {
     isLoading.value = true;
     error.value = null;
+
+    // Detect device info
+    const userAgent = typeof window !== 'undefined' ? window.navigator.userAgent : 'Server';
+    const isMobile = typeof window !== 'undefined' && /mobile/i.test(userAgent);
+    const deviceType = isMobile ? 'Móvil' : 'Web';
+
     try {
       const res = await fetch(`${API_URL}/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
+        body: JSON.stringify({ email, password, deviceType, userAgent })
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Error en login');
-      token.value = data.access_token || data.session?.access_token || data.token;
+      
+      const session = data.session || data;
+      token.value = session.access_token || data.access_token;
+      const refToken = session.refresh_token || data.refresh_token;
+      
       user.value = data.user || data;
+      
       if (typeof window !== 'undefined') {
         if (token.value) localStorage.setItem('obai_token', token.value);
+        if (refToken) localStorage.setItem('obai_refresh_token', refToken);
         localStorage.setItem('obai_user', JSON.stringify(user.value));
       }
       return data;
@@ -76,11 +88,26 @@ export function useAuth() {
     }
   };
 
-  const logout = () => {
+  const logout = async () => {
+    const refToken = typeof window !== 'undefined' ? localStorage.getItem('obai_refresh_token') : null;
+    
+    if (refToken) {
+      try {
+        await fetch(`${API_URL}/auth/logout`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ refreshToken: refToken })
+        });
+      } catch (e) {
+        console.error('Error invalidating session on server', e);
+      }
+    }
+
     user.value = null;
     token.value = null;
     if (typeof window !== 'undefined') {
       localStorage.removeItem('obai_token');
+      localStorage.removeItem('obai_refresh_token');
       localStorage.removeItem('obai_user');
     }
   };

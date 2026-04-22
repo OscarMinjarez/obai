@@ -16,6 +16,7 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   devices   Device[]
+  sessions  Session[]
   agents    Agent[]
   messages  Message[]
 }
@@ -31,7 +32,6 @@ model Agent {
   language    String   @default("Español")
   userId      String   @unique
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  messages    Message[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
@@ -49,6 +49,20 @@ model Device {
   updatedAt DateTime @updatedAt
 }
 
+model Session {
+  id           String   @id @default(uuid())
+  token        String   @unique
+  deviceType   String
+  userAgent    String?
+  ipAddress    String?
+  isActive     Boolean  @default(true)
+  lastActiveAt DateTime @default(now())
+  expiresAt    DateTime
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt    DateTime @default(now())
+}
+
 model Message {
   id        String   @id @default(uuid())
   content   String   @db.Text
@@ -56,7 +70,5 @@ model Message {
   createdAt DateTime @default(now())
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  agentId   String
-  agent     Agent    @relation(fields: [agentId], references: [id], onDelete: Cascade)
   @@index([userId, createdAt])
 }

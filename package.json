@@ -55,6 +55,7 @@
     "jwks-rsa": "^4.0.1",
     "lru-cache": "^9.1.2",
     "lucide-react": "^1.8.0",
+    "lucide-vue-next": "^1.0.0",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
     "pg": "^8.20.0",
@@ -63,7 +64,8 @@
     "rxjs": "^7.8.1",
     "socket.io": "^4.8.3",
     "socket.io-client": "^4.8.3",
-    "tailwind-merge": "^3.5.0"
+    "tailwind-merge": "^3.5.0",
+    "vue-router": "^5.0.6"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
