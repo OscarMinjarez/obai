@@ -10,14 +10,20 @@ defineProps<{
 
 const emit = defineEmits<{
   (e: 'login', payload: { email: string; pass: string }): void;
+  (e: 'loginOtp', email: string): void;
   (e: 'back'): void;
 }>();
 
 const email = ref('');
 const password = ref('');
+const mode = ref<'password' | 'otp'>('password');
 
 function handleSubmit() {
-  emit('login', { email: email.value, pass: password.value });
+  if (mode.value === 'password') {
+    emit('login', { email: email.value, pass: password.value });
+  } else {
+    emit('loginOtp', email.value);
+  }
 }
 </script>
 
@@ -28,10 +34,10 @@ function handleSubmit() {
       <div class="w-full max-w-sm space-y-8 animate-in fade-in slide-in-from-left-4 duration-500">
         <div class="space-y-2 text-center lg:text-left">
           <h1 class="text-3xl font-bold tracking-tight">
-            {{ title || 'Entrar' }}
+            {{ title || (mode === 'password' ? 'Entrar' : 'Acceso con código') }}
           </h1>
           <p class="text-sm text-muted-foreground">
-            {{ subtitle || 'Introduce tus credenciales para continuar.' }}
+            {{ subtitle || (mode === 'password' ? 'Introduce tus credenciales para continuar.' : 'Enviaremos un código a tu correo para entrar.') }}
           </p>
         </div>
 
@@ -54,7 +60,8 @@ function handleSubmit() {
                 required 
               >
             </div>
-            <div class="space-y-2">
+            
+            <div v-if="mode === 'password'" class="space-y-2 animate-in fade-in slide-in-from-top-2">
               <div class="flex items-center justify-between">
                 <label
                   class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
@@ -71,7 +78,7 @@ function handleSubmit() {
                 type="password" 
                 class="flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50" 
                 placeholder="••••••••" 
-                required 
+                :required="mode === 'password'" 
               >
             </div>
           </div>
@@ -82,9 +89,19 @@ function handleSubmit() {
               class="w-full h-10"
               :disabled="loading"
             >
-              <span v-if="loading">Iniciando sesión...</span>
-              <span v-else>Entrar</span>
+              <span v-if="loading">Cargando...</span>
+              <span v-else>{{ mode === 'password' ? 'Entrar' : 'Enviar código' }}</span>
             </Button>
+            
+            <Button
+              variant="link"
+              type="button"
+              class="text-xs"
+              @click="mode = mode === 'password' ? 'otp' : 'password'"
+            >
+              {{ mode === 'password' ? 'Prefiero usar un código por correo' : 'Volver a contraseña' }}
+            </Button>
+
             <div class="relative py-4">
               <div class="absolute inset-0 flex items-center">
                 <span class="w-full border-t" />
@@ -127,12 +144,6 @@ function handleSubmit() {
       >
       <div class="absolute inset-0 bg-gradient-to-t from-background/40 to-transparent" />
       <div class="absolute bottom-12 left-12 right-12 z-20">
-        <!-- <blockquote class="space-y-2">
-          <p class="text-lg font-medium text-white italic">
-            "Obai ha transformado la manera en que gestiono mi día a día. Es mucho más que un asistente, es un compañero inteligente."
-          </p>
-          <footer class="text-sm text-white/80">— Elena, tu compañera de Obai</footer>
-        </blockquote> -->
       </div>
     </div>
   </div>

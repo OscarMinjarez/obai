@@ -5,6 +5,10 @@
   "author": "",
   "private": true,
   "license": "UNLICENSED",
+  "workspaces": [
+    "apps/web",
+    "apps/mobile"
+  ],
   "scripts": {
     "build": "nest build",
     "format": "npm run format:lint",

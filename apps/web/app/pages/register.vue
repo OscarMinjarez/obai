@@ -8,7 +8,14 @@ const { register, isLoading, error } = useAuth();
 async function handleRegister(payload: { name: string; email: string; pass: string }) {
   try {
     await register(payload.name, payload.email, payload.pass);
-    router.push('/login');
+    // Guardar email de respaldo por si se pierde el query param
+    if (typeof window !== 'undefined') localStorage.setItem('obai_pending_email', payload.email);
+    
+    // Redirigir a la página de verificación pasando el email por query
+    router.push({
+      path: '/verify-otp',
+      query: { email: payload.email, type: 'signup' }
+    });
   } catch (e) {
     console.error('Error en registro', e);
   }

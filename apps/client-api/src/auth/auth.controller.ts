@@ -29,4 +29,27 @@ export class AuthController {
     return this.authService.logout(data.refreshToken);
   }
 
+  @Post('otp/request')
+  async requestOtp(@Body() data: { email: string }) {
+    return this.authService.signInWithOtp(data.email);
+  }
+
+  @Post('otp/verify')
+  async verifyOtp(@Body() data: { 
+    email: string; 
+    token: string; 
+    type?: string; 
+    deviceType?: string; 
+    userAgent?: string 
+  }, @Ip() ip: string) {
+    return this.authService.verifyOtp(
+      data.email,
+      data.token,
+      (data.type as any) || 'signup',
+      data.deviceType,
+      data.userAgent,
+      ip
+    );
+  }
+
 }

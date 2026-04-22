@@ -37,6 +37,11 @@ const routes: Array<RouteRecordRaw> = [
     name: 'Onboarding',
     component: () => import('../views/OnboardingPage.vue'),
     meta: { requiresAuth: true }
+  },
+  {
+    path: '/verify-otp',
+    name: 'VerifyOtp',
+    component: () => import('../views/VerifyOtpPage.vue')
   }
 ];
 
