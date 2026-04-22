@@ -1,6 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthService } from './auth.service';
 import { createClient } from '@supabase/supabase-js';
+import { UserRepository } from '../../entities/src/classes/user/user.repository';
+import { EntitiesService } from '../../entities/src/entities.service';
 
 jest.mock('@supabase/supabase-js', () => ({
   createClient: jest.fn(),
@@ -9,21 +11,39 @@ jest.mock('@supabase/supabase-js', () => ({
 describe('AuthService', () => {
   let service: AuthService;
   let mockSupabase: any;
+  let mockUserRepo: any;
+  let mockEntities: any;
 
   beforeEach(async () => {
     mockSupabase = {
       auth: {
         signUp: jest.fn(),
         signInWithPassword: jest.fn(),
+        signOut: jest.fn(),
       },
     };
     (createClient as jest.Mock).mockReturnValue(mockSupabase);
+
+    mockUserRepo = {
+      create: jest.fn(),
+    };
+
+    mockEntities = {
+      session: {
+        create: jest.fn(),
+        deleteMany: jest.fn(),
+      },
+    };
 
     process.env.SUPABASE_URL = 'http://localhost';
     process.env.SUPABASE_ANON_KEY = 'key';
 
     const module: TestingModule = await Test.createTestingModule({
-      providers: [AuthService],
+      providers: [
+        AuthService,
+        { provide: UserRepository, useValue: mockUserRepo },
+        { provide: EntitiesService, useValue: mockEntities },
+      ],
     }).compile();
 
     service = module.get<AuthService>(AuthService);

@@ -2,10 +2,8 @@
 import {
   MessageSquare,
   Settings,
-  Shield,
   Zap,
-} from 'lucide-vue-next'
-import { ref } from 'vue'
+} from 'lucide-vue-next';
 import {
   Sidebar,
   SidebarContent,
@@ -15,10 +13,9 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarGroup,
-  SidebarGroupLabel,
   SidebarRail,
-} from './ui/sidebar'
-import NavUser from './NavUser.vue'
+} from './ui/sidebar';
+import NavUser from './NavUser.vue';
 
 const data = {
   user: {
@@ -39,15 +36,22 @@ const data = {
       icon: Settings,
     },
   ],
-}
+};
 </script>
 
 <template>
-  <Sidebar collapsible="icon" class="group/sidebar" v-bind="$attrs">
+  <Sidebar
+    collapsible="icon"
+    class="group/sidebar"
+    v-bind="$attrs"
+  >
     <SidebarHeader class="flex justify-center px-2 bg-sidebar pt-[var(--ion-safe-area-top,0px)] h-[calc(4rem+var(--ion-safe-area-top,0px))]">
       <SidebarMenu>
         <SidebarMenuItem>
-          <SidebarMenuButton size="lg" class="pointer-events-none">
+          <SidebarMenuButton
+            size="lg"
+            class="pointer-events-none"
+          >
             <div class="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-sm">
               <Zap class="size-4" />
             </div>
@@ -61,8 +65,15 @@ const data = {
     <SidebarContent>
       <SidebarGroup>
         <SidebarMenu>
-          <SidebarMenuItem v-for="item in data.navMain" :key="item.title">
-            <SidebarMenuButton :tooltip="item.title" :active="item.isActive" as-child>
+          <SidebarMenuItem
+            v-for="item in data.navMain"
+            :key="item.title"
+          >
+            <SidebarMenuButton
+              :tooltip="item.title"
+              :active="item.isActive"
+              as-child
+            >
               <a :href="item.url">
                 <component :is="item.icon" />
                 <span>{{ item.title }}</span>

@@ -1,7 +1,7 @@
 import { defineNuxtRouteMiddleware, navigateTo } from '#imports';
 import { useAuth } from '@obai/shared/composables/useAuth';
 
-export default defineNuxtRouteMiddleware((to, from) => {
+export default defineNuxtRouteMiddleware((_to, _from) => {
   if (process.server) return;
 
   const { isAuthenticated } = useAuth();

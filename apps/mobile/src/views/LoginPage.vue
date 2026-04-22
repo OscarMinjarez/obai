@@ -1,7 +1,12 @@
 <template>
   <ion-page>
     <ion-content class="ion-padding bg-background text-foreground">
-      <p v-if="error" class="text-red-500 text-center py-2">{{ error }}</p>
+      <p
+        v-if="error"
+        class="text-red-500 text-center py-2"
+      >
+        {{ error }}
+      </p>
       <LoginPageView 
         title="Iniciar Sesión (App)" 
         subtitle="Acceso de Usuario"

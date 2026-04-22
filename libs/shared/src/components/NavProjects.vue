@@ -5,7 +5,7 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from './ui/dropdown-menu'
+} from './ui/dropdown-menu';
 import {
   SidebarGroup,
   SidebarGroupLabel,
@@ -14,8 +14,8 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from './ui/sidebar'
-import { Folder, Forward, MoreHorizontal, Trash2, type LucideIcon } from 'lucide-vue-next'
+} from './ui/sidebar';
+import { Folder, Forward, MoreHorizontal, Trash2, type LucideIcon } from 'lucide-vue-next';
 
 defineProps<{
   projects: {
@@ -23,9 +23,9 @@ defineProps<{
     url: string
     icon: LucideIcon
   }[]
-}>()
+}>();
 
-const { isMobile } = useSidebar()
+const { isMobile } = useSidebar();
 </script>
 
 <template>

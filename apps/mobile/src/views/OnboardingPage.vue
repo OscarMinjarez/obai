@@ -18,7 +18,7 @@ import { useRouter } from 'vue-router';
 import { ref, onMounted } from 'vue';
 
 const router = useRouter();
-const { getSuggestion, saveAgent, getMyAgent, isLoading, error } = useAgents();
+const { getSuggestion, saveAgent, getMyAgent, isLoading } = useAgents();
 const currentAgent = ref<any>(null);
 
 async function fetchNewSuggestion() {

@@ -3,19 +3,18 @@ import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from './ui/collapsible'
+} from './ui/collapsible';
 import {
   SidebarGroup,
   SidebarGroupLabel,
   SidebarMenu,
-  SidebarMenuAction,
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
-} from './ui/sidebar'
-import { ChevronRight, type LucideIcon } from 'lucide-vue-next'
+} from './ui/sidebar';
+import { ChevronRight, type LucideIcon } from 'lucide-vue-next';
 
 defineProps<{
   items: {
@@ -28,7 +27,7 @@ defineProps<{
       url: string
     }[]
   }[]
-}>()
+}>();
 </script>
 
 <template>
@@ -45,7 +44,10 @@ defineProps<{
         <SidebarMenuItem>
           <CollapsibleTrigger as-child>
             <SidebarMenuButton :tooltip="item.title">
-              <component :is="item.icon" v-if="item.icon" />
+              <component
+                :is="item.icon"
+                v-if="item.icon"
+              />
               <span>{{ item.title }}</span>
               <ChevronRight
                 class="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90"

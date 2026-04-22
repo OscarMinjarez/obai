@@ -8,9 +8,9 @@
   "scripts": {
     "build": "nest build",
     "format": "npm run format:lint",
-    "format:prettier": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
-    "format:lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
-    "format:check": "eslint \"{src,apps,libs,test}/**/*.ts\"",
+    "format:prettier": "prettier --write \"apps/**/*.{ts,tsx,vue}\" \"libs/**/*.{ts,tsx,vue}\"",
+    "format:lint": "eslint \"{src,apps,libs,test}/**/*.{ts,tsx,vue}\" --fix",
+    "format:check": "eslint \"{src,apps,libs,test}/**/*.{ts,tsx,vue}\"",
     "dev:client": "nest start client-api --watch",
     "dev:admin": "nest start admin-api --watch",
     "dev:apis": "concurrently --names \"client,admin\" --prefix-colors \"cyan,magenta\" \"npm run dev:client\" \"npm run dev:admin\"",
@@ -83,6 +83,7 @@
     "eslint": "^9.18.0",
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-prettier": "^5.2.2",
+    "eslint-plugin-vue": "^10.9.0",
     "globals": "^17.0.0",
     "jest": "^30.0.0",
     "prettier": "^3.4.2",
@@ -96,7 +97,8 @@
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.7.3",
-    "typescript-eslint": "^8.20.0"
+    "typescript-eslint": "^8.20.0",
+    "vue-eslint-parser": "^10.4.0"
   },
   "jest": {
     "moduleFileExtensions": [

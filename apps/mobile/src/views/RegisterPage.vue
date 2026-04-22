@@ -1,7 +1,12 @@
 <template>
   <ion-page>
     <ion-content class="ion-padding bg-background text-foreground">
-      <p v-if="error" class="text-red-500 text-center py-2">{{ error }}</p>
+      <p
+        v-if="error"
+        class="text-red-500 text-center py-2"
+      >
+        {{ error }}
+      </p>
       <RegisterPageView 
         title="Crear Cuenta" 
         subtitle="Regístrate en App"
@@ -20,7 +25,7 @@ import RegisterPageView from '@obai/shared/pages/RegisterPageView.vue';
 import { useAuth } from '@obai/shared/composables/useAuth';
 
 const router = useRouter();
-const { register, login, isLoading, error } = useAuth();
+const { register, isLoading, error } = useAuth();
 
 async function handleRegister(payload: { name: string; email: string; pass: string }) {
   try {

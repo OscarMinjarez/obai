@@ -28,4 +28,5 @@ export class AuthController {
   async logout(@Body() data: { refreshToken: string }) {
     return this.authService.logout(data.refreshToken);
   }
+
 }

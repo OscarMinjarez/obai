@@ -30,7 +30,10 @@ function handleBack() {
 <template>
   <div class="relative min-h-screen">
     <!-- Floating error indicator -->
-    <p v-if="error" class="fixed top-6 left-1/2 -translate-x-1/2 z-[60] bg-red-500/10 border border-red-500/20 text-red-500 px-4 py-2 rounded-full text-xs font-bold backdrop-blur-md animate-in fade-in slide-in-from-top-4">
+    <p
+      v-if="error"
+      class="fixed top-6 left-1/2 -translate-x-1/2 z-[60] bg-red-500/10 border border-red-500/20 text-red-500 px-4 py-2 rounded-full text-xs font-bold backdrop-blur-md animate-in fade-in slide-in-from-top-4"
+    >
       {{ error }}
     </p>
     

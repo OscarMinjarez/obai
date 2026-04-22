@@ -3,7 +3,7 @@ import {
   Avatar,
   AvatarFallback,
   AvatarImage,
-} from './ui/avatar'
+} from './ui/avatar';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,13 +12,13 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from './ui/dropdown-menu'
+} from './ui/dropdown-menu';
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from './ui/sidebar'
+} from './ui/sidebar';
 import {
   BadgeCheck,
   Bell,
@@ -26,26 +26,26 @@ import {
   CreditCard,
   LogOut,
   Sparkles,
-} from 'lucide-vue-next'
-import { useAuth } from '../composables/useAuth'
-import { useRouter } from 'vue-router'
+} from 'lucide-vue-next';
+import { useAuth } from '../composables/useAuth';
+import { useRouter } from 'vue-router';
 
-const props = defineProps<{
+defineProps<{
   user: {
     name: string
     email: string
     avatar: string
   }
-}>()
+}>();
 
-const { isMobile } = useSidebar()
-const { logout, user: authUser } = useAuth()
-const router = useRouter()
+const { isMobile } = useSidebar();
+const { logout, user: authUser } = useAuth();
+const router = useRouter();
 
 const handleLogout = async () => {
-  await logout()
-  router.push('/login')
-}
+  await logout();
+  router.push('/login');
+};
 </script>
 
 <template>
@@ -58,7 +58,10 @@ const handleLogout = async () => {
             class="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
           >
             <Avatar class="h-8 w-8 rounded-lg">
-              <AvatarImage :src="user.avatar" :alt="user.name" />
+              <AvatarImage
+                :src="user.avatar"
+                :alt="user.name"
+              />
               <AvatarFallback class="rounded-lg">
                 {{ authUser?.name?.substring(0, 2).toUpperCase() || 'US' }}
               </AvatarFallback>
@@ -79,7 +82,10 @@ const handleLogout = async () => {
           <DropdownMenuLabel class="p-0 font-normal">
             <div class="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
               <Avatar class="h-8 w-8 rounded-lg">
-                <AvatarImage :src="user.avatar" :alt="user.name" />
+                <AvatarImage
+                  :src="user.avatar"
+                  :alt="user.name"
+                />
                 <AvatarFallback class="rounded-lg">
                   {{ authUser?.name?.substring(0, 2).toUpperCase() || 'US' }}
                 </AvatarFallback>

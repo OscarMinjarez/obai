@@ -67,5 +67,12 @@
         "libs/common/src/*"
       ]
     }
-  }
+  },
+  "include": [
+    "apps/**/*.ts",
+    "libs/**/*.ts",
+    "libs/**/*.vue",
+    "apps/**/*.vue",
+    "src/**/*.ts"
+  ]
 }

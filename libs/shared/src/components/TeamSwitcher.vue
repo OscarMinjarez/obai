@@ -7,15 +7,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuShortcut,
   DropdownMenuTrigger,
-} from './ui/dropdown-menu'
+} from './ui/dropdown-menu';
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from './ui/sidebar'
-import { ChevronsUpDown, Plus } from 'lucide-vue-next'
-import { ref, type Component } from 'vue'
+} from './ui/sidebar';
+import { ChevronsUpDown, Plus } from 'lucide-vue-next';
+import { ref, type Component } from 'vue';
 
 const props = defineProps<{
   teams: {
@@ -23,10 +23,10 @@ const props = defineProps<{
     logo: Component
     plan: string
   }[]
-}>()
+}>();
 
-const { isMobile } = useSidebar()
-const activeTeam = ref(props.teams[0])
+const { isMobile } = useSidebar();
+const activeTeam = ref(props.teams[0]);
 </script>
 
 <template>
@@ -39,7 +39,10 @@ const activeTeam = ref(props.teams[0])
             class="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
           >
             <div class="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-              <component :is="activeTeam.logo" class="size-4" />
+              <component
+                :is="activeTeam.logo"
+                class="size-4"
+              />
             </div>
             <div class="grid flex-1 text-left text-sm leading-tight">
               <span class="truncate font-semibold">
@@ -66,7 +69,10 @@ const activeTeam = ref(props.teams[0])
             @click="activeTeam = team"
           >
             <div class="flex size-6 items-center justify-center rounded-sm border">
-              <component :is="team.logo" class="size-4 shrink-0" />
+              <component
+                :is="team.logo"
+                class="size-4 shrink-0"
+              />
             </div>
             {{ team.name }}
             <DropdownMenuShortcut>⌘{{ index + 1 }}</DropdownMenuShortcut>
@@ -76,7 +82,9 @@ const activeTeam = ref(props.teams[0])
             <div class="flex size-6 items-center justify-center rounded-md border bg-background">
               <Plus class="size-4" />
             </div>
-            <div class="font-medium text-muted-foreground">Add team</div>
+            <div class="font-medium text-muted-foreground">
+              Add team
+            </div>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
