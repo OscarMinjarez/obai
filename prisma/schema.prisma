@@ -30,7 +30,7 @@ model Agent {
   behaviors   String[]
   language    String   @default("Español")
   userId      String   @unique
-  user        User     @relation(fields: [userId], references: [id])
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   messages    Message[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -44,7 +44,7 @@ model Device {
   lastSeen  DateTime @default(now())
   fcmToken  String?
   userId    String
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -55,8 +55,8 @@ model Message {
   role      String
   createdAt DateTime @default(now())
   userId    String
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   agentId   String
-  agent     Agent    @relation(fields: [agentId], references: [id])
+  agent     Agent    @relation(fields: [agentId], references: [id], onDelete: Cascade)
   @@index([userId, createdAt])
 }
