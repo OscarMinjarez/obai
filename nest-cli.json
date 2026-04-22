@@ -54,6 +54,33 @@
       "compilerOptions": {
         "tsConfigPath": "libs/messaging/tsconfig.lib.json"
       }
+    },
+    "intelligence": {
+      "type": "library",
+      "root": "libs/intelligence",
+      "entryFile": "index",
+      "sourceRoot": "libs/intelligence/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/intelligence/tsconfig.lib.json"
+      }
+    },
+    "common": {
+      "type": "library",
+      "root": "libs/common",
+      "entryFile": "index",
+      "sourceRoot": "libs/common/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/common/tsconfig.lib.json"
+      }
+    },
+    "shared": {
+      "type": "library",
+      "root": "libs/shared",
+      "entryFile": "index",
+      "sourceRoot": "libs/shared/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/shared/tsconfig.lib.json"
+      }
     }
   }
 }

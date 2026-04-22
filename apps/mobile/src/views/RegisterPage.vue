@@ -25,8 +25,7 @@ const { register, login, isLoading, error } = useAuth();
 async function handleRegister(payload: { name: string; email: string; pass: string }) {
   try {
     await register(payload.name, payload.email, payload.pass);
-    await login(payload.email, payload.pass);
-    router.push('/chat'); // o la ruta principal de la app
+    router.push('/login');
   } catch (e) {
     console.error('Error registrando en la app', e);
   }

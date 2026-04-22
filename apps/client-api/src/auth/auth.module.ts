@@ -5,7 +5,6 @@ import { JwtStrategy } from 'obai/auth/strategies/jwt/jwt';
 
 @Module({
   imports: [SharedAuthModule],
-  providers: [AuthService, JwtStrategy],
   controllers: [AuthController],
 })
 export class AuthModule {}

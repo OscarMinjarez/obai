@@ -15,11 +15,11 @@ export abstract class BaseRepository<T> {
     return this.entityService[this.model].findUnique({ where: { id } });
   }
 
-  async create(data: T): Promise<T> {
+  async create(data: Partial<T>): Promise<T> {
     return this.entityService[this.model].create({ data });
   }
 
-  async update(id: string, data: T): Promise<T> {
+  async update(id: string, data: Partial<T>): Promise<T> {
     return this.entityService[this.model].update({ where: { id }, data });
   }
 

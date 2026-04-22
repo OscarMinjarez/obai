@@ -25,7 +25,7 @@ const { login, isLoading, error } = useAuth();
 async function handleLogin(payload: { email: string; pass: string }) {
   try {
     await login(payload.email, payload.pass);
-    router.push('/chat'); // o la ruta principal de la app
+    router.push('/onboarding');
   } catch (e) {
     console.error('Error logueando en la app', e);
   }

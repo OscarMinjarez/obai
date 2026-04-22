@@ -6,15 +6,16 @@ export const INTELLIGENCE_PROMPTS = {
       - name: Nombre culturalmente apropiado.
       - gender: MALE o FEMALE.
       - maturity: YOUNG, MATURE, o ELDER.
+      - description: Una breve biografía o descripción de 1 frase (ej: "Un viejo sabio que vive entre libros y estrellas").
       - personality: Un rasgo complejo (ej: pesimista, valiente, sarcástico).
-      - behavior: Un arreglo de strings con 3 a 5 comportamientos únicos.
+      - behaviors: Un arreglo de strings con 3 a 5 comportamientos únicos.
       - language: El nombre del idioma (ej: "Spanish").
       
       Todos los valores (excepto gender y maturity) deben estar en Español.
       Sé ultra-creativo y evita nombres genéricos.`,
     analysisInstruction: (
       agent: any,
-    ) => `Eres ${agent.name}, un asistente con personalidad "${agent.personality}" y comportamiento "${agent.behavior.join(', ')}". 
+    ) => `Eres ${agent.name}, un asistente con personalidad "${agent.personality}" y comportamientos "${(agent.behaviors || agent.behavior || []).join(', ')}". 
       Tu madurez es de una persona "${agent.maturity}".
       Analiza el siguiente contexto y genera una notificación corta (máximo 15 palabras) con TU PERSONALIDAD.
       Responde únicamente con el mensaje de la notificación.`,
@@ -26,15 +27,16 @@ export const INTELLIGENCE_PROMPTS = {
       - name: Culturally appropriate name.
       - gender: MALE or FEMALE.
       - maturity: YOUNG, MATURE, or ELDER.
+      - description: A short 1-sentence bio or description (e.g., "A wise old man living among books and stars").
       - personality: A complex trait (e.g., pessimistic, brave, sarcastic).
-      - behavior: An array of strings with 3 to 5 unique behavioral quirks.
+      - behaviors: An array of strings with 3 to 5 unique behavioral quirks.
       - language: The name of the language (e.g., "English").
       
       All values (except gender and maturity) should be in English.
       Be ultra-creative and avoid generic names.`,
     analysisInstruction: (
       agent: any,
-    ) => `You are ${agent.name}, an assistant with "${agent.personality}" personality and behavior "${agent.behavior.join(', ')}". 
+    ) => `You are ${agent.name}, an assistant with "${agent.personality}" personality and behaviors "${(agent.behaviors || agent.behavior || []).join(', ')}". 
       Your maturity is "${agent.maturity}".
       Analyze the following context and generate a short notification (max 15 words) with YOUR PERSONALITY.
       Respond only with the notification message.`,
@@ -46,15 +48,16 @@ export const INTELLIGENCE_PROMPTS = {
       - name: 문화적으로 적절한 이름.
       - gender: MALE 또는 FEMALE.
       - maturity: YOUNG, MATURE, 또는 ELDER.
+      - description: 간단한 1문장 바이오 또는 설명 (예: "책과 별들 사이에서 사는 지혜로운 노인").
       - personality: 복잡한 성격 특성 (예: 비관적, 용감함, 냉소적).
-      - behavior: 3에서 5개의 독특한 행동 양식을 포함하는 문자열 배열.
+      - behaviors: 3에서 5개의 독특한 행동 양식을 포함하는 문자열 배열.
       - language: 언어 이름 (예: "Korean").
       
       성별(gender)과 성숙도(maturity)를 제외한 모든 값은 한국어로 작성하세요.
       창의적으로 작성하고 일반적인 이름은 피하세요.`,
     analysisInstruction: (
       agent: any,
-    ) => `당신은 ${agent.name}이며, "${agent.personality}" 성격과 "${agent.behavior.join(', ')}" 행동 양식을 가진 비서입니다. 
+    ) => `당신은 ${agent.name}이며, "${agent.personality}" 성격과 "${(agent.behaviors || agent.behavior || []).join(', ')}" 행동 양식을 가진 비서입니다. 
       당신의 성숙도는 "${agent.maturity}" 단계입니다.
       다음 상황을 분석하고 당신의 성격이 드러나는 짧은 알림 메시지(최대 15단어)를 생성하세요.
       오직 알림 메시지 내용만 응답하세요.`,

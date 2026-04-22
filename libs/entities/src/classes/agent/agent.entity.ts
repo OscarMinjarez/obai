@@ -27,6 +27,10 @@ export class AgentEntity {
   @IsString({ each: true })
   behaviors: string[];
 
+  @IsString()
+  @IsNotEmpty()
+  language: string;
+
   @IsUUID()
   userId: string;
 

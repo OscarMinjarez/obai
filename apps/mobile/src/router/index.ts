@@ -31,6 +31,12 @@ const routes: Array<RouteRecordRaw> = [
     name: 'Chat',
     component: ChatPage,
     meta: { requiresAuth: true }
+  },
+  {
+    path: '/onboarding',
+    name: 'Onboarding',
+    component: () => import('../views/OnboardingPage.vue'),
+    meta: { requiresAuth: true }
   }
 ]
 

@@ -28,6 +28,7 @@ model Agent {
   maturity    String   @default("MATURE")
   personality String
   behaviors   String[]
+  language    String   @default("Español")
   userId      String   @unique
   user        User     @relation(fields: [userId], references: [id])
   messages    Message[]

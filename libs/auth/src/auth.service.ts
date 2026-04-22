@@ -1,10 +1,17 @@
-import { Injectable, OnModuleInit } from '@nestjs/common';
+import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
+
+import { UserRepository } from '../../entities/src/classes/user/user.repository';
 
 @Injectable()
 export class AuthService implements OnModuleInit {
 
     private supabase: SupabaseClient;
+
+    constructor(
+        @Inject(UserRepository)
+        private readonly userRepo: UserRepository
+    ) {}
 
     onModuleInit() {
         const url = process.env.SUPABASE_URL;
@@ -34,6 +41,17 @@ export class AuthService implements OnModuleInit {
         if (error) {
             throw error;
         }
+
+        // Mirror user in local database for relations (Agents, Devices, etc)
+        if (data.user) {
+            await this.userRepo.create({
+                id: data.user.id,
+                email: email,
+                name: name,
+                password: 'SUPABASE_AUTH', // Managed by Supabase
+            } as any);
+        }
+
         return data;
     }
 

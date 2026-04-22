@@ -6,9 +6,10 @@ import { DevicesModule } from './devices/devices.module';
 import { IntelligenceModule } from './intelligence/intelligence.module';
 import { AuthModule } from './auth/auth.module';
 import { ChatModule } from './chat/chat.module';
+import { AgentsModule } from './agents/agents.module';
 
 @Module({
-  imports: [EntitiesModule, DevicesModule, IntelligenceModule, AuthModule, ChatModule],
+  imports: [EntitiesModule, DevicesModule, IntelligenceModule, AuthModule, ChatModule, AgentsModule],
   controllers: [ClientApiController],
   providers: [ClientApiService],
 })

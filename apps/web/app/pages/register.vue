@@ -9,9 +9,7 @@ const { register, login, isLoading, error } = useAuth();
 async function handleRegister(payload: { name: string; email: string; pass: string }) {
   try {
     await register(payload.name, payload.email, payload.pass);
-    // Realizamos login automático luego de registrar (Opcional, depende de tu backend)
-    await login(payload.email, payload.pass);
-    router.push('/chat');
+    router.push('/login');
   } catch (e) {
     console.error('Error en registro', e);
   }
