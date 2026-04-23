@@ -32,24 +32,6 @@ function handleSubmit() {
         class="absolute inset-0 h-full w-full object-cover brightness-[0.7] dark:brightness-[0.4]"
       >
       <div class="absolute inset-0 bg-gradient-to-t from-background/40 to-transparent" />
-      <div class="absolute top-12 left-12 right-12 z-20">
-        <div class="flex items-center gap-2 text-white text-xl font-bold">
-          <div class="h-8 w-8 bg-white rounded-md flex items-center justify-center">
-            <div class="h-4 w-4 bg-black rounded-sm" />
-          </div>
-          Obai Platform
-        </div>
-      </div>
-      <div class="absolute bottom-12 left-12 right-12 z-20">
-        <blockquote class="space-y-2">
-          <p class="text-lg font-medium text-white italic">
-            "Únete a miles de personas que ya están mejorando su productividad con inteligencia artificial humana y cercana."
-          </p>
-          <footer class="text-sm text-white/80">
-            — El equipo de Obai
-          </footer>
-        </blockquote>
-      </div>
     </div>
 
     <!-- Form Side -->
