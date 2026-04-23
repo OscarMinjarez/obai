@@ -28,6 +28,7 @@ import {
   Sparkles,
 } from 'lucide-vue-next';
 import { useAuth } from '../composables/useAuth';
+import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 
 defineProps<{
@@ -40,6 +41,7 @@ defineProps<{
 
 const { isMobile } = useSidebar();
 const { logout, user: authUser } = useAuth();
+const { t } = useI18n();
 const router = useRouter();
 
 const handleLogout = async () => {
@@ -100,28 +102,28 @@ const handleLogout = async () => {
           <DropdownMenuGroup>
             <DropdownMenuItem>
               <Sparkles />
-              Upgrade to Pro
+              {{ t('common.upgrade_pro') }}
             </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
             <DropdownMenuItem>
               <BadgeCheck />
-              Account
+              {{ t('common.account') }}
             </DropdownMenuItem>
             <DropdownMenuItem>
               <CreditCard />
-              Billing
+              {{ t('common.billing') }}
             </DropdownMenuItem>
             <DropdownMenuItem>
               <Bell />
-              Notifications
+              {{ t('common.notifications') }}
             </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuItem @click="handleLogout">
             <LogOut />
-            Log out
+            {{ t('common.logout') }}
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

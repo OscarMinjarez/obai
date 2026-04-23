@@ -9,8 +9,6 @@
       </p>
       
       <RegisterPageView 
-        title="Crear Cuenta" 
-        subtitle="Regístrate en App"
         :loading="isLoading"
         @register="handleRegister"
         @back="handleBack"

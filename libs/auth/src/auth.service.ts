@@ -1,5 +1,6 @@
 import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { I18nService } from 'nestjs-i18n';
 
 import { UserRepository } from '../../entities/src/classes/user/user.repository';
 import { EntitiesService } from '../../entities/src/entities.service';
@@ -13,14 +14,15 @@ export class AuthService implements OnModuleInit {
         @Inject(UserRepository)
         private readonly userRepo: UserRepository,
         @Inject(EntitiesService)
-        private readonly entities: EntitiesService
+        private readonly entities: EntitiesService,
+        private readonly i18n: I18nService
     ) {}
 
     onModuleInit() {
         const url = process.env.SUPABASE_URL;
         const key = process.env.SUPABASE_ANON_KEY;
         if (!url || !key) {
-            throw new Error('Supabase URL or Key is missing. Check your .env file.');
+            throw new Error(this.i18n.t('errors.supabase_config_missing'));
         }
         this.supabase = createClient(url, key, {
             auth: {
@@ -117,7 +119,7 @@ export class AuthService implements OnModuleInit {
         ipAddress?: string
     ) {
         if (!email) {
-            throw new Error('Email is required for OTP verification');
+            throw new Error(this.i18n.t('errors.email_required_otp'));
         }
 
         const { data, error } = await this.supabase.auth.verifyOtp({

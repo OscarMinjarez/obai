@@ -8,20 +8,20 @@
         <section class="w-full space-y-6 rounded-lg border bg-card p-6 text-card-foreground shadow-sm">
           <div class="space-y-2">
             <p class="text-sm font-medium text-muted-foreground">
-              Obai Mobile
+              {{ t('landing.mobile_title') }}
             </p>
             <h1 class="text-3xl font-semibold tracking-tight">
-              Welcome
+              {{ t('landing.welcome') }}
             </h1>
             <p class="text-sm text-muted-foreground">
-              Default shadcn-vue light theme shared from the library.
+              {{ t('landing.mobile_subtitle') }}
             </p>
           </div>
 
           <div class="flex flex-col gap-3">
             <Button as-child>
               <router-link to="/login">
-                Login
+                {{ t('landing.login') }}
               </router-link>
             </Button>
             <Button
@@ -29,7 +29,7 @@
               as-child
             >
               <router-link to="/register">
-                Register
+                {{ t('landing.register') }}
               </router-link>
             </Button>
             <Button
@@ -37,7 +37,7 @@
               as-child
             >
               <router-link to="/chat">
-                Chat
+                {{ t('landing.chat') }}
               </router-link>
             </Button>
           </div>
@@ -50,4 +50,7 @@
 <script setup lang="ts">
 import { IonContent, IonPage } from '@ionic/vue';
 import { Button } from '@obai/shared/components/ui/button';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 </script>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, nextTick, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button } from '../components/ui/button';
 import { Textarea } from '../components/ui/textarea';
 // import { Avatar, AvatarFallback, AvatarImage } from '../components/ui/avatar';
@@ -12,6 +13,7 @@ import { useChat } from '../composables/useChat';
 import { SidebarProvider, AppSidebar, SidebarInset, SidebarTrigger } from '../index';
 
 const { messages, isTyping, connect, sendMessage } = useChat();
+const { t } = useI18n();
 
 const newMessage = ref('');
 const textareaRef = ref<any>(null);
@@ -85,7 +87,7 @@ watch(isTyping, (typing) => {
         <div class="flex flex-1 items-center justify-between">
           <h1 class="text-sm font-semibold tracking-tight">
             <slot name="title">
-              Asistente Obai
+              {{ t('chat.title') }}
             </slot>
           </h1>
           <div class="flex items-center gap-2">
@@ -120,7 +122,7 @@ watch(isTyping, (typing) => {
                 ><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /></svg>
               </div>
               <p class="text-sm font-medium">
-                No hay mensajes. Di algo para comenzar.
+                {{ t('chat.empty_state') }}
               </p>
             </div>
 
@@ -173,7 +175,7 @@ watch(isTyping, (typing) => {
               ref="textareaRef"
               v-model="newMessage"
               rows="1"
-              placeholder="Escribe un mensaje..." 
+              :placeholder="t('chat.input_placeholder')" 
               class="flex !min-h-[40px] w-full resize-none rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm ring-offset-background transition-all placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:opacity-50"
               @keydown.enter.prevent="handleSend"
             />

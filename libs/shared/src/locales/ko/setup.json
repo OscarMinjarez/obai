@@ -1,0 +1,22 @@
+{
+  "title": "봇 설정",
+  "subtitle": "AI 동반자의 성격과 프로필을 맞춤 설정하세요.",
+  "name_label": "이름",
+  "name_placeholder": "에이전트 이름",
+  "gender_label": "성별 톤",
+  "gender_male": "남성",
+  "gender_female": "여성",
+  "gender_neutral": "중성",
+  "maturity_label": "성숙도",
+  "maturity_young": "청년",
+  "maturity_mature": "성숙",
+  "maturity_elder": "노년",
+  "desc_label": "짧은 설명",
+  "desc_placeholder": "빠른 약력...",
+  "personality_label": "성격",
+  "personality_placeholder": "성격을 설명하세요...",
+  "behaviors_label": "행동 (한 줄에 하나씩)",
+  "behaviors_placeholder": "행동 목록...",
+  "save_button": "저장 및 계속",
+  "regenerate_button": "제안 다시 생성"
+}

@@ -1,0 +1,6 @@
+{
+  "title": "Obai Assistant",
+  "empty_state": "No messages yet. Say something to start.",
+  "input_placeholder": "Type a message...",
+  "send_button": "Send"
+}

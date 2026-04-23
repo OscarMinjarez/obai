@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { EntitiesService, AgentEntity } from 'obai/entities';
 import { AiIntelligenceService, AgentGeneratorService } from 'obai/intelligence';
+import { I18nService } from 'nestjs-i18n';
 
 @Injectable()
 export class MessagingService {
@@ -9,9 +10,10 @@ export class MessagingService {
     private readonly entities: EntitiesService,
     private readonly ai: AiIntelligenceService,
     private readonly agentGenerator: AgentGeneratorService,
+    private readonly i18n: I18nService,
   ) {}
 
-  async sendMessage(userId: string, content: string) {
+  async sendMessage(userId: string, content: string, locale: string = 'es') {
     const userExists = await (this.entities as any).user.findUnique({ where: { id: userId } });
     if (!userExists) {
       this.ai['logger']?.warn(`Usuario ${userId} no encontrado en Prisma. Creando fallback local...`);
@@ -36,8 +38,14 @@ export class MessagingService {
           maturity: generatedProfile.maturity || 'MATURE',
           personality: generatedProfile.personality || 'Amigable',
           behaviors: generatedProfile.behaviors || ['Profesional'],
+          language: locale,
           userId,
         }
+      });
+    } else if (agentData.language !== locale) {
+      agentData = await (this.entities as any).agent.update({
+        where: { id: agentData.id },
+        data: { language: locale }
       });
     }
     const agent = new AgentEntity(agentData);
@@ -61,6 +69,7 @@ export class MessagingService {
         userId,
         chronologicalHistory,
         agent,
+        locale
       );
 
       return await (this.entities as any).message.create({
@@ -72,7 +81,7 @@ export class MessagingService {
       });
     } catch (error) {
       console.error('❌ Error en el flujo de mensajería:', error.message);
-      throw new Error('Lo siento, hubo un problema al procesar tu mensaje. Inténtalo de nuevo.');
+      throw new Error(this.i18n.t('common.errors.messaging_problem'));
     }
   }
 

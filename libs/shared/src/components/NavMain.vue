@@ -15,6 +15,9 @@ import {
   SidebarMenuSubItem,
 } from './ui/sidebar';
 import { ChevronRight, type LucideIcon } from 'lucide-vue-next';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 defineProps<{
   items: {
@@ -32,7 +35,7 @@ defineProps<{
 
 <template>
   <SidebarGroup>
-    <SidebarGroupLabel>Platform</SidebarGroupLabel>
+    <SidebarGroupLabel>{{ t('sidebar.platform') }}</SidebarGroupLabel>
     <SidebarMenu>
       <Collapsible
         v-for="item in items"

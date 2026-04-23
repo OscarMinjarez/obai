@@ -37,6 +37,15 @@
         "tsConfigPath": "apps/client-api/tsconfig.app.json"
       }
     },
+    "common": {
+      "type": "library",
+      "root": "libs/common",
+      "entryFile": "index",
+      "sourceRoot": "libs/common/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/common/tsconfig.lib.json"
+      }
+    },
     "entities": {
       "type": "library",
       "root": "libs/entities",
@@ -46,13 +55,13 @@
         "tsConfigPath": "libs/entities/tsconfig.lib.json"
       }
     },
-    "messaging": {
+    "i18n": {
       "type": "library",
-      "root": "libs/messaging",
+      "root": "libs/i18n",
       "entryFile": "index",
-      "sourceRoot": "libs/messaging/src",
+      "sourceRoot": "libs/i18n/src",
       "compilerOptions": {
-        "tsConfigPath": "libs/messaging/tsconfig.lib.json"
+        "tsConfigPath": "libs/i18n/tsconfig.lib.json"
       }
     },
     "intelligence": {
@@ -64,13 +73,13 @@
         "tsConfigPath": "libs/intelligence/tsconfig.lib.json"
       }
     },
-    "common": {
+    "messaging": {
       "type": "library",
-      "root": "libs/common",
+      "root": "libs/messaging",
       "entryFile": "index",
-      "sourceRoot": "libs/common/src",
+      "sourceRoot": "libs/messaging/src",
       "compilerOptions": {
-        "tsConfigPath": "libs/common/tsconfig.lib.json"
+        "tsConfigPath": "libs/messaging/tsconfig.lib.json"
       }
     },
     "shared": {

@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { Button } from '@obai/shared/components/ui/button';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 </script>
 
 <template>
@@ -7,10 +10,10 @@ import { Button } from '@obai/shared/components/ui/button';
     <div class="w-full max-w-sm space-y-8 text-center">
       <div class="space-y-2">
         <h1 class="text-3xl font-bold tracking-tight">
-          Obai Web
+          {{ t('landing.title') }}
         </h1>
         <p class="text-sm text-muted-foreground">
-          Plataforma de pruebas y desarrollo.
+          {{ t('landing.subtitle') }}
         </p>
       </div>
       
@@ -20,7 +23,7 @@ import { Button } from '@obai/shared/components/ui/button';
           class="h-10"
         >
           <NuxtLink to="/login">
-            Ir a Login
+            {{ t('landing.go_to_login') }}
           </NuxtLink>
         </Button>
         <Button
@@ -29,7 +32,7 @@ import { Button } from '@obai/shared/components/ui/button';
           class="h-10"
         >
           <NuxtLink to="/register">
-            Crear Cuenta
+            {{ t('landing.create_account') }}
           </NuxtLink>
         </Button>
         <Button
@@ -38,7 +41,7 @@ import { Button } from '@obai/shared/components/ui/button';
           class="h-10"
         >
           <NuxtLink to="/chat">
-            Ir al Chat
+            {{ t('landing.go_to_chat') }}
           </NuxtLink>
         </Button>
       </div>

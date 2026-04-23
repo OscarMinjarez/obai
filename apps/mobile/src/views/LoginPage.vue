@@ -9,8 +9,6 @@
       </p>
 
       <LoginPageView 
-        title="Iniciar Sesión (App)" 
-        subtitle="Acceso de Usuario"
         :loading="isLoading"
         @login="handleLogin"
         @login-otp="handleLoginOtp"

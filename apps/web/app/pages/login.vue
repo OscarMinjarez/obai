@@ -60,8 +60,6 @@ function handleBack() {
     </p>
     
     <LoginPageView 
-      title="Bienvenido de nuevo" 
-      subtitle="Accede a tu cuenta de Obai"
       :loading="isLoading"
       @login="handleLogin"
       @login-otp="handleLoginOtp"

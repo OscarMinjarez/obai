@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-
     "module": "nodenext",
     "moduleResolution": "nodenext",
     "resolvePackageJsonExports": true,
@@ -24,17 +23,35 @@
     "noFallthroughCasesInSwitch": false,
     "jsx": "react-jsx",
     "paths": {
+      "@obai/shared": [
+        "libs/shared/src"
+      ],
+      "@obai/shared/*": [
+        "libs/shared/src/*"
+      ],
       "obai/auth": [
         "libs/auth/src"
       ],
       "obai/auth/*": [
         "libs/auth/src/*"
       ],
+      "obai/common": [
+        "libs/common/src"
+      ],
+      "obai/common/*": [
+        "libs/common/src/*"
+      ],
       "obai/entities": [
         "libs/entities/src"
       ],
       "obai/entities/*": [
         "libs/entities/src/*"
+      ],
+      "obai/i18n": [
+        "libs/i18n/src"
+      ],
+      "obai/i18n/*": [
+        "libs/i18n/src/*"
       ],
       "obai/intelligence": [
         "libs/intelligence/src"
@@ -53,18 +70,6 @@
       ],
       "obai/shared/*": [
         "libs/shared/src/*"
-      ],
-      "@obai/shared": [
-        "libs/shared/src"
-      ],
-      "@obai/shared/*": [
-        "libs/shared/src/*"
-      ],
-      "obai/common": [
-        "libs/common/src"
-      ],
-      "obai/common/*": [
-        "libs/common/src/*"
       ]
     }
   },

@@ -1,12 +1,21 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue';
-import { GalleryVerticalEnd } from "lucide-vue-next"
+import { GalleryVerticalEnd } from "lucide-vue-next";
+import { useForm } from 'vee-validate';
+import { useI18n } from 'vue-i18n';
+import { toTypedSchema } from '@vee-validate/zod';
+import { verifyOtpSchema } from '../schemas/auth.schema';
 import {
   PinInput,
   PinInputGroup,
   PinInputSlot,
-} from '../components/ui/pin-input';
-import { Button } from '../components/ui/button';
+  Button,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+  FormField
+} from '../index';
 import { useAuth } from '../composables/useAuth';
 import { cn } from '../lib/utils';
 
@@ -17,12 +26,19 @@ const props = defineProps<{
 
 const emit = defineEmits(['verified', 'resend']);
 
-const value = ref<string[]>([]);
-const { verifyOtp, requestOtp, isLoading, error } = useAuth();
+const { verifyOtp, requestOtp, isLoading, error: apiError } = useAuth();
+const { t } = useI18n();
 const timer = ref(30);
 
 // Usar el email del prop o buscar el de respaldo en localStorage
 const effectiveEmail = ref(props.email);
+
+const form = useForm({
+  validationSchema: toTypedSchema(verifyOtpSchema),
+  initialValues: {
+    otp: '',
+  },
+});
 
 onMounted(() => {
   startTimer();
@@ -35,23 +51,25 @@ watch(() => props.email, (newEmail) => {
   if (newEmail) effectiveEmail.value = newEmail;
 });
 
-const handleComplete = async (e: string[]) => {
-  const code = e.join('');
-  if (code.length === 6) {
+const handleComplete = async (otpValue: string) => {
+  if (otpValue.length === 6) {
     if (!effectiveEmail.value) {
       console.error('No email found for verification');
       return;
     }
     try {
-      await verifyOtp(effectiveEmail.value, code, props.type || 'signup');
+      await verifyOtp(effectiveEmail.value, otpValue, props.type || 'signup');
       emit('verified');
-      // Limpiar el respaldo tras éxito
       if (typeof window !== 'undefined') localStorage.removeItem('obai_pending_email');
     } catch (err) {
       console.error('OTP verification failed', err);
     }
   }
 };
+
+const onSubmit = form.handleSubmit((values) => {
+  handleComplete(values.otp);
+});
 
 const resendOtp = async () => {
   if (timer.value > 0 || !effectiveEmail.value) return;
@@ -74,83 +92,92 @@ const startTimer = () => {
     }
   }, 1000);
 };
-
-onMounted(() => {
-  startTimer();
-});
 </script>
 
 <template>
-  <div :class="cn('flex flex-col gap-6 w-full max-w-sm mx-auto', $attrs.class ?? '')">
+  <div :class="cn('flex flex-col gap-8 w-full max-w-sm mx-auto animate-in fade-in slide-in-from-bottom-4 duration-500', $attrs.class ?? '')">
     <div class="flex flex-col items-center gap-2 text-center">
-      <a href="#" class="flex flex-col items-center gap-2 font-medium">
-        <div class="flex size-9 items-center justify-center rounded-md bg-primary text-primary-foreground">
-          <GalleryVerticalEnd class="size-6" />
-        </div>
-        <span class="sr-only">Obai Inc.</span>
-      </a>
-      <h1 class="text-xl font-bold mt-2">
-        Ingresa el código de verificación
+      <div class="flex size-11 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-lg shadow-primary/20 mb-2">
+        <GalleryVerticalEnd class="size-6" />
+      </div>
+      <h1 class="text-2xl font-bold tracking-tight">
+        {{ t('auth.verify.title') }}
       </h1>
       <p class="text-sm text-muted-foreground">
-        Hemos enviado un código de 6 dígitos a <br>
+        {{ t('auth.verify.subtitle') }} <br>
         <span class="font-medium text-foreground">{{ effectiveEmail }}</span>
       </p>
     </div>
 
-    <div class="grid gap-6">
-      <div class="flex flex-col items-center gap-4">
-        <PinInput
-          id="otp"
-          v-model="value"
-          class="flex items-center gap-2 sm:gap-4"
-          @complete="handleComplete"
+    <form @submit="onSubmit" class="grid gap-6">
+      <FormField v-slot="{ value, handleChange }" name="otp">
+        <FormItem class="flex flex-col items-center gap-4">
+          <FormLabel class="sr-only">{{ t('auth.verify.otp_label') }}</FormLabel>
+          <FormControl>
+            <PinInput
+              id="otp"
+              :model-value="typeof value === 'string' ? value.split('') : []"
+              class="flex items-center gap-2 sm:gap-4"
+              placeholder="○"
+              @update:model-value="(val) => handleChange(val.join(''))"
+              @complete="(val) => handleComplete(val.join(''))"
+            >
+              <PinInputGroup class="gap-2 sm:gap-3">
+                <PinInputSlot 
+                  v-for="index in [0, 1, 2]" 
+                  :key="index" 
+                  :index="index"
+                  class="h-14 w-10 sm:h-16 sm:w-12 rounded-lg border-2 text-xl font-bold transition-all focus:border-primary"
+                />
+              </PinInputGroup>
+              
+              <div class="flex items-center justify-center">
+                <span class="text-2xl font-light text-muted-foreground/30">−</span>
+              </div>
+
+              <PinInputGroup class="gap-2 sm:gap-3">
+                <PinInputSlot 
+                  v-for="index in [3, 4, 5]" 
+                  :key="index" 
+                  :index="index"
+                  class="h-14 w-10 sm:h-16 sm:w-12 rounded-lg border-2 text-xl font-bold transition-all focus:border-primary"
+                />
+              </PinInputGroup>
+            </PinInput>
+          </FormControl>
+          <FormMessage />
+          <p v-if="apiError" class="text-xs text-destructive font-medium animate-in shake duration-300">{{ apiError }}</p>
+        </FormItem>
+      </FormField>
+
+      <div class="space-y-4">
+        <Button 
+          type="submit"
+          class="w-full h-11 text-base font-semibold shadow-sm"
+          :disabled="(form.values.otp?.length ?? 0) < 6 || isLoading"
         >
-          <PinInputGroup class="gap-2 sm:gap-3 *:data-[slot=pin-input-slot]:h-14 *:data-[slot=pin-input-slot]:w-10 sm:*:data-[slot=pin-input-slot]:h-16 sm:*:data-[slot=pin-input-slot]:w-12 *:data-[slot=pin-input-slot]:rounded-md *:data-[slot=pin-input-slot]:border *:data-[slot=pin-input-slot]:text-xl">
-            <PinInputSlot :index="0" />
-            <PinInputSlot :index="1" />
-            <PinInputSlot :index="2" />
-          </PinInputGroup>
-          
-          <div class="flex items-center justify-center">
-            <span class="text-2xl font-light text-muted-foreground/50">−</span>
-          </div>
+          {{ isLoading ? t('auth.verify.verifying') : t('auth.verify.verify_button') }}
+        </Button>
 
-          <PinInputGroup class="gap-2 sm:gap-3 *:data-[slot=pin-input-slot]:h-14 *:data-[slot=pin-input-slot]:w-10 sm:*:data-[slot=pin-input-slot]:h-16 sm:*:data-[slot=pin-input-slot]:w-12 *:data-[slot=pin-input-slot]:rounded-md *:data-[slot=pin-input-slot]:border *:data-[slot=pin-input-slot]:text-xl">
-            <PinInputSlot :index="3" />
-            <PinInputSlot :index="4" />
-            <PinInputSlot :index="5" />
-          </PinInputGroup>
-        </PinInput>
-        
-        <p v-if="error" class="text-xs text-destructive font-medium">{{ error }}</p>
-
-        <p class="text-sm text-center text-muted-foreground mt-2">
-          ¿No recibiste el código? 
+        <p class="text-sm text-center text-muted-foreground">
+          {{ t('auth.verify.no_code') }} 
           <button 
-            class="text-primary hover:underline font-medium disabled:opacity-50"
+            type="button"
+            class="text-primary hover:underline font-medium disabled:opacity-50 transition-opacity"
             :disabled="timer > 0 || isLoading"
             @click="resendOtp"
           >
-            {{ timer > 0 ? `Reenviar en ${timer}s` : 'Reenviar' }}
+            {{ timer > 0 ? `${t('auth.verify.resend_prefix')} ${timer}s` : t('auth.verify.resend_button') }}
           </button>
         </p>
       </div>
-
-      <Button 
-        class="w-full h-11 text-base font-semibold"
-        :disabled="value.length < 6 || isLoading"
-        @click="handleComplete(value)"
-      >
-        {{ isLoading ? 'Verificando...' : 'Verificar' }}
-      </Button>
-    </div>
+    </form>
 
     <p class="px-6 text-center text-xs text-muted-foreground leading-relaxed">
-      Al hacer clic en continuar, aceptas nuestros 
-      <a href="#" class="underline underline-offset-4 hover:text-primary">Términos de Servicio</a>
-      y 
-      <a href="#" class="underline underline-offset-4 hover:text-primary">Política de Privacidad</a>.
+      {{ t('auth.verify.terms_prefix') }} 
+      <a href="#" class="underline underline-offset-4 hover:text-primary">{{ t('auth.verify.terms_link') }}</a>
+      {{ t('auth.login.terms_and') }} 
+      <a href="#" class="underline underline-offset-4 hover:text-primary">{{ t('auth.verify.privacy_link') }}</a>.
     </p>
   </div>
 </template>

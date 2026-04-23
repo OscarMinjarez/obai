@@ -1,0 +1,7 @@
+{
+  "messaging_problem": "죄송합니다. 메시지를 처리하는 중에 문제가 발생했습니다. 다시 시도해 주세요.",
+  "ai_high_demand": "현재 AI 수요가 많습니다. 몇 초 후에 다시 시도해 주세요.",
+  "ai_technical_error": "AI 서비스의 기술적 오류로 인해 봇 제안을 생성할 수 없습니다.",
+  "supabase_config_missing": "Supabase 설정이 누락되었습니다. 환경 변수를 확인해 주세요.",
+  "email_required_otp": "OTP 인증을 위해 이메일 주소가 필요합니다."
+}

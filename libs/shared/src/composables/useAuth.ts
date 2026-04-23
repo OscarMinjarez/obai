@@ -22,7 +22,13 @@ export function useAuth() {
       const storedUser = localStorage.getItem('obai_user');
       if (storedToken) {
         token.value = storedToken;
-        if (storedUser) user.value = JSON.parse(storedUser);
+        if (storedUser) {
+          const parsedUser = JSON.parse(storedUser);
+          user.value = {
+            ...parsedUser,
+            name: parsedUser.name || parsedUser.user_metadata?.name || parsedUser.email?.split('@')[0]
+          };
+        }
       }
     } catch (e) {
       console.error('Error recovering session', e);
@@ -50,7 +56,10 @@ export function useAuth() {
       token.value = session.access_token || data.access_token;
       const refToken = session.refresh_token || data.refresh_token;
       
-      user.value = data.user || data;
+      user.value = {
+        ...(data.user || data),
+        name: (data.user || data).name || (data.user || data).user_metadata?.name || (data.user || data).email?.split('@')[0]
+      };
       
       if (typeof window !== 'undefined') {
         if (token.value) localStorage.setItem('obai_token', token.value);
@@ -153,7 +162,10 @@ export function useAuth() {
       token.value = session.access_token || data.access_token;
       const refToken = session.refresh_token || data.refresh_token;
       
-      user.value = data.user || data;
+      user.value = {
+        ...(data.user || data),
+        name: (data.user || data).name || (data.user || data).user_metadata?.name || (data.user || data).email?.split('@')[0]
+      };
       
       if (typeof window !== 'undefined') {
         if (token.value) localStorage.setItem('obai_token', token.value);

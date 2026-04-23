@@ -43,7 +43,6 @@ export class ChatGateway implements OnGatewayConnection {
         this.logger.warn('Conexión rechazada: Token inválido o mal formado.');
         throw new UnauthorizedException('Invalid token');
       }
-
       client.data.userId = decoded.payload.sub;
       const userAgent = client.handshake.headers['user-agent'] || '';
       const isMobile = /mobile/i.test(userAgent);
@@ -51,7 +50,6 @@ export class ChatGateway implements OnGatewayConnection {
       client.data.device = deviceType;
       client.join(client.data.userId);
       this.logger.log(`✅ Usuario ${client.data.userId} conectado desde: ${deviceType} (${userAgent.substring(0, 50)}...)`);
-
       const history = await this.messagingService.getHistory(client.data.userId);
       client.emit('chat:history', history);
       client.emit('chat:device_info', { deviceType });
@@ -63,27 +61,21 @@ export class ChatGateway implements OnGatewayConnection {
 
   @SubscribeMessage('chat:send')
   async handleMessage(
-    @MessageBody() data: { message: string },
+    @MessageBody() data: { message: string, locale: string },
     @ConnectedSocket() client: Socket,
   ) {
     const userId = client.data.userId;
     if (!userId) return;
-
-    // Notificar escritura a todos los dispositivos del usuario
     this.server.to(userId).emit('chat:typing', { isTyping: true });
-
     try {
-      // Reenviar el mensaje del usuario a sus otros dispositivos para sincronizar la vista
       client.to(userId).emit('chat:receive', { 
         role: 'user', 
         content: data.message, 
+        locale: data.locale,
         createdAt: new Date().toISOString() 
       });
-
-      const response = await this.messagingService.sendMessage(userId, data.message);
-      
-      // Enviar la respuesta del bot a TODOS los dispositivos del usuario
-      this.server.to(userId).emit('chat:receive', response);
+      const response = await this.messagingService.sendMessage(userId, data.message, data.locale);
+      this.server.to(userId).emit('chat:receive', { ...response, locale: data.locale });
     } catch (error) {
       this.logger.error('Error en el chat gateway', error);
       client.emit('chat:error', { message: 'No pude procesar tu mensaje.' });

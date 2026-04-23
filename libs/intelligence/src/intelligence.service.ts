@@ -36,7 +36,7 @@ export class AiIntelligenceService {
     }
   }
 
-  async generateChatResponse(userId: string, history: any[], agent: AgentEntity): Promise<string> {
+  async generateChatResponse(userId: string, history: any[], agent: AgentEntity, locale: string = 'es'): Promise<string> {
     try {
       const chatHistory = history.map(msg => ({
         role: msg.role === 'user' ? 'user' : 'model',
@@ -56,7 +56,9 @@ export class AiIntelligenceService {
       2. Avoid being theatrical, poetic, or overly dramatic. Speak like a real person.
       3. Do NOT use metaphors or long roleplay descriptions between asterisks.
       4. Stay in character as a companion, not a fictional character in a play.
-      5. Respond in the same language as the user.`;
+      5. Respond in the same language as the user.
+      6. IMPORTANT: Always respond strictly in the language indicated by the current locale.
+      Current locale: ${locale}`;
 
       const result = await this.ai.models.generateContent({
         model: 'gemini-3.1-flash-lite-preview',

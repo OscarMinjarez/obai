@@ -16,6 +16,7 @@ import {
   useSidebar,
 } from './ui/sidebar';
 import { Folder, Forward, MoreHorizontal, Trash2, type LucideIcon } from 'lucide-vue-next';
+import { useI18n } from 'vue-i18n';
 
 defineProps<{
   projects: {
@@ -26,11 +27,12 @@ defineProps<{
 }>();
 
 const { isMobile } = useSidebar();
+const { t } = useI18n();
 </script>
 
 <template>
   <SidebarGroup class="group-data-[collapsible=icon]:hidden">
-    <SidebarGroupLabel>Projects</SidebarGroupLabel>
+    <SidebarGroupLabel>{{ t('sidebar.projects') }}</SidebarGroupLabel>
     <SidebarMenu>
       <SidebarMenuItem
         v-for="item in projects"
@@ -46,7 +48,7 @@ const { isMobile } = useSidebar();
           <DropdownMenuTrigger as-child>
             <SidebarMenuAction show-on-hover>
               <MoreHorizontal />
-              <span class="sr-only">More</span>
+              <span class="sr-only">{{ t('common.more') }}</span>
             </SidebarMenuAction>
           </DropdownMenuTrigger>
           <DropdownMenuContent
@@ -56,16 +58,16 @@ const { isMobile } = useSidebar();
           >
             <DropdownMenuItem>
               <Folder class="text-muted-foreground" />
-              <span>View Project</span>
+              <span>{{ t('sidebar.view_project') }}</span>
             </DropdownMenuItem>
             <DropdownMenuItem>
               <Forward class="text-muted-foreground" />
-              <span>Share Project</span>
+              <span>{{ t('sidebar.share_project') }}</span>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
               <Trash2 class="text-muted-foreground" />
-              <span>Delete Project</span>
+              <span>{{ t('sidebar.delete_project') }}</span>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -73,7 +75,7 @@ const { isMobile } = useSidebar();
       <SidebarMenuItem>
         <SidebarMenuButton class="text-sidebar-foreground/70">
           <MoreHorizontal class="text-sidebar-foreground/70" />
-          <span>More</span>
+          <span>{{ t('common.more') }}</span>
         </SidebarMenuButton>
       </SidebarMenuItem>
     </SidebarMenu>

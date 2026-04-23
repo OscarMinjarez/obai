@@ -1,5 +1,6 @@
 import { HttpException, Injectable, Logger, ServiceUnavailableException } from '@nestjs/common';
 import { GoogleGenAI } from '@google/genai';
+import { I18nService } from 'nestjs-i18n';
 import { INTELLIGENCE_PROMPTS } from './prompts/intelligence.prompts';
 
 @Injectable()
@@ -8,7 +9,7 @@ export class AgentGeneratorService {
   private readonly logger = new Logger(AgentGeneratorService.name);
   private ai: GoogleGenAI;
 
-  constructor() {
+  constructor(private readonly i18n: I18nService) {
     this.ai = new GoogleGenAI({
       apiKey: process.env['GEMINI_API_KEY'],
     });
@@ -68,7 +69,7 @@ export class AgentGeneratorService {
       if (status === 503 || error.message?.includes('503') || error.message?.includes('high demand')) {
         this.logger.warn('Gemini API is overloaded (503). Sending friendly message to frontend.');
         throw new ServiceUnavailableException(
-          'La IA está experimentando mucha demanda en este momento. Por favor, intenta de nuevo en unos segundos.'
+          this.i18n.t('common.errors.ai_high_demand')
         );
       }
 
@@ -79,7 +80,7 @@ export class AgentGeneratorService {
       }
 
       throw new HttpException(
-        'No pudimos generar la sugerencia del bot debido a un error técnico del servicio de IA.',
+        this.i18n.t('common.errors.ai_technical_error'),
         500
       );
     }

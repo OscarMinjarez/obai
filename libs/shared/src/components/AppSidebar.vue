@@ -1,9 +1,11 @@
 <script setup lang="ts">
+import { computed } from 'vue';
 import {
   MessageSquare,
   Settings,
   Zap,
 } from 'lucide-vue-next';
+import { useI18n } from 'vue-i18n';
 import {
   Sidebar,
   SidebarContent,
@@ -15,28 +17,34 @@ import {
   SidebarGroup,
   SidebarRail,
 } from './ui/sidebar';
+import { useAuth } from '../composables/useAuth';
 import NavUser from './NavUser.vue';
+import LanguageSwitcher from './LanguageSwitcher.vue';
 
-const data = {
+const { user: authUser } = useAuth();
+
+const { t } = useI18n();
+
+const data = computed(() => ({
   user: {
-    name: 'Usuario',
-    email: 'user@obai.ai',
-    avatar: '',
+    name: authUser.value?.name || 'Usuario',
+    email: authUser.value?.email || 'user@obai.ai',
+    avatar: authUser.value?.avatar || '',
   },
   navMain: [
     {
-      title: 'Chat con Obai',
+      title: t('sidebar.chat_link'),
       url: '/chat',
       icon: MessageSquare,
       isActive: true,
     },
     {
-      title: 'Ajustes',
+      title: t('sidebar.settings_link'),
       url: '#',
       icon: Settings,
     },
   ],
-};
+}));
 </script>
 
 <template>
@@ -47,18 +55,23 @@ const data = {
   >
     <SidebarHeader class="flex justify-center px-2 bg-sidebar pt-[var(--ion-safe-area-top,0px)] h-[calc(4rem+var(--ion-safe-area-top,0px))]">
       <SidebarMenu>
-        <SidebarMenuItem>
+        <SidebarMenuItem class="flex items-center justify-between gap-2">
           <SidebarMenuButton
             size="lg"
-            class="pointer-events-none"
+            class="pointer-events-none flex-1"
           >
             <div class="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-sm">
               <Zap class="size-4" />
             </div>
             <div class="grid flex-1 text-left text-sm leading-tight">
-              <span class="truncate font-bold text-base">Obai</span>
+              <span class="truncate font-bold text-base">{{ t('sidebar.nav_title') }}</span>
             </div>
           </SidebarMenuButton>
+          
+          <!-- Language Switcher -->
+          <div class="flex items-center pr-2">
+            <LanguageSwitcher />
+          </div>
         </SidebarMenuItem>
       </SidebarMenu>
     </SidebarHeader>

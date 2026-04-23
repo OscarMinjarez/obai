@@ -1,0 +1,7 @@
+{
+  "messaging_problem": "I'm sorry, there was a problem processing your message. Please try again.",
+  "ai_high_demand": "The AI is experiencing high demand right now. Please try again in a few seconds.",
+  "ai_technical_error": "We couldn't generate the bot suggestion due to a technical error in the AI service.",
+  "supabase_config_missing": "Supabase configuration is missing. Please check the environment variables.",
+  "email_required_otp": "Email is required for OTP verification."
+}

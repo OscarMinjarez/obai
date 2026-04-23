@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button } from '../components/ui/button';
 
 const props = defineProps<{
@@ -11,6 +12,8 @@ const emit = defineEmits<{
   (e: 'save', agent: any): void;
   (e: 'regenerate'): void;
 }>();
+
+const { t } = useI18n();
 
 const agent = ref({
   name: '',
@@ -47,10 +50,10 @@ function handleRegenerate() {
     <div class="space-y-6">
       <div>
         <h1 class="text-3xl font-bold tracking-tight">
-          Bot Setup
+          {{ t('setup.title') }}
         </h1>
         <p class="text-muted-foreground">
-          Customize your AI companion's personality and profile.
+          {{ t('setup.subtitle') }}
         </p>
       </div>
 
@@ -59,12 +62,12 @@ function handleRegenerate() {
           <label
             for="name"
             class="text-sm font-medium leading-none"
-          >Name</label>
+          >{{ t('setup.name_label') }}</label>
           <input 
             id="name"
             v-model="agent.name"
             class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-            placeholder="Agent Name"
+            :placeholder="t('setup.name_placeholder')"
           >
         </div>
 
@@ -73,20 +76,20 @@ function handleRegenerate() {
             <label
               for="gender"
               class="text-sm font-medium leading-none"
-            >Tono de Género</label>
+            >{{ t('setup.gender_label') }}</label>
             <select 
               id="gender"
               v-model="agent.gender"
               class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
             >
               <option value="MALE">
-                Masculino
+                {{ t('setup.gender_male') }}
               </option>
               <option value="FEMALE">
-                Femenino
+                {{ t('setup.gender_female') }}
               </option>
               <option value="NEUTRAL">
-                Neutral
+                {{ t('setup.gender_neutral') }}
               </option>
             </select>
           </div>
@@ -94,20 +97,20 @@ function handleRegenerate() {
             <label
               for="maturity"
               class="text-sm font-medium leading-none"
-            >Madurez</label>
+            >{{ t('setup.maturity_label') }}</label>
             <select 
               id="maturity"
               v-model="agent.maturity"
               class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
             >
               <option value="YOUNG">
-                Joven
+                {{ t('setup.maturity_young') }}
               </option>
               <option value="MATURE">
-                Maduro
+                {{ t('setup.maturity_mature') }}
               </option>
               <option value="ELDER">
-                Anciano
+                {{ t('setup.maturity_elder') }}
               </option>
             </select>
           </div>
@@ -117,12 +120,12 @@ function handleRegenerate() {
           <label
             for="description"
             class="text-sm font-medium leading-none"
-          >Descripción Corta</label>
+          >{{ t('setup.desc_label') }}</label>
           <input 
             id="description"
             v-model="agent.description"
             class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-            placeholder="Biografía rápida..."
+            :placeholder="t('setup.desc_placeholder')"
           >
         </div>
 
@@ -130,13 +133,13 @@ function handleRegenerate() {
           <label
             for="personality"
             class="text-sm font-medium leading-none"
-          >Personalidad</label>
+          >{{ t('setup.personality_label') }}</label>
           <textarea 
             id="personality"
             v-model="agent.personality"
             rows="2"
             class="flex min-h-[40px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-            placeholder="Describe su personalidad..."
+            :placeholder="t('setup.personality_placeholder')"
           />
         </div>
 
@@ -144,13 +147,13 @@ function handleRegenerate() {
           <label
             for="behaviors"
             class="text-sm font-medium leading-none"
-          >Comportamientos (uno por línea)</label>
+          >{{ t('setup.behaviors_label') }}</label>
           <textarea 
             id="behaviors"
             :value="agent.behaviors ? agent.behaviors.join('\n') : ''"
             rows="4"
             class="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-            placeholder="Lista de comportamientos..."
+            :placeholder="t('setup.behaviors_placeholder')"
             @input="e => agent.behaviors = (e.target as HTMLTextAreaElement).value.split('\n')"
           />
         </div>
@@ -162,15 +165,15 @@ function handleRegenerate() {
           :disabled="loading"
           @click="handleSave"
         >
-          <span v-if="loading">Saving...</span>
-          <span v-else>Save and Continue</span>
+          <span v-if="loading">{{ t('common.loading') }}</span>
+          <span v-else>{{ t('setup.save_button') }}</span>
         </Button>
         <Button 
           variant="secondary" 
           :disabled="loading"
           @click="handleRegenerate"
         >
-          Regenerate Suggestion
+          {{ t('setup.regenerate_button') }}
         </Button>
       </div>
     </div>

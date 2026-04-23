@@ -1,0 +1,13 @@
+{
+  "title": "Obai 웹",
+  "subtitle": "테스트 및 개발 플랫폼.",
+  "go_to_login": "로그인으로 이동",
+  "create_account": "계정 생성",
+  "go_to_chat": "채팅으로 이동",
+  "mobile_title": "Obai 모바일",
+  "welcome": "환영합니다",
+  "login": "로그인",
+  "register": "회원가입",
+  "chat": "채팅",
+  "mobile_subtitle": "모바일 앱으로 언제 어디서나 Obai를 경험하세요."
+}

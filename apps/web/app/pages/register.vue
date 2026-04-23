@@ -17,7 +17,7 @@ async function handleRegister(payload: { name: string; email: string; pass: stri
       query: { email: payload.email, type: 'signup' }
     });
   } catch (e) {
-    console.error('Error en registro', e);
+    console.error('Error en registro', (e as any).message || e);
   }
 }
 
@@ -37,8 +37,6 @@ function handleBack() {
     </p>
 
     <RegisterPageView 
-      title="Empieza hoy"
-      subtitle="Crea tu cuenta de Obai"
       :loading="isLoading"
       @register="handleRegister"
       @back="handleBack"
