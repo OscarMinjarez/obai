@@ -109,10 +109,18 @@ const startTimer = () => {
       </p>
     </div>
 
-    <form @submit="onSubmit" class="grid gap-6">
-      <FormField v-slot="{ value, handleChange }" name="otp">
+    <form
+      class="grid gap-6"
+      @submit="onSubmit"
+    >
+      <FormField
+        v-slot="{ value, handleChange }"
+        name="otp"
+      >
         <FormItem class="flex flex-col items-center gap-4">
-          <FormLabel class="sr-only">{{ t('auth.verify.otp_label') }}</FormLabel>
+          <FormLabel class="sr-only">
+            {{ t('auth.verify.otp_label') }}
+          </FormLabel>
           <FormControl>
             <PinInput
               id="otp"
@@ -146,7 +154,12 @@ const startTimer = () => {
             </PinInput>
           </FormControl>
           <FormMessage />
-          <p v-if="apiError" class="text-xs text-destructive font-medium animate-in shake duration-300">{{ apiError }}</p>
+          <p
+            v-if="apiError"
+            class="text-xs text-destructive font-medium animate-in shake duration-300"
+          >
+            {{ apiError }}
+          </p>
         </FormItem>
       </FormField>
 
@@ -175,9 +188,15 @@ const startTimer = () => {
 
     <p class="px-6 text-center text-xs text-muted-foreground leading-relaxed">
       {{ t('auth.verify.terms_prefix') }} 
-      <a href="#" class="underline underline-offset-4 hover:text-primary">{{ t('auth.verify.terms_link') }}</a>
+      <a
+        href="#"
+        class="underline underline-offset-4 hover:text-primary"
+      >{{ t('auth.verify.terms_link') }}</a>
       {{ t('auth.login.terms_and') }} 
-      <a href="#" class="underline underline-offset-4 hover:text-primary">{{ t('auth.verify.privacy_link') }}</a>.
+      <a
+        href="#"
+        class="underline underline-offset-4 hover:text-primary"
+      >{{ t('auth.verify.privacy_link') }}</a>.
     </p>
   </div>
 </template>

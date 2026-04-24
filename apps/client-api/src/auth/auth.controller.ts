@@ -1,7 +1,7 @@
 import { Body, Controller, Ip, Post } from '@nestjs/common';
 import { AuthService } from 'obai/auth';
-import { RegisterRequest } from './requests/register.request';
-import { LoginRequest } from './requests/login.request';
+import { RegisterRequest } from './requests/register.request.js';
+import { LoginRequest } from './requests/login.request.js';
 
 @Controller('auth')
 export class AuthController {

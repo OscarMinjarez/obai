@@ -2,8 +2,7 @@ import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { I18nService } from 'nestjs-i18n';
 
-import { UserRepository } from '../../entities/src/classes/user/user.repository';
-import { EntitiesService } from '../../entities/src/entities.service';
+import { UserRepository, EntitiesService } from 'obai/entities';
 
 @Injectable()
 export class AuthService implements OnModuleInit {
@@ -88,8 +87,9 @@ export class AuthService implements OnModuleInit {
                         expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30),
                     }
                 });
-            } catch (dbError) {
-                console.error('⚠️ Falló el registro de sesión en DB, pero el login fue exitoso:', dbError.message);
+            } catch (dbError: unknown) {
+                const msg = this.formatErrorMessage(dbError);
+                console.error('⚠️ Falló el registro de sesión en DB, pero el login fue exitoso:', msg);
             }
         }
 
@@ -145,8 +145,9 @@ export class AuthService implements OnModuleInit {
                         expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30),
                     }
                 });
-            } catch (dbError) {
-                console.error('⚠️ Error registering session after OTP:', dbError.message);
+            } catch (dbError: unknown) {
+                const msg = this.formatErrorMessage(dbError);
+                console.error('⚠️ Error registering session after OTP:', msg);
             }
         }
 
@@ -159,10 +160,22 @@ export class AuthService implements OnModuleInit {
             await (this.entities as any).session.deleteMany({
                 where: { token: refreshToken }
             });
-        } catch (error) {
-            console.error('⚠️ Error eliminando sesión en DB:', error.message);
+        } catch (error: unknown) {
+            const msg = this.formatErrorMessage(error);
+            console.error('⚠️ Error eliminando sesión en DB:', msg);
         }
+
         return { success: true };
+    }
+
+    private formatErrorMessage(error: unknown): string {
+        if (error instanceof Error) return error.message;
+        if (typeof error === 'string') return error;
+        try {
+            return JSON.stringify(error);
+        } catch {
+            return String(error);
+        }
     }
 
 }

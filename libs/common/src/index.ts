@@ -1,1 +1,1 @@
-export * from './filters/all-exceptions.filter';
+export * from './filters/all-exceptions.filter.js';

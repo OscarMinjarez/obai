@@ -7,7 +7,14 @@ import {
   Logger,
 } from '@nestjs/common';
 import { Response } from 'express';
-import { ApiResponse } from 'obai/shared';
+
+interface ApiResponse<T = any> {
+  success: boolean;
+  statusCode: number;
+  message: string;
+  error: T;
+  timestamp: string;
+}
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {

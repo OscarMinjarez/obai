@@ -1,7 +1,7 @@
 import { Body, Controller, Param, Patch, Post, Req, UseGuards } from '@nestjs/common';
-import { DevicesService } from './devices.service';
-import { RegisterDeviceRequest } from './requests/register-device.request';
-import { JwtAuthGuard } from 'obai/auth/guards/jwt-auth/jwt-auth.guard';
+import { DevicesService } from './devices.service.js';
+import { RegisterDeviceRequest } from './requests/register-device.request.js';
+import { JwtAuthGuard } from 'obai/auth';
 
 @Controller('devices')
 @UseGuards(JwtAuthGuard)

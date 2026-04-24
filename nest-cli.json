@@ -3,9 +3,10 @@
   "collection": "@nestjs/schematics",
   "sourceRoot": "apps/client-api/src",
   "compilerOptions": {
-    "deleteOutDir": true,
+    "deleteOutDir": false,
     "webpack": true,
-    "tsConfigPath": "apps/client-api/tsconfig.app.json"
+    "tsConfigPath": "apps/client-api/tsconfig.webpack.json",
+    "webpackConfigPath": "webpack.config.cjs"
   },
   "monorepo": true,
   "root": "apps/client-api",
@@ -16,7 +17,8 @@
       "entryFile": "main",
       "sourceRoot": "apps/admin-api/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/admin-api/tsconfig.app.json"
+        "tsConfigPath": "apps/admin-api/tsconfig.webpack.json",
+        "webpackConfigPath": "webpack.config.cjs"
       }
     },
     "auth": {
@@ -34,7 +36,8 @@
       "entryFile": "main",
       "sourceRoot": "apps/client-api/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/client-api/tsconfig.app.json"
+        "tsConfigPath": "apps/client-api/tsconfig.webpack.json",
+        "webpackConfigPath": "webpack.config.cjs"
       }
     },
     "common": {

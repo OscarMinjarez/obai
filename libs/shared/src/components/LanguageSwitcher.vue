@@ -25,12 +25,19 @@ function handleSetLocale(code: 'en' | 'es' | 'ko') {
 <template>
   <DropdownMenu>
     <DropdownMenuTrigger as-child>
-      <Button variant="ghost" size="icon" class="w-9 h-9 rounded-full">
+      <Button
+        variant="ghost"
+        size="icon"
+        class="w-9 h-9 rounded-full"
+      >
         <Languages class="h-[1.2rem] w-[1.2rem]" />
         <span class="sr-only">Toggle language</span>
       </Button>
     </DropdownMenuTrigger>
-    <DropdownMenuContent align="end" class="w-40">
+    <DropdownMenuContent
+      align="end"
+      class="w-40"
+    >
       <DropdownMenuItem
         v-for="lang in languages"
         :key="lang.code"

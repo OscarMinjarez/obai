@@ -83,7 +83,10 @@ function toggleMode() {
           @submit="onSubmit"
         >
           <div class="space-y-4">
-            <FormField v-slot="{ componentField }" name="email">
+            <FormField
+              v-slot="{ componentField }"
+              name="email"
+            >
               <FormItem>
                 <FormLabel>{{ t('auth.login.email_label') }}</FormLabel>
                 <FormControl>
@@ -98,7 +101,11 @@ function toggleMode() {
               </FormItem>
             </FormField>
             
-            <FormField v-if="mode === 'password'" v-slot="{ componentField }" name="password">
+            <FormField
+              v-if="mode === 'password'"
+              v-slot="{ componentField }"
+              name="password"
+            >
               <FormItem class="animate-in fade-in slide-in-from-top-2">
                 <div class="flex items-center justify-between">
                   <FormLabel>{{ t('auth.login.password_label') }}</FormLabel>

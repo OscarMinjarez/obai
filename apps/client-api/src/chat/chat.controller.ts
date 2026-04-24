@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { MessagingService } from 'obai/messaging';
-import { SendMessageDto } from './dto/send-message.dto';
-import { JwtAuthGuard } from 'obai/auth/guards/jwt-auth/jwt-auth.guard';
+import { SendMessageDto } from './dto/send-message.dto.js';
+import { JwtAuthGuard } from 'obai/auth';
 
 @Controller('chat')
 @UseGuards(JwtAuthGuard)

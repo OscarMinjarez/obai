@@ -1,8 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthService } from './auth.service';
 import { createClient } from '@supabase/supabase-js';
-import { UserRepository } from '../../entities/src/classes/user/user.repository';
-import { EntitiesService } from '../../entities/src/entities.service';
+import { UserRepository, EntitiesService } from 'obai/entities';
 
 jest.mock('@supabase/supabase-js', () => ({
   createClient: jest.fn(),

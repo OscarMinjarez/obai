@@ -2,7 +2,7 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "declaration": true,
-    "outDir": "../../dist/libs/auth",
+    "outDir": "../../dist/libs/intelligence",
     "rootDir": "src",
     "composite": true,
     "incremental": true,
@@ -11,13 +11,12 @@
     "resolvePackageJsonExports": false,
     "types": ["node"]
     ,
-    "tsBuildInfoFile": "../../dist/.tsbuildinfo/auth.tsbuildinfo"
+    "tsBuildInfoFile": "../../dist/.tsbuildinfo/intelligence.tsbuildinfo"
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist", "test", "**/*spec.ts"]
   ,
   "references": [
-    { "path": "../entities/tsconfig.lib.json" },
-    { "path": "../i18n/tsconfig.lib.json" }
+    { "path": "../entities/tsconfig.lib.json" }
   ]
 }

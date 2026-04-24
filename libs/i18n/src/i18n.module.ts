@@ -12,7 +12,7 @@ import {
     I18nModule.forRoot({
       fallbackLanguage: 'es',
       loaderOptions: {
-        path: path.join(__dirname, '../../../libs/shared/src/locales/'), // Relative to dist/apps/client-api/
+        path: path.join(process.cwd(), 'libs/shared/src/locales/'),
         watch: true,
       },
       resolvers: [

@@ -1,9 +1,23 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "declaration": true,
-    "outDir": "../../dist/libs/messaging"
+    "outDir": "../../dist/libs/messaging",
+    "rootDir": "src",
+    "composite": true,
+    "incremental": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "resolvePackageJsonExports": false,
+    "types": ["node"]
+    ,
+    "tsBuildInfoFile": "../../dist/.tsbuildinfo/messaging.tsbuildinfo"
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist", "test", "**/*spec.ts"]
+  ,
+  "references": [
+    { "path": "../entities/tsconfig.lib.json" },
+    { "path": "../intelligence/tsconfig.lib.json" }
+  ]
 }

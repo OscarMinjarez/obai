@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import { NestFactory, Reflector } from '@nestjs/core';
 import { Logger, ValidationPipe, ClassSerializerInterceptor } from '@nestjs/common';
-import { ClientApiModule } from './client-api.module';
+import { ClientApiModule } from './client-api.module.js';
 import { AllExceptionsFilter } from 'obai/common';
 
 const APP_NAME = 'ClientAPI';

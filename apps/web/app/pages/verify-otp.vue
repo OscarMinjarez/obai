@@ -1,15 +1,11 @@
 <script setup lang="ts">
 import { VerifyOtpPageView, useAuth, useAgents } from '@obai/shared';
 import { useRouter, useRoute } from '#imports';
-import { computed } from 'vue';
 
 const router = useRouter();
 const route = useRoute();
 const { error } = useAuth();
 const { getMyAgent } = useAgents();
-
-const email = computed(() => (route.query.email as string) || '');
-const type = computed(() => (route.query.type as 'signup' | 'signin' | 'magiclink') || 'signup');
 
 async function onVerified() {
   try {

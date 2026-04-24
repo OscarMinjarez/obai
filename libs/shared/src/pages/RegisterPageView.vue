@@ -85,7 +85,10 @@ const onSubmit = form.handleSubmit((values) => {
           @submit="onSubmit"
         >
           <div class="space-y-4">
-            <FormField v-slot="{ componentField }" name="name">
+            <FormField
+              v-slot="{ componentField }"
+              name="name"
+            >
               <FormItem>
                 <FormLabel>{{ t('auth.register.name_label') }}</FormLabel>
                 <FormControl>
@@ -100,7 +103,10 @@ const onSubmit = form.handleSubmit((values) => {
               </FormItem>
             </FormField>
 
-            <FormField v-slot="{ componentField }" name="email">
+            <FormField
+              v-slot="{ componentField }"
+              name="email"
+            >
               <FormItem>
                 <FormLabel>{{ t('auth.register.email_label') }}</FormLabel>
                 <FormControl>
@@ -115,7 +121,10 @@ const onSubmit = form.handleSubmit((values) => {
               </FormItem>
             </FormField>
 
-            <FormField v-slot="{ componentField }" name="password">
+            <FormField
+              v-slot="{ componentField }"
+              name="password"
+            >
               <FormItem>
                 <FormLabel>{{ t('auth.register.password_label') }}</FormLabel>
                 <FormControl>

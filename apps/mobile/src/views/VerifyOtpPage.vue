@@ -22,16 +22,12 @@
 <script setup lang="ts">
 import { IonContent, IonPage } from '@ionic/vue';
 import { useRouter, useRoute } from 'vue-router';
-import { computed } from 'vue';
 import { VerifyOtpPageView, useAuth, useAgents } from '@obai/shared';
 
 const router = useRouter();
 const route = useRoute();
 const { error } = useAuth();
 const { getMyAgent } = useAgents();
-
-const userEmail = computed(() => (route.query.email as string) || '');
-const type = computed(() => (route.query.type as 'signup' | 'signin' | 'magiclink') || 'signup');
 
 async function onVerified() {
   try {
