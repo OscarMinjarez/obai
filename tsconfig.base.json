@@ -21,6 +21,7 @@
     "removeComments": true,
     "ignoreDeprecations": "6.0",
     "baseUrl": ".",
+    "types": ["jest", "node"],
     "paths": {
       "obai/*": [
         "libs/*/src/index.ts"

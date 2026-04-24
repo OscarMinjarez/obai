@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { EntitiesService } from 'obai/entities/entities.service.js';
+import { EntitiesService } from 'obai/entities';
 import RegisterUserRequest from './requests/register-user.request.js';
 import { UserResponse } from './responses/user.response.js';
 

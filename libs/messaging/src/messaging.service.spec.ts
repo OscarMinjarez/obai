@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { MessagingService } from './messaging.service';
 import { EntitiesService } from 'obai/entities';
 import { AiIntelligenceService, AgentGeneratorService } from 'obai/intelligence';
+import { I18nService } from 'nestjs-i18n';
 
 describe('MessagingService', () => {
   let service: MessagingService;
@@ -17,6 +18,7 @@ describe('MessagingService', () => {
         { provide: EntitiesService, useValue: mockEntitiesService },
         { provide: AiIntelligenceService, useValue: mockAiIntelligenceService },
         { provide: AgentGeneratorService, useValue: mockAgentGeneratorService },
+        { provide: I18nService, useValue: { t: jest.fn((key: string) => key) } },
       ],
     }).compile();
 

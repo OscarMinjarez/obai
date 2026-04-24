@@ -117,20 +117,28 @@
   },
   "jest": {
     "moduleFileExtensions": [
+      "ts",
       "js",
-      "json",
-      "ts"
+      "json"
     ],
     "rootDir": ".",
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {
-      "^.+\\.(t|j)s$": "ts-jest"
+      "^.+\\.(t|j)s$": [
+        "ts-jest",
+        {
+          "tsconfig": "<rootDir>/tsconfig.spec.json"
+        }
+      ]
     },
     "collectCoverageFrom": [
       "**/*.(t|j)s"
     ],
     "coverageDirectory": "./coverage",
     "testEnvironment": "node",
+    "modulePathIgnorePatterns": [
+      "<rootDir>/apps/mobile"
+    ],
     "roots": [
       "<rootDir>/apps/client-api/",
       "<rootDir>/apps/admin-api/",
@@ -141,7 +149,9 @@
       "^obai/entities(|/.*)$": "<rootDir>/libs/entities/src/$1",
       "^obai/i18n(|/.*)$": "<rootDir>/libs/i18n/src/$1",
       "^obai/intelligence(|/.*)$": "<rootDir>/libs/intelligence/src/$1",
-      "^obai/messaging(|/.*)$": "<rootDir>/libs/messaging/src/$1"
+      "^obai/messaging(|/.*)$": "<rootDir>/libs/messaging/src/$1",
+      "^generated/prisma(|/.*)$": "<rootDir>/generated/prisma/$1",
+      "^(\\.\\.?/.*)\\.js$": "$1"
     },
     "coverageThreshold": {
       "global": {

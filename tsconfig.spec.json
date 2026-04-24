@@ -1,0 +1,20 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "types": ["jest", "node"],
+    "typeRoots": ["./node_modules/@types"]
+  },
+  "include": [
+    "apps/admin-api/**/*.ts",
+    "apps/client-api/**/*.ts",
+    "libs/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "apps/mobile/**",
+    "**/node_modules_bak/**",
+    "**/cypress/**",
+    "**/cypress.config.ts"
+  ]
+}

@@ -1,5 +1,17 @@
 import { IsString, IsNotEmpty, IsUUID } from 'class-validator';
 
+export enum AgentGender {
+  MALE = 'MALE',
+  FEMALE = 'FEMALE',
+  NON_BINARY = 'NON_BINARY'
+}
+
+export enum AgentMaturity {
+  YOUNG = 'YOUNG',
+  MATURE = 'MATURE',
+  ELDER = 'ELDER'
+}
+
 export class AgentEntity {
 
   @IsUUID()

@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AgentGeneratorService } from './agent-generator.service';
 import { GoogleGenAI } from '@google/genai';
+import { I18nService } from 'nestjs-i18n';
 
 jest.mock('@google/genai');
 
@@ -28,7 +29,10 @@ describe('AgentGeneratorService', () => {
     }));
 
     const module: TestingModule = await Test.createTestingModule({
-      providers: [AgentGeneratorService],
+      providers: [
+        AgentGeneratorService,
+        { provide: I18nService, useValue: { t: jest.fn((key: string) => key) } },
+      ],
     }).compile();
 
     service = module.get<AgentGeneratorService>(AgentGeneratorService);

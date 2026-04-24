@@ -2,6 +2,10 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { DevicesController } from './devices.controller';
 import { DevicesService } from './devices.service';
 
+jest.mock('obai/auth', () => ({
+  JwtAuthGuard: class JwtAuthGuard {},
+}));
+
 describe('DevicesController', () => {
   let controller: DevicesController;
 

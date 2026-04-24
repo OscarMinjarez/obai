@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AuthService } from './auth.service';
 import { createClient } from '@supabase/supabase-js';
 import { UserRepository, EntitiesService } from 'obai/entities';
+import { I18nService } from 'nestjs-i18n';
 
 jest.mock('@supabase/supabase-js', () => ({
   createClient: jest.fn(),
@@ -42,6 +43,7 @@ describe('AuthService', () => {
         AuthService,
         { provide: UserRepository, useValue: mockUserRepo },
         { provide: EntitiesService, useValue: mockEntities },
+        { provide: I18nService, useValue: { t: jest.fn((key: string) => key) } },
       ],
     }).compile();
 

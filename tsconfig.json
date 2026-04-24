@@ -3,6 +3,7 @@
   "compilerOptions": {
     "module": "commonjs",
     "moduleResolution": "node",
+    "allowJs": true,
     "noEmit": true,
     "declaration": true,
     "removeComments": true,
@@ -22,6 +23,8 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
+    "types": ["jest", "node"],
+    "typeRoots": ["./node_modules/@types"],
     "paths": {
       "obai/auth": ["libs/auth/src/index.ts"],
       "obai/auth/*": ["libs/auth/src/*"],
@@ -46,5 +49,12 @@
     "libs/**/*.ts",
     "libs/**/*.vue",
     "apps/**/*.vue"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "**/cypress",
+    "**/cypress.config.ts",
+    "**/node_modules/cypress"
   ]
 }
