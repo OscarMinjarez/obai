@@ -11,7 +11,7 @@ describe('AiIntelligenceService', () => {
   const mockAgent = new AgentEntity({
     name: 'Atlas',
     personality: 'Sarcastic',
-    behavior: ['Witty'],
+    behaviors: ['Witty'],
     maturity: 'YOUNG',
     gender: 'MALE',
     language: 'Spanish',

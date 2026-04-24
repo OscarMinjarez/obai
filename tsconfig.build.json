@@ -1,4 +1,12 @@
 {
-  "extends": "./tsconfig.json",
-  "exclude": ["node_modules", "test", "dist", "**/*spec.ts"]
+  "files": [],
+  "references": [
+    { "path": "libs/common/tsconfig.lib.json" },
+    { "path": "libs/entities/tsconfig.lib.json" },
+    { "path": "libs/auth/tsconfig.lib.json" },
+    { "path": "libs/i18n/tsconfig.lib.json" },
+    { "path": "libs/intelligence/tsconfig.lib.json" },
+    { "path": "libs/messaging/tsconfig.lib.json" }
+  ]
 }
+ 

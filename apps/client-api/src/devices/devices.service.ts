@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { DeviceRepository } from 'obai/entities';
-import { DeviceResponse } from './responses/device.response';
-import { RegisterDeviceRequest } from './requests/register-device.request';
+import { DeviceResponse } from './responses/device.response.js';
+import { RegisterDeviceRequest } from './requests/register-device.request.js';
 
 @Injectable()
 export class DevicesService {

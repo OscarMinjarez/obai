@@ -1,6 +1,19 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { Button } from '../components/ui/button';
+import { ref, computed } from 'vue';
+import { useForm } from 'vee-validate';
+import { useI18n } from 'vue-i18n';
+import { toTypedSchema } from '@vee-validate/zod';
+import { loginSchema, otpRequestSchema } from '../schemas/auth.schema';
+import { 
+  Button, 
+  FormControl, 
+  FormField, 
+  FormItem, 
+  FormLabel, 
+  FormMessage,
+  Input,
+  LanguageSwitcher
+} from '../index';
 
 defineProps<{
   title?: string;
@@ -10,70 +23,108 @@ defineProps<{
 
 const emit = defineEmits<{
   (e: 'login', payload: { email: string; pass: string }): void;
+  (e: 'loginOtp', email: string): void;
   (e: 'back'): void;
 }>();
 
-const email = ref('');
-const password = ref('');
+const mode = ref<'password' | 'otp'>('password');
 
-function handleSubmit() {
-  emit('login', { email: email.value, pass: password.value });
+const { t } = useI18n();
+
+const currentSchema = computed(() => {
+  return mode.value === 'password' 
+    ? toTypedSchema(loginSchema) 
+    : toTypedSchema(otpRequestSchema);
+});
+
+const form = useForm<any>({
+  validationSchema: currentSchema,
+  initialValues: {
+    email: '',
+    password: '',
+  },
+});
+
+const onSubmit = form.handleSubmit((values) => {
+  if (mode.value === 'password') {
+    emit('login', { email: values.email, pass: values.password });
+  } else {
+    emit('loginOtp', values.email);
+  }
+});
+
+function toggleMode() {
+  mode.value = mode.value === 'password' ? 'otp' : 'password';
+  form.resetForm();
 }
 </script>
 
 <template>
-  <div class="flex min-h-screen w-full flex-col lg:flex-row">
+  <div class="flex min-h-screen w-full flex-col lg:flex-row relative">
+    <!-- Language Switcher Corner -->
+    <div class="absolute top-4 right-4 z-50">
+      <LanguageSwitcher />
+    </div>
+
     <!-- Form Side -->
     <div class="flex flex-1 items-center justify-center bg-background px-6 py-12 lg:px-12">
       <div class="w-full max-w-sm space-y-8 animate-in fade-in slide-in-from-left-4 duration-500">
         <div class="space-y-2 text-center lg:text-left">
           <h1 class="text-3xl font-bold tracking-tight">
-            {{ title || 'Entrar' }}
+            {{ title || (mode === 'password' ? t('auth.login.title_password') : t('auth.login.title_otp')) }}
           </h1>
           <p class="text-sm text-muted-foreground">
-            {{ subtitle || 'Introduce tus credenciales para continuar.' }}
+            {{ subtitle || (mode === 'password' ? t('auth.login.subtitle_password') : t('auth.login.subtitle_otp')) }}
           </p>
         </div>
 
         <form
           class="space-y-6"
-          @submit.prevent="handleSubmit"
+          @submit="onSubmit"
         >
           <div class="space-y-4">
-            <div class="space-y-2">
-              <label
-                class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                for="email"
-              >Email</label>
-              <input 
-                id="email"
-                v-model="email" 
-                type="email" 
-                class="flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50" 
-                placeholder="nombre@ejemplo.com" 
-                required 
-              >
-            </div>
-            <div class="space-y-2">
-              <div class="flex items-center justify-between">
-                <label
-                  class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                  for="password"
-                >Contraseña</label>
-                <a
-                  href="#"
-                  class="text-xs text-muted-foreground hover:text-primary transition-colors"
-                >¿Olvidaste tu contraseña?</a>
-              </div>
-              <input 
-                id="password"
-                v-model="password" 
-                type="password" 
-                class="flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50" 
-                placeholder="••••••••" 
-                required 
-              >
-            </div>
+            <FormField
+              v-slot="{ componentField }"
+              name="email"
+            >
+              <FormItem>
+                <FormLabel>{{ t('auth.login.email_label') }}</FormLabel>
+                <FormControl>
+                  <Input 
+                    type="email" 
+                    :placeholder="t('auth.login.email_placeholder')" 
+                    v-bind="componentField"
+                    :disabled="loading"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            </FormField>
+            
+            <FormField
+              v-if="mode === 'password'"
+              v-slot="{ componentField }"
+              name="password"
+            >
+              <FormItem class="animate-in fade-in slide-in-from-top-2">
+                <div class="flex items-center justify-between">
+                  <FormLabel>{{ t('auth.login.password_label') }}</FormLabel>
+                  <a
+                    href="#"
+                    class="text-xs text-muted-foreground hover:text-primary transition-colors"
+                  >{{ t('auth.login.forgot_password') }}</a>
+                </div>
+                <FormControl>
+                  <Input 
+                    type="password" 
+                    :placeholder="t('auth.login.password_placeholder')" 
+                    v-bind="componentField"
+                    :disabled="loading"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            </FormField>
           </div>
 
           <div class="flex flex-col gap-3">
@@ -82,15 +133,25 @@ function handleSubmit() {
               class="w-full h-10"
               :disabled="loading"
             >
-              <span v-if="loading">Iniciando sesión...</span>
-              <span v-else>Entrar</span>
+              <span v-if="loading">{{ t('auth.login.loading') }}</span>
+              <span v-else>{{ mode === 'password' ? t('auth.login.submit_password') : t('auth.login.submit_otp') }}</span>
             </Button>
+            
+            <Button
+              variant="link"
+              type="button"
+              class="text-xs"
+              @click="toggleMode"
+            >
+              {{ mode === 'password' ? t('auth.login.toggle_otp') : t('auth.login.toggle_password') }}
+            </Button>
+
             <div class="relative py-4">
               <div class="absolute inset-0 flex items-center">
                 <span class="w-full border-t" />
               </div>
               <div class="relative flex justify-center text-xs uppercase">
-                <span class="bg-background px-2 text-muted-foreground">O continúa con</span>
+                <span class="bg-background px-2 text-muted-foreground">{{ t('auth.login.or_continue_with') }}</span>
               </div>
             </div>
             <Button
@@ -99,21 +160,21 @@ function handleSubmit() {
               class="w-full h-10"
               @click="$emit('back')"
             >
-              Volver al inicio
+              {{ t('auth.login.back_home') }}
             </Button>
           </div>
         </form>
 
         <p class="px-8 text-center text-sm text-muted-foreground">
-          Al hacer clic en continuar, aceptas nuestros 
+          {{ t('auth.login.terms_prefix') }} 
           <a
             href="#"
             class="underline underline-offset-4 hover:text-primary"
-          >Términos de Servicio</a> y 
+          >{{ t('auth.login.terms_link') }}</a> {{ t('auth.login.terms_and') }} 
           <a
             href="#"
             class="underline underline-offset-4 hover:text-primary"
-          >Política de Privacidad</a>.
+          >{{ t('auth.login.privacy_link') }}</a>.
         </p>
       </div>
     </div>
@@ -126,13 +187,15 @@ function handleSubmit() {
         class="absolute inset-0 h-full w-full object-cover brightness-[0.7] dark:brightness-[0.4]"
       >
       <div class="absolute inset-0 bg-gradient-to-t from-background/40 to-transparent" />
-      <div class="absolute bottom-12 left-12 right-12 z-20">
-        <!-- <blockquote class="space-y-2">
-          <p class="text-lg font-medium text-white italic">
-            "Obai ha transformado la manera en que gestiono mi día a día. Es mucho más que un asistente, es un compañero inteligente."
+      <div class="absolute bottom-12 left-12 right-12 z-10">
+        <blockquote class="space-y-2">
+          <p class="text-lg font-medium text-white/90">
+            "{{ t('auth.login.quote') }}"
           </p>
-          <footer class="text-sm text-white/80">— Elena, tu compañera de Obai</footer>
-        </blockquote> -->
+          <footer class="text-sm text-white/60">
+            {{ t('auth.login.quote_footer') }}
+          </footer>
+        </blockquote>
       </div>
     </div>
   </div>

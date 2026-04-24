@@ -1,3 +1,3 @@
-export * from './intelligence.module';
-export * from './intelligence.service';
-export * from './agent-generator.service';
+export * from './intelligence.module.js';
+export * from './intelligence.service.js';
+export * from './agent-generator.service.js';

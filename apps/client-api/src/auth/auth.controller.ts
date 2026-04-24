@@ -1,7 +1,7 @@
 import { Body, Controller, Ip, Post } from '@nestjs/common';
 import { AuthService } from 'obai/auth';
-import { RegisterRequest } from './requests/register.request';
-import { LoginRequest } from './requests/login.request';
+import { RegisterRequest } from './requests/register.request.js';
+import { LoginRequest } from './requests/login.request.js';
 
 @Controller('auth')
 export class AuthController {
@@ -27,6 +27,29 @@ export class AuthController {
   @Post('logout')
   async logout(@Body() data: { refreshToken: string }) {
     return this.authService.logout(data.refreshToken);
+  }
+
+  @Post('otp/request')
+  async requestOtp(@Body() data: { email: string }) {
+    return this.authService.signInWithOtp(data.email);
+  }
+
+  @Post('otp/verify')
+  async verifyOtp(@Body() data: { 
+    email: string; 
+    token: string; 
+    type?: string; 
+    deviceType?: string; 
+    userAgent?: string 
+  }, @Ip() ip: string) {
+    return this.authService.verifyOtp(
+      data.email,
+      data.token,
+      (data.type as any) || 'signup',
+      data.deviceType,
+      data.userAgent,
+      ip
+    );
   }
 
 }

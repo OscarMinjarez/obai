@@ -15,6 +15,7 @@ import {
   useSidebar,
 } from './ui/sidebar';
 import { ChevronsUpDown, Plus } from 'lucide-vue-next';
+import { useI18n } from 'vue-i18n';
 import { ref, type Component } from 'vue';
 
 const props = defineProps<{
@@ -26,6 +27,7 @@ const props = defineProps<{
 }>();
 
 const { isMobile } = useSidebar();
+const { t } = useI18n();
 const activeTeam = ref(props.teams[0]);
 </script>
 
@@ -60,7 +62,7 @@ const activeTeam = ref(props.teams[0]);
           :side-offset="4"
         >
           <DropdownMenuLabel class="text-xs text-muted-foreground">
-            Teams
+            {{ t('sidebar.teams') }}
           </DropdownMenuLabel>
           <DropdownMenuItem
             v-for="(team, index) in teams"
@@ -83,7 +85,7 @@ const activeTeam = ref(props.teams[0]);
               <Plus class="size-4" />
             </div>
             <div class="font-medium text-muted-foreground">
-              Add team
+              {{ t('sidebar.add_team') }}
             </div>
           </DropdownMenuItem>
         </DropdownMenuContent>

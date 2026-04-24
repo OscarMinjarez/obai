@@ -1,7 +1,22 @@
 # compiled output
 /dist
 node_modules/
+/apps/mobile/node_modules_bak/
 /build
+
+# TypeScript compiled artifacts accidentally in source dirs
+apps/**/*.js
+apps/**/*.js.map
+apps/**/*.d.ts
+apps/**/*.tsbuildinfo
+libs/**/*.js
+libs/**/*.js.map
+libs/**/*.d.ts
+libs/**/*.tsbuildinfo
+# keep webpack config (it's intentionally .cjs)
+!webpack.config.cjs
+!*.config.cjs
+!*.config.mjs
 
 # Logs
 logs

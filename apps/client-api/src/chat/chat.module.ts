@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MessagingModule } from 'obai/messaging';
-import { ChatController } from './chat.controller';
+import { ChatController } from './chat.controller.js';
 
 @Module({
   imports: [MessagingModule],

@@ -1,8 +1,17 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "declaration": true,
-    "outDir": "../../dist/libs/entities"
+    "outDir": "../../dist/libs/entities",
+    "rootDir": "src",
+    "composite": true,
+    "incremental": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "resolvePackageJsonExports": false,
+    "types": ["node"]
+    ,
+    "tsBuildInfoFile": "../../dist/.tsbuildinfo/entities.tsbuildinfo"
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist", "test", "**/*spec.ts"]

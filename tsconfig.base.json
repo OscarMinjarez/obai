@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "target": "ES2023",
+    "lib": [
+      "ES2023",
+      "DOM"
+    ],
+    "esModuleInterop": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": false,
+    "strictNullChecks": true,
+    "strictPropertyInitialization": false,
+    "noImplicitAny": false,
+    "strictBindCallApply": false,
+    "incremental": true,
+    "sourceMap": true,
+    "removeComments": true,
+    "ignoreDeprecations": "6.0",
+    "baseUrl": ".",
+    "types": ["jest", "node"],
+    "paths": {
+      "obai/*": [
+        "libs/*/src/index.ts"
+      ]
+    }
+  }
+}

@@ -1,78 +1,60 @@
 {
+  "extends": "./tsconfig.base.json",
   "compilerOptions": {
-
-    "module": "nodenext",
-    "moduleResolution": "nodenext",
-    "resolvePackageJsonExports": true,
-    "esModuleInterop": true,
-    "isolatedModules": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "allowJs": true,
+    "noEmit": true,
     "declaration": true,
     "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
     "target": "ES2023",
-    "sourceMap": true,
+    "sourceMap": false,
     "outDir": "./dist",
-    "baseUrl": "./",
-    "incremental": true,
+    "baseUrl": ".",
+    "ignoreDeprecations": "6.0",
     "skipLibCheck": true,
     "strictNullChecks": true,
+    "strictPropertyInitialization": false,
     "forceConsistentCasingInFileNames": true,
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
-    "jsx": "react-jsx",
+    "types": ["jest", "node"],
+    "typeRoots": ["./node_modules/@types"],
     "paths": {
-      "obai/auth": [
-        "libs/auth/src"
-      ],
-      "obai/auth/*": [
-        "libs/auth/src/*"
-      ],
-      "obai/entities": [
-        "libs/entities/src"
-      ],
-      "obai/entities/*": [
-        "libs/entities/src/*"
-      ],
-      "obai/intelligence": [
-        "libs/intelligence/src"
-      ],
-      "obai/intelligence/*": [
-        "libs/intelligence/src/*"
-      ],
-      "obai/messaging": [
-        "libs/messaging/src"
-      ],
-      "obai/messaging/*": [
-        "libs/messaging/src/*"
-      ],
-      "obai/shared": [
-        "libs/shared/src"
-      ],
-      "obai/shared/*": [
-        "libs/shared/src/*"
-      ],
-      "@obai/shared": [
-        "libs/shared/src"
-      ],
-      "@obai/shared/*": [
-        "libs/shared/src/*"
-      ],
-      "obai/common": [
-        "libs/common/src"
-      ],
-      "obai/common/*": [
-        "libs/common/src/*"
-      ]
+      "obai/auth": ["libs/auth/src/index.ts"],
+      "obai/auth/*": ["libs/auth/src/*"],
+      "obai/common": ["libs/common/src/index.ts"],
+      "obai/common/*": ["libs/common/src/*"],
+      "obai/entities": ["libs/entities/src/index.ts"],
+      "obai/entities/*": ["libs/entities/src/*"],
+      "obai/i18n": ["libs/i18n/src/index.ts"],
+      "obai/i18n/*": ["libs/i18n/src/*"],
+      "obai/intelligence": ["libs/intelligence/src/index.ts"],
+      "obai/intelligence/*": ["libs/intelligence/src/*"],
+      "obai/messaging": ["libs/messaging/src/index.ts"],
+      "obai/messaging/*": ["libs/messaging/src/*"],
+      "obai/shared": ["libs/shared/src/index.ts"],
+      "obai/shared/*": ["libs/shared/src/*"],
+      "@obai/shared": ["libs/shared/src/index.ts"],
+      "@obai/shared/*": ["libs/shared/src/*"]
     }
   },
   "include": [
     "apps/**/*.ts",
     "libs/**/*.ts",
     "libs/**/*.vue",
-    "apps/**/*.vue",
-    "src/**/*.ts"
+    "apps/**/*.vue"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "**/cypress",
+    "**/cypress.config.ts",
+    "**/node_modules/cypress"
   ]
 }

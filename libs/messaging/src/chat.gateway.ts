@@ -18,7 +18,7 @@ import * as jwt from 'jsonwebtoken';
 export class ChatGateway implements OnGatewayConnection {
 
   @WebSocketServer()
-  server: Server;
+  server!: Server;
 
   private readonly logger = new Logger(ChatGateway.name);
 
@@ -43,7 +43,6 @@ export class ChatGateway implements OnGatewayConnection {
         this.logger.warn('Conexión rechazada: Token inválido o mal formado.');
         throw new UnauthorizedException('Invalid token');
       }
-
       client.data.userId = decoded.payload.sub;
       const userAgent = client.handshake.headers['user-agent'] || '';
       const isMobile = /mobile/i.test(userAgent);
@@ -51,44 +50,61 @@ export class ChatGateway implements OnGatewayConnection {
       client.data.device = deviceType;
       client.join(client.data.userId);
       this.logger.log(`✅ Usuario ${client.data.userId} conectado desde: ${deviceType} (${userAgent.substring(0, 50)}...)`);
-
       const history = await this.messagingService.getHistory(client.data.userId);
       client.emit('chat:history', history);
       client.emit('chat:device_info', { deviceType });
     } catch (error) {
-      this.logger.error(`❌ Conexión fallida: ${error.message}`);
+      const errMessage = error instanceof Error ? error.message : (typeof error === 'string' ? error : String(error));
+      const errStack = error instanceof Error ? error.stack : undefined;
+      this.logger.error(`❌ Conexión fallida: ${errMessage}`, errStack);
       client.disconnect();
     }
   }
 
   @SubscribeMessage('chat:send')
   async handleMessage(
-    @MessageBody() data: { message: string },
+    @MessageBody() data: { id?: string, message: string, locale: string },
     @ConnectedSocket() client: Socket,
   ) {
     const userId = client.data.userId;
     if (!userId) return;
 
-    // Notificar escritura a todos los dispositivos del usuario
-    this.server.to(userId).emit('chat:typing', { isTyping: true });
-
     try {
-      // Reenviar el mensaje del usuario a sus otros dispositivos para sincronizar la vista
+      const userMessageId = data.id || `user_${Date.now()}_${Math.random().toString(36).substr(2, 5)}`;
       client.to(userId).emit('chat:receive', { 
+        id: userMessageId,
         role: 'user', 
         content: data.message, 
+        locale: data.locale,
         createdAt: new Date().toISOString() 
       });
 
-      const response = await this.messagingService.sendMessage(userId, data.message);
+      const stream = this.messagingService.sendMessageStream(userId, data.message, data.locale);
       
-      // Enviar la respuesta del bot a TODOS los dispositivos del usuario
-      this.server.to(userId).emit('chat:receive', response);
+      let fullContent = '';
+      const messageId = `ai_${Date.now()}_${Math.random().toString(36).substr(2, 5)}`;
+
+      for await (const chunk of stream) {
+        fullContent += chunk;
+        this.server.to(userId).emit('chat:receive_chunk', {
+          id: messageId,
+          chunk: chunk,
+          role: 'assistant'
+        });
+      }
+
+      this.server.to(userId).emit('chat:receive', {
+        id: messageId,
+        content: fullContent,
+        role: 'assistant',
+        locale: data.locale,
+        createdAt: new Date().toISOString()
+      });
     } catch (error) {
-      this.logger.error('Error en el chat gateway', error);
+      const errMessage = error instanceof Error ? error.message : (typeof error === 'string' ? error : String(error));
+      const errStack = error instanceof Error ? error.stack : undefined;
+      this.logger.error(`Error en el chat gateway: ${errMessage}`, errStack);
       client.emit('chat:error', { message: 'No pude procesar tu mensaje.' });
-    } finally {
-      this.server.to(userId).emit('chat:typing', { isTyping: false });
     }
   }
 

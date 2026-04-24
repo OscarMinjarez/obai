@@ -1,6 +1,18 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { Button } from '../components/ui/button';
+import { useForm } from 'vee-validate';
+import { useI18n } from 'vue-i18n';
+import { toTypedSchema } from '@vee-validate/zod';
+import { registerSchema, type RegisterFormValues } from '../schemas/auth.schema';
+import { 
+  Button, 
+  FormControl, 
+  FormField, 
+  FormItem, 
+  FormLabel, 
+  FormMessage,
+  Input,
+  LanguageSwitcher
+} from '../index';
 
 defineProps<{
   title?: string;
@@ -13,17 +25,29 @@ const emit = defineEmits<{
   (e: 'back'): void;
 }>();
 
-const name = ref('');
-const email = ref('');
-const password = ref('');
+const { t } = useI18n();
 
-function handleSubmit() {
-  emit('register', { name: name.value, email: email.value, pass: password.value });
-}
+const form = useForm<RegisterFormValues>({
+  validationSchema: toTypedSchema(registerSchema),
+  initialValues: {
+    name: '',
+    email: '',
+    password: '',
+  },
+});
+
+const onSubmit = form.handleSubmit((values) => {
+  emit('register', { name: values.name, email: values.email, pass: values.password });
+});
 </script>
 
 <template>
-  <div class="flex min-h-screen w-full flex-col lg:flex-row">
+  <div class="flex min-h-screen w-full flex-col lg:flex-row relative">
+    <!-- Language Switcher Corner -->
+    <div class="absolute top-4 right-4 z-50">
+      <LanguageSwitcher />
+    </div>
+
     <!-- Image Side -->
     <div class="hidden lg:block lg:flex-1 relative bg-muted overflow-hidden order-last lg:order-first">
       <img 
@@ -32,21 +56,13 @@ function handleSubmit() {
         class="absolute inset-0 h-full w-full object-cover brightness-[0.7] dark:brightness-[0.4]"
       >
       <div class="absolute inset-0 bg-gradient-to-t from-background/40 to-transparent" />
-      <div class="absolute top-12 left-12 right-12 z-20">
-        <div class="flex items-center gap-2 text-white text-xl font-bold">
-          <div class="h-8 w-8 bg-white rounded-md flex items-center justify-center">
-            <div class="h-4 w-4 bg-black rounded-sm" />
-          </div>
-          Obai Platform
-        </div>
-      </div>
-      <div class="absolute bottom-12 left-12 right-12 z-20">
+      <div class="absolute bottom-12 left-12 right-12 z-10 hidden xl:block">
         <blockquote class="space-y-2">
-          <p class="text-lg font-medium text-white italic">
-            "Únete a miles de personas que ya están mejorando su productividad con inteligencia artificial humana y cercana."
+          <p class="text-lg font-medium text-white/90">
+            "{{ t('auth.register.quote') }}"
           </p>
-          <footer class="text-sm text-white/80">
-            — El equipo de Obai
+          <footer class="text-sm text-white/60">
+            {{ t('auth.register.quote_footer') }}
           </footer>
         </blockquote>
       </div>
@@ -57,60 +73,71 @@ function handleSubmit() {
       <div class="w-full max-w-sm space-y-8 animate-in fade-in slide-in-from-right-4 duration-500">
         <div class="space-y-2 text-center lg:text-left">
           <h1 class="text-3xl font-bold tracking-tight">
-            {{ title || 'Crear cuenta' }}
+            {{ title || t('auth.register.title') }}
           </h1>
           <p class="text-sm text-muted-foreground">
-            {{ subtitle || 'Comienza tu viaje con Obai hoy mismo.' }}
+            {{ subtitle || t('auth.register.subtitle') }}
           </p>
         </div>
 
         <form
           class="space-y-6"
-          @submit.prevent="handleSubmit"
+          @submit="onSubmit"
         >
           <div class="space-y-4">
-            <div class="space-y-2">
-              <label
-                class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                for="name"
-              >Nombre completo</label>
-              <input 
-                id="name"
-                v-model="name" 
-                type="text" 
-                class="flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50" 
-                placeholder="Tu nombre" 
-                required 
-              >
-            </div>
-            <div class="space-y-2">
-              <label
-                class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                for="email"
-              >Email</label>
-              <input 
-                id="email"
-                v-model="email" 
-                type="email" 
-                class="flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50" 
-                placeholder="nombre@ejemplo.com" 
-                required 
-              >
-            </div>
-            <div class="space-y-2">
-              <label
-                class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                for="password"
-              >Contraseña</label>
-              <input 
-                id="password"
-                v-model="password" 
-                type="password" 
-                class="flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50" 
-                placeholder="Mínimo 8 caracteres" 
-                required 
-              >
-            </div>
+            <FormField
+              v-slot="{ componentField }"
+              name="name"
+            >
+              <FormItem>
+                <FormLabel>{{ t('auth.register.name_label') }}</FormLabel>
+                <FormControl>
+                  <Input 
+                    type="text" 
+                    :placeholder="t('auth.register.name_placeholder')" 
+                    v-bind="componentField"
+                    :disabled="loading"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            </FormField>
+
+            <FormField
+              v-slot="{ componentField }"
+              name="email"
+            >
+              <FormItem>
+                <FormLabel>{{ t('auth.register.email_label') }}</FormLabel>
+                <FormControl>
+                  <Input 
+                    type="email" 
+                    :placeholder="t('auth.register.email_placeholder')" 
+                    v-bind="componentField"
+                    :disabled="loading"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            </FormField>
+
+            <FormField
+              v-slot="{ componentField }"
+              name="password"
+            >
+              <FormItem>
+                <FormLabel>{{ t('auth.register.password_label') }}</FormLabel>
+                <FormControl>
+                  <Input 
+                    type="password" 
+                    :placeholder="t('auth.register.password_placeholder')" 
+                    v-bind="componentField"
+                    :disabled="loading"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            </FormField>
           </div>
 
           <div class="flex flex-col gap-3">
@@ -119,8 +146,8 @@ function handleSubmit() {
               class="w-full h-10"
               :disabled="loading"
             >
-              <span v-if="loading">Creando cuenta...</span>
-              <span v-else>Registrarse</span>
+              <span v-if="loading">{{ t('auth.register.loading') }}</span>
+              <span v-else>{{ t('auth.register.submit') }}</span>
             </Button>
             <Button
               variant="outline"
@@ -128,17 +155,17 @@ function handleSubmit() {
               class="w-full h-10"
               @click="$emit('back')"
             >
-              Ya tengo cuenta
+              {{ t('auth.register.back_login') }}
             </Button>
           </div>
         </form>
 
         <p class="px-8 text-center text-sm text-muted-foreground">
-          Al registrarte, confirmas que has leído y aceptas nuestros 
+          {{ t('auth.register.terms_prefix') }} 
           <a
             href="#"
             class="underline underline-offset-4 hover:text-primary"
-          >Términos</a>.
+          >{{ t('auth.register.terms_link') }}</a>.
         </p>
       </div>
     </div>

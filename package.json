@@ -5,8 +5,16 @@
   "author": "",
   "private": true,
   "license": "UNLICENSED",
+  "workspaces": [
+    "apps/web",
+    "apps/mobile",
+    "libs/shared"
+  ],
   "scripts": {
+    "install:all": "npm install && npm install --prefix apps/web && npm install --prefix apps/mobile && npm install --prefix libs/shared",
+    "dev": "npm run dev:all",
     "build": "nest build",
+    "build:libs": "tsc -b tsconfig.build.json",
     "format": "npm run format:lint",
     "format:prettier": "prettier --write \"apps/**/*.{ts,tsx,vue}\" \"libs/**/*.{ts,tsx,vue}\"",
     "format:lint": "eslint \"{src,apps,libs,test}/**/*.{ts,tsx,vue}\" --fix",
@@ -46,6 +54,7 @@
     "@types/jsonwebtoken": "^9.0.10",
     "@types/passport-jwt": "^4.0.1",
     "@types/pg": "^8.20.0",
+    "@vee-validate/zod": "^4.15.1",
     "bcrypt": "^6.0.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.15.1",
@@ -56,6 +65,7 @@
     "lru-cache": "^9.1.2",
     "lucide-react": "^1.8.0",
     "lucide-vue-next": "^1.0.0",
+    "nestjs-i18n": "^10.7.5",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
     "pg": "^8.20.0",
@@ -65,7 +75,10 @@
     "socket.io": "^4.8.3",
     "socket.io-client": "^4.8.3",
     "tailwind-merge": "^3.5.0",
-    "vue-router": "^5.0.6"
+    "vee-validate": "^4.15.1",
+    "vue-i18n": "^11.3.2",
+    "vue-router": "^5.0.6",
+    "zod": "^3.24.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
@@ -96,26 +109,36 @@
     "ts-loader": "^9.5.2",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
-    "typescript": "^5.7.3",
+    "typescript": "^6.0.3",
     "typescript-eslint": "^8.20.0",
-    "vue-eslint-parser": "^10.4.0"
+    "vue-eslint-parser": "^10.4.0",
+    "webpack": "^5.106.2",
+    "webpack-node-externals": "^3.0.0"
   },
   "jest": {
     "moduleFileExtensions": [
+      "ts",
       "js",
-      "json",
-      "ts"
+      "json"
     ],
     "rootDir": ".",
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {
-      "^.+\\.(t|j)s$": "ts-jest"
+      "^.+\\.(t|j)s$": [
+        "ts-jest",
+        {
+          "tsconfig": "<rootDir>/tsconfig.spec.json"
+        }
+      ]
     },
     "collectCoverageFrom": [
       "**/*.(t|j)s"
     ],
     "coverageDirectory": "./coverage",
     "testEnvironment": "node",
+    "modulePathIgnorePatterns": [
+      "<rootDir>/apps/mobile"
+    ],
     "roots": [
       "<rootDir>/apps/client-api/",
       "<rootDir>/apps/admin-api/",
@@ -124,8 +147,11 @@
     "moduleNameMapper": {
       "^obai/auth(|/.*)$": "<rootDir>/libs/auth/src/$1",
       "^obai/entities(|/.*)$": "<rootDir>/libs/entities/src/$1",
+      "^obai/i18n(|/.*)$": "<rootDir>/libs/i18n/src/$1",
       "^obai/intelligence(|/.*)$": "<rootDir>/libs/intelligence/src/$1",
-      "^obai/messaging(|/.*)$": "<rootDir>/libs/messaging/src/$1"
+      "^obai/messaging(|/.*)$": "<rootDir>/libs/messaging/src/$1",
+      "^generated/prisma(|/.*)$": "<rootDir>/generated/prisma/$1",
+      "^(\\.\\.?/.*)\\.js$": "$1"
     },
     "coverageThreshold": {
       "global": {

@@ -2,19 +2,19 @@
 
 A compact list of useful scripts available from the repo root (see `package.json`).
 
-- `npm run dev:apis` — Run the backend APIs (client + admin) in watch mode.
-- `npm run dev:web` — Run the web frontend (Nuxt).
-- `npm run dev:mobile` — Run the mobile app (Expo/Ionic/Vite).
-- `npm run dev:all` — Run APIs + web + mobile concurrently.
-- `npm run test` — Run unit tests.
-- `npm run format` — Run code formatters and linters.
+## Maintenance & Installation
+- `npm run install:all` – Install dependencies for ALL projects in the monorepo (Root, Web, Mobile, Shared).
 
-Examples:
+## Development
+- `npm run dev:apis` – Run the backend APIs (client + admin) in watch mode using Webpack.
+- `npm run dev:web` – Run the web frontend (Nuxt).
+- `npm run dev:mobile` – Run the mobile app (Vite/Ionic).
+- `npm run dev:all` – Run APIs + web + mobile concurrently.
 
-```bash
-# Run client-api only
-npm run dev --prefix apps/client-api
+## Quality & Testing
+- `npm run test` – Run unit tests.
+- `npm run format` – Run code formatters and linters.
+- `npm run build` – Build all applications for production.
 
-# Run web and mobile at the same time
-npm run dev:web & npm run dev:mobile
-```
+### Note on Backend Builds
+Backend applications (`admin-api` and `client-api`) use Webpack to bundle all dependencies and library code into a single executable `main.js` file located in `dist/apps/{project}/src/`.

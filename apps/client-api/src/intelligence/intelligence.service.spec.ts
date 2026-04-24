@@ -45,7 +45,7 @@ describe('IntelligenceService', () => {
     const mockAgent = new AgentEntity({
       name: 'Test Agent',
       personality: 'Kind',
-      behavior: 'Polite',
+      behaviors: ['Polite'],
       maturity: 'MATURE',
       gender: 'FEMALE',
       language: 'Spanish',

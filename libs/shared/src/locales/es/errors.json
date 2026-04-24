@@ -1,0 +1,7 @@
+{
+  "messaging_problem": "Lo siento, hubo un problema al procesar tu mensaje. Inténtalo de nuevo.",
+  "ai_high_demand": "La IA está experimentando mucha demanda en este momento. Por favor, intenta de nuevo en unos segundos.",
+  "ai_technical_error": "No pudimos generar la sugerencia del bot debido a un error técnico del servicio de IA.",
+  "supabase_config_missing": "Falta la configuración de Supabase. Por favor, revisa las variables de entorno.",
+  "email_required_otp": "El correo electrónico es obligatorio para la verificación OTP."
+}

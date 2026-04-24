@@ -1,0 +1,22 @@
+{
+  "title": "Configuración del Bot",
+  "subtitle": "Personaliza la personalidad y el perfil de tu compañero de IA.",
+  "name_label": "Nombre",
+  "name_placeholder": "Nombre del Agente",
+  "gender_label": "Tono de Género",
+  "gender_male": "Masculino",
+  "gender_female": "Femenino",
+  "gender_neutral": "Neutral",
+  "maturity_label": "Madurez",
+  "maturity_young": "Joven",
+  "maturity_mature": "Maduro",
+  "maturity_elder": "Anciano",
+  "desc_label": "Descripción Corta",
+  "desc_placeholder": "Biografía rápida...",
+  "personality_label": "Personalidad",
+  "personality_placeholder": "Describe su personalidad...",
+  "behaviors_label": "Comportamientos (uno por línea)",
+  "behaviors_placeholder": "Lista de comportamientos...",
+  "save_button": "Guardar y Continuar",
+  "regenerate_button": "Regenerar Sugerencia"
+}

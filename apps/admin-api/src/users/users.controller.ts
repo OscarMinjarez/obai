@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
-import { UsersService } from './users.service';
-import RegisterUserRequest from './requests/register-user.request';
-import { UserResponse } from './responses/user.response';
+import { UsersService } from './users.service.js';
+import RegisterUserRequest from './requests/register-user.request.js';
+import { UserResponse } from './responses/user.response.js';
 
 @Controller('users')
 export class UsersController {

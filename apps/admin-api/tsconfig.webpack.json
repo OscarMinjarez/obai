@@ -1,0 +1,27 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "resolvePackageJsonExports": false,
+    "rootDir": "../..",
+    "types": ["node"],
+    "paths": {
+      "obai/auth": ["libs/auth/src/index.ts"],
+      "obai/auth/*": ["libs/auth/src/*"],
+      "obai/common": ["libs/common/src/index.ts"],
+      "obai/common/*": ["libs/common/src/*"],
+      "obai/entities": ["libs/entities/src/index.ts"],
+      "obai/entities/*": ["libs/entities/src/*"],
+      "obai/i18n": ["libs/i18n/src/index.ts"],
+      "obai/i18n/*": ["libs/i18n/src/*"],
+      "obai/intelligence": ["libs/intelligence/src/index.ts"],
+      "obai/intelligence/*": ["libs/intelligence/src/*"],
+      "obai/messaging": ["libs/messaging/src/index.ts"],
+      "obai/messaging/*": ["libs/messaging/src/*"],
+      "generated/prisma": ["generated/prisma"]
+    }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["**/*.spec.ts"]
+}

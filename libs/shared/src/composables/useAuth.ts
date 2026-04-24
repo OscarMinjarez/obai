@@ -22,7 +22,13 @@ export function useAuth() {
       const storedUser = localStorage.getItem('obai_user');
       if (storedToken) {
         token.value = storedToken;
-        if (storedUser) user.value = JSON.parse(storedUser);
+        if (storedUser) {
+          const parsedUser = JSON.parse(storedUser);
+          user.value = {
+            ...parsedUser,
+            name: parsedUser.name || parsedUser.user_metadata?.name || parsedUser.email?.split('@')[0]
+          };
+        }
       }
     } catch (e) {
       console.error('Error recovering session', e);
@@ -50,7 +56,10 @@ export function useAuth() {
       token.value = session.access_token || data.access_token;
       const refToken = session.refresh_token || data.refresh_token;
       
-      user.value = data.user || data;
+      user.value = {
+        ...(data.user || data),
+        name: (data.user || data).name || (data.user || data).user_metadata?.name || (data.user || data).email?.split('@')[0]
+      };
       
       if (typeof window !== 'undefined') {
         if (token.value) localStorage.setItem('obai_token', token.value);
@@ -112,6 +121,66 @@ export function useAuth() {
     }
   };
 
+  const requestOtp = async (email: string) => {
+    isLoading.value = true;
+    error.value = null;
+    try {
+      const res = await fetch(`${API_URL}/auth/otp/request`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'Error requesting OTP');
+      return data;
+    } catch (e: any) {
+      error.value = e.message;
+      throw e;
+    } finally {
+      isLoading.value = false;
+    }
+  };
+
+  const verifyOtp = async (email: string, tokenVal: string, type: string = 'signup') => {
+    isLoading.value = true;
+    error.value = null;
+
+    const userAgent = typeof window !== 'undefined' ? window.navigator.userAgent : 'Server';
+    const isMobile = typeof window !== 'undefined' && /mobile/i.test(userAgent);
+    const deviceType = isMobile ? 'Móvil' : 'Web';
+
+    try {
+      const res = await fetch(`${API_URL}/auth/otp/verify`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, token: tokenVal, type, deviceType, userAgent })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'Error verifying OTP');
+      
+      const session = data.session || data;
+      token.value = session.access_token || data.access_token;
+      const refToken = session.refresh_token || data.refresh_token;
+      
+      user.value = {
+        ...(data.user || data),
+        name: (data.user || data).name || (data.user || data).user_metadata?.name || (data.user || data).email?.split('@')[0]
+      };
+      
+      if (typeof window !== 'undefined') {
+        if (token.value) localStorage.setItem('obai_token', token.value);
+        if (refToken) localStorage.setItem('obai_refresh_token', refToken);
+        localStorage.setItem('obai_user', JSON.stringify(user.value));
+      }
+      return data;
+    } catch (e: any) {
+      error.value = e.message;
+      throw e;
+    } finally {
+      isLoading.value = false;
+    }
+  };
+
   return {
     user,
     token,
@@ -120,6 +189,8 @@ export function useAuth() {
     isAuthenticated: () => !!token.value,
     login,
     register,
+    requestOtp,
+    verifyOtp,
     logout
   };
 }

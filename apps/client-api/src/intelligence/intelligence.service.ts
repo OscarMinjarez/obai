@@ -1,8 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { DeviceRepository, AgentEntity } from 'obai/entities';
-import { DeviceResponse } from '../devices/responses/device.response';
+import { DeviceResponse } from '../devices/responses/device.response.js';
 import { AiIntelligenceService } from 'obai/intelligence';
-import { AgentRepository } from 'obai/entities/classes/agent/agent.repository';
+import { AgentRepository } from 'obai/entities';
 
 @Injectable()
 export class IntelligenceService {

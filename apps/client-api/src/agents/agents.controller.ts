@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post, Query, UseGuards, Req } from '@nestjs/common';
-import { JwtAuthGuard } from 'obai/auth/guards/jwt-auth/jwt-auth.guard';
-import { AgentsService } from './agents.service';
+import { JwtAuthGuard } from 'obai/auth';
+import { AgentsService } from './agents.service.js';
 
 @Controller('agents')
 @UseGuards(JwtAuthGuard)

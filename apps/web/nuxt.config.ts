@@ -1,6 +1,7 @@
 import { fileURLToPath } from 'node:url';
 
 export default defineNuxtConfig({
+  ssr: false,
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
   modules: ['@nuxtjs/tailwindcss'],
@@ -18,6 +19,14 @@ export default defineNuxtConfig({
       fs: {
         allow: [fileURLToPath(new URL('../..', import.meta.url))]
       }
+    },
+    optimizeDeps: {
+      include: [
+        'vue-i18n',
+        'vee-validate',
+        '@vee-validate/zod',
+        'zod',
+      ]
     }
   }
 });

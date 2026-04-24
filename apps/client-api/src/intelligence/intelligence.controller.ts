@@ -1,10 +1,10 @@
 import { Body, Controller, Get, Post, Headers, Req } from '@nestjs/common';
-import { IntelligenceService } from './intelligence.service';
-import { AnalyzeContextRequest } from './requests/analyze-context.request';
+import { IntelligenceService } from './intelligence.service.js';
+import { AnalyzeContextRequest } from './requests/analyze-context.request.js';
 import { AgentGeneratorService } from 'obai/intelligence';
 import { AgentRepository, AgentEntity } from 'obai/entities';
 import { UseGuards } from '@nestjs/common';
-import { JwtAuthGuard } from 'obai/auth/guards/jwt-auth/jwt-auth.guard';
+import { JwtAuthGuard } from 'obai/auth';
 
 @Controller('intelligence')
 @UseGuards(JwtAuthGuard)

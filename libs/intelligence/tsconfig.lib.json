@@ -1,0 +1,22 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "declaration": true,
+    "outDir": "../../dist/libs/intelligence",
+    "rootDir": "src",
+    "composite": true,
+    "incremental": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "resolvePackageJsonExports": false,
+    "types": ["node"]
+    ,
+    "tsBuildInfoFile": "../../dist/.tsbuildinfo/intelligence.tsbuildinfo"
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "test", "**/*spec.ts"]
+  ,
+  "references": [
+    { "path": "../entities/tsconfig.lib.json" }
+  ]
+}

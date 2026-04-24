@@ -7,6 +7,7 @@ export default tsEslint.config(
     ignores: [
       '**/dist/**',
       '**/node_modules/**',
+      '**/node_modules_bak/**',
       'libs/shared/src/components/ui/**',
       'apps/web/.nuxt/**',
       'apps/mobile/www/**',

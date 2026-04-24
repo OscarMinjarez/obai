@@ -1,0 +1,6 @@
+{
+  "IS_EMAIL": "The email must be a valid email address.",
+  "IS_NOT_EMPTY": "This field cannot be empty.",
+  "MIN_LENGTH": "The field must be at least {constraints.0} characters long.",
+  "IS_STRING": "This field must be a string."
+}

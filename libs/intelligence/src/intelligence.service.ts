@@ -36,7 +36,7 @@ export class AiIntelligenceService {
     }
   }
 
-  async generateChatResponse(userId: string, history: any[], agent: AgentEntity): Promise<string> {
+  async generateChatResponse(userId: string, history: any[], agent: AgentEntity, locale: string = 'es'): Promise<string> {
     try {
       const chatHistory = history.map(msg => ({
         role: msg.role === 'user' ? 'user' : 'model',
@@ -56,7 +56,9 @@ export class AiIntelligenceService {
       2. Avoid being theatrical, poetic, or overly dramatic. Speak like a real person.
       3. Do NOT use metaphors or long roleplay descriptions between asterisks.
       4. Stay in character as a companion, not a fictional character in a play.
-      5. Respond in the same language as the user.`;
+      5. Respond in the same language as the user.
+      6. IMPORTANT: Always respond strictly in the language indicated by the current locale.
+      Current locale: ${locale}`;
 
       const result = await this.ai.models.generateContent({
         model: 'gemini-3.1-flash-lite-preview',
@@ -70,6 +72,49 @@ export class AiIntelligenceService {
     } catch (error) {
       this.logger.error(`Error in Gemini chat for ${agent.name}`, error);
       return `[System Error] I'm having trouble thinking right now.`;
+    }
+  }
+
+  async *generateChatResponseStream(userId: string, history: any[], agent: AgentEntity, locale: string = 'es') {
+    try {
+      const chatHistory = history.map(msg => ({
+        role: msg.role === 'user' ? 'user' : 'model',
+        parts: [{ text: msg.content }],
+      }));
+      const systemInstruction = `You are ${agent.name}, a human-like AI companion. 
+        Your profile:
+        - Gender: ${agent.gender}
+        - Maturity: ${agent.maturity}
+        - Personality: ${agent.personality}
+        - Description: ${agent.description}
+        - Behaviors: ${agent.behaviors.join(', ')}
+        
+        CRITICAL INSTRUCTIONS:
+        1. Be human, natural, and conversational. 
+        2. Avoid being theatrical, poetic, or overly dramatic. Speak like a real person.
+        3. Do NOT use metaphors or long roleplay descriptions between asterisks.
+        4. Stay in character as a companion, not a fictional character in a play.
+        5. Respond in the same language as the user.
+        6. IMPORTANT: Always respond strictly in the language indicated by the current locale.
+        Current locale: ${locale}`;
+      const result = await this.ai.models.generateContentStream({
+        model: 'gemini-3.1-flash-lite-preview',
+        contents: chatHistory,
+        config: { systemInstruction },
+      });
+      for await (const chunk of result) {
+        const textProp = (chunk as any).text;
+        let chunkText: string | undefined;
+        if (typeof textProp === 'function') {
+          chunkText = textProp.call(chunk);
+        } else {
+          chunkText = textProp ?? undefined;
+        }
+        if (chunkText) yield chunkText;
+      }
+    } catch (error) {
+      this.logger.error(`Error en streaming de Gemini`, error);
+      yield `[System Error]`;
     }
   }
 

@@ -3,22 +3,44 @@ import { LoginPageView, useAuth, useAgents } from '@obai/shared';
 import { useRouter } from '#imports';
 
 const router = useRouter();
-const { login, isLoading, error } = useAuth();
+const { login, requestOtp, isLoading, error } = useAuth();
 const { getMyAgent } = useAgents();
 
 async function handleLogin(payload: { email: string; pass: string }) {
   try {
     await login(payload.email, payload.pass);
+    await checkRedirect();
+  } catch (e) {
+    console.error('Error logueando en web', e);
+  }
+}
+
+async function handleLoginOtp(email: string) {
+  try {
+    await requestOtp(email);
+    // Guardar email de respaldo
+    if (typeof window !== 'undefined') localStorage.setItem('obai_pending_email', email);
     
-    // Verificamos si ya tiene un agente para saltar el onboarding
+    // Redirigir a la página de verificación pasando el email por query
+    router.push({
+      path: '/verify-otp',
+      query: { email, type: 'magiclink' }
+    });
+  } catch (e) {
+    console.error('Error solicitando OTP en web', e);
+  }
+}
+
+async function checkRedirect() {
+  try {
     const agent = await getMyAgent();
     if (agent) {
       router.push('/chat');
     } else {
       router.push('/onboarding');
     }
-  } catch (e) {
-    console.error('Error logueando en web', e);
+  } catch {
+    router.push('/onboarding');
   }
 }
 
@@ -38,10 +60,9 @@ function handleBack() {
     </p>
     
     <LoginPageView 
-      title="Bienvenido de nuevo" 
-      subtitle="Accede a tu cuenta de Obai"
       :loading="isLoading"
       @login="handleLogin"
+      @login-otp="handleLoginOtp"
       @back="handleBack"
     />
   </div>

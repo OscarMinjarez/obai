@@ -4,6 +4,10 @@ import { IntelligenceService } from './intelligence.service';
 import { AgentGeneratorService } from 'obai/intelligence';
 import { AgentRepository } from 'obai/entities';
 
+jest.mock('obai/auth', () => ({
+  JwtAuthGuard: class JwtAuthGuard {},
+}));
+
 describe('IntelligenceController', () => {
   let controller: IntelligenceController;
   let intelligenceService: IntelligenceService;

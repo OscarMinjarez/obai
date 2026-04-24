@@ -7,9 +7,8 @@
       >
         {{ error }}
       </p>
+      
       <RegisterPageView 
-        title="Crear Cuenta" 
-        subtitle="Regístrate en App"
         :loading="isLoading"
         @register="handleRegister"
         @back="handleBack"
@@ -21,8 +20,7 @@
 <script setup lang="ts">
 import { IonContent, IonPage } from '@ionic/vue';
 import { useRouter } from 'vue-router';
-import RegisterPageView from '@obai/shared/pages/RegisterPageView.vue';
-import { useAuth } from '@obai/shared/composables/useAuth';
+import { RegisterPageView, useAuth } from '@obai/shared';
 
 const router = useRouter();
 const { register, isLoading, error } = useAuth();
@@ -30,13 +28,19 @@ const { register, isLoading, error } = useAuth();
 async function handleRegister(payload: { name: string; email: string; pass: string }) {
   try {
     await register(payload.name, payload.email, payload.pass);
-    router.push('/login');
+    // Guardar email de respaldo
+    localStorage.setItem('obai_pending_email', payload.email);
+    
+    router.push({
+      path: '/verify-otp',
+      query: { email: payload.email, type: 'signup' }
+    });
   } catch (e) {
     console.error('Error registrando en la app', e);
   }
 }
 
 function handleBack() {
-  router.push('/home'); // O '/' principal
+  router.push('/home');
 }
 </script>

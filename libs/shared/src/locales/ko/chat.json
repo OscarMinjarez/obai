@@ -1,0 +1,6 @@
+{
+  "title": "Obai 어시스턴트",
+  "empty_state": "메시지가 없습니다. 대화를 시작해 보세요.",
+  "input_placeholder": "메시지를 입력하세요...",
+  "send_button": "전송"
+}

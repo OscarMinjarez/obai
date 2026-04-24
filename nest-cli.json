@@ -3,9 +3,10 @@
   "collection": "@nestjs/schematics",
   "sourceRoot": "apps/client-api/src",
   "compilerOptions": {
-    "deleteOutDir": true,
+    "deleteOutDir": false,
     "webpack": true,
-    "tsConfigPath": "apps/client-api/tsconfig.app.json"
+    "tsConfigPath": "apps/client-api/tsconfig.webpack.json",
+    "webpackConfigPath": "webpack.config.cjs"
   },
   "monorepo": true,
   "root": "apps/client-api",
@@ -16,7 +17,8 @@
       "entryFile": "main",
       "sourceRoot": "apps/admin-api/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/admin-api/tsconfig.app.json"
+        "tsConfigPath": "apps/admin-api/tsconfig.webpack.json",
+        "webpackConfigPath": "webpack.config.cjs"
       }
     },
     "auth": {
@@ -34,7 +36,17 @@
       "entryFile": "main",
       "sourceRoot": "apps/client-api/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/client-api/tsconfig.app.json"
+        "tsConfigPath": "apps/client-api/tsconfig.webpack.json",
+        "webpackConfigPath": "webpack.config.cjs"
+      }
+    },
+    "common": {
+      "type": "library",
+      "root": "libs/common",
+      "entryFile": "index",
+      "sourceRoot": "libs/common/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/common/tsconfig.lib.json"
       }
     },
     "entities": {
@@ -46,13 +58,13 @@
         "tsConfigPath": "libs/entities/tsconfig.lib.json"
       }
     },
-    "messaging": {
+    "i18n": {
       "type": "library",
-      "root": "libs/messaging",
+      "root": "libs/i18n",
       "entryFile": "index",
-      "sourceRoot": "libs/messaging/src",
+      "sourceRoot": "libs/i18n/src",
       "compilerOptions": {
-        "tsConfigPath": "libs/messaging/tsconfig.lib.json"
+        "tsConfigPath": "libs/i18n/tsconfig.lib.json"
       }
     },
     "intelligence": {
@@ -64,13 +76,13 @@
         "tsConfigPath": "libs/intelligence/tsconfig.lib.json"
       }
     },
-    "common": {
+    "messaging": {
       "type": "library",
-      "root": "libs/common",
+      "root": "libs/messaging",
       "entryFile": "index",
-      "sourceRoot": "libs/common/src",
+      "sourceRoot": "libs/messaging/src",
       "compilerOptions": {
-        "tsConfigPath": "libs/common/tsconfig.lib.json"
+        "tsConfigPath": "libs/messaging/tsconfig.lib.json"
       }
     },
     "shared": {

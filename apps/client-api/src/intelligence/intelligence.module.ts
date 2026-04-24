@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { IntelligenceController } from './intelligence.controller';
-import { IntelligenceService } from './intelligence.service';
+import { IntelligenceController } from './intelligence.controller.js';
+import { IntelligenceService } from './intelligence.service.js';
 import { EntitiesModule } from 'obai/entities';
 import { IntelligenceModule as AiLibraryModule } from 'obai/intelligence';
 

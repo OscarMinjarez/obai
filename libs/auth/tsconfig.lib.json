@@ -1,9 +1,23 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "declaration": true,
-    "outDir": "../../dist/libs/auth"
+    "outDir": "../../dist/libs/auth",
+    "rootDir": "src",
+    "composite": true,
+    "incremental": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "resolvePackageJsonExports": false,
+    "types": ["node"]
+    ,
+    "tsBuildInfoFile": "../../dist/.tsbuildinfo/auth.tsbuildinfo"
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist", "test", "**/*spec.ts"]
+  ,
+  "references": [
+    { "path": "../entities/tsconfig.lib.json" },
+    { "path": "../i18n/tsconfig.lib.json" }
+  ]
 }

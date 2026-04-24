@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AuthModule as SharedAuthModule } from 'obai/auth';
-import { AuthController } from './auth.controller';
+import { AuthController } from './auth.controller.js';
 
 @Module({
   imports: [SharedAuthModule],

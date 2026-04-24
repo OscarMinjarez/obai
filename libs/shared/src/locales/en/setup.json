@@ -1,0 +1,22 @@
+{
+  "title": "Bot Setup",
+  "subtitle": "Customize your AI companion's personality and profile.",
+  "name_label": "Name",
+  "name_placeholder": "Agent Name",
+  "gender_label": "Gender Tone",
+  "gender_male": "Male",
+  "gender_female": "Female",
+  "gender_neutral": "Neutral",
+  "maturity_label": "Maturity",
+  "maturity_young": "Young",
+  "maturity_mature": "Mature",
+  "maturity_elder": "Elder",
+  "desc_label": "Short Description",
+  "desc_placeholder": "Quick bio...",
+  "personality_label": "Personality",
+  "personality_placeholder": "Describe their personality...",
+  "behaviors_label": "Behaviors (one per line)",
+  "behaviors_placeholder": "List of behaviors...",
+  "save_button": "Save and Continue",
+  "regenerate_button": "Regenerate Suggestion"
+}
